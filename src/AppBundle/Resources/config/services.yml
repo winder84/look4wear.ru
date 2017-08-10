@@ -1,0 +1,30 @@
+services:
+    app.admin.offer:
+        class: AppBundle\Admin\OfferAdmin
+        arguments: [~, AppBundle\Entity\Offer, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Контент, label: Офферы }
+
+    app.admin.goods:
+        class: AppBundle\Admin\GoodsAdmin
+        arguments: [~, AppBundle\Entity\Goods, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Контент, label: Товары }
+
+    app.admin.goods_param:
+        class: AppBundle\Admin\GoodsParamAdmin
+        arguments: [~, AppBundle\Entity\GoodsParam, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Контент, label: Параметры товаров }
+
+    app.admin.goods_param_value:
+        class: AppBundle\Admin\GoodsParamValueAdmin
+        arguments: [~, AppBundle\Entity\GoodsParamValue, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Контент, label: Значения параметров }
+
+    app.admin.vendor:
+        class: AppBundle\Admin\VendorAdmin
+        arguments: [~, AppBundle\Entity\Vendor, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Контент, label: Бренды }
