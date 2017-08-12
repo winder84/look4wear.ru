@@ -164,7 +164,7 @@ class parseCommand extends ContainerAwareCommand
                                         case 'vendor':
                                             $vendorAlias = $vendorName = iconv("UTF-8", "UTF-8//IGNORE", $value);
                                             $vendorAlias = mb_strtolower($vendorAlias, 'UTF-8');
-                                            $vendorAlias = preg_replace('/[^a-zA-Zа-яА-Я]/ui', '', $vendorAlias);
+                                            $vendorAlias = preg_replace('/[^a-zA-Zа-яА-Я0-9]/ui', '', $vendorAlias);
                                             $vendorAlias = $this->TransUrl($vendorAlias);
                                             $vendor = $this->em
                                                 ->getRepository('AppBundle:Vendor')
