@@ -25,6 +25,7 @@ class OfferAdmin extends AbstractAdmin
             ->add('url')
             ->add('alias')
             ->add('version')
+            ->add('isDelete')
         ;
     }
 
@@ -43,6 +44,7 @@ class OfferAdmin extends AbstractAdmin
             ->add('url')
             ->add('alias')
             ->add('version')
+            ->add('isDelete')
             ->add('_action', null, array(
                 'actions' => array(
                     'show' => array(),
@@ -59,6 +61,7 @@ class OfferAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
+            ->add('isDelete')
             ->add('name')
             ->add('description')
             ->add('xmlParseUrl')

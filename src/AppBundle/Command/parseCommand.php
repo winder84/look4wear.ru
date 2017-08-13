@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Command;
+
 use AppBundle\Entity\Goods;
 use AppBundle\Entity\Offer;
 use AppBundle\Entity\Vendor;
@@ -9,9 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Debug\Exception\ContextErrorException;
-use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\Security\Acl\Exception\Exception;
 
 class parseCommand extends ContainerAwareCommand
 {
@@ -19,36 +17,74 @@ class parseCommand extends ContainerAwareCommand
     /**
      * @var OutputInterface
      */
-    protected $output;
+    protected static $output;
 
     /**
      * @var string Разделитель
      */
-    protected $delimer = '----------';
+    protected static $delimer = '----------';
 
     /**
      * @var EntityManager
      */
-    protected $em;
+    protected static $em;
+
+    /**
+     * @var Goods
+     */
+    protected static $goods = null;
+
+    /**
+     * @var string
+     */
+    protected static $externalId = '';
+
+    /**
+     * @var string
+     */
+    protected static $aliasName = '';
+
+    /**
+     * @var string
+     */
+    protected static $goodsType = '';
+
+    /**
+     * @var array
+     */
+    protected static $pictures = [];
 
     protected function configure()
     {
         $this
             ->setName('main:parse')
-            ->setDescription('Parse offers')
-        ;
+            ->setDescription('Parse offers');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->em = $this->getContainer()->get('doctrine')->getManager();
-        $this->em->getConnection()->getConfiguration()->setSQLLogger(null);
-        $this->output = $output;
-        $offers = $this->em
+        self::$em = $this->getContainer()->get('doctrine')->getManager();
+        self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
+        self::$output = $output;
+        $offers = self::$em
             ->getRepository('AppBundle:Offer')
-            ->findAll();
+            ->findBy([
+                'isDelete' => 0
+            ]);
         foreach ($offers as $offer) {
             $this->parseOffer($offer);
+        }
+
+        /** Проставляем isDelete для товаров, у оффера которых isDelete = 1 */
+        $offers = self::$em
+            ->getRepository('AppBundle:Offer')
+            ->findBy([
+                'isDelete' => 1
+            ]);
+        foreach ($offers as $offer) {
+            $this->outputWriteLn('Удаление товаров оффера ' . $offer->getName());
+            $this->deleteGoodsByOffer($offer);
+            $this->outputWriteLn('Удаление товаров оффера ' . $offer->getName() . ' завершено');
         }
     }
 
@@ -58,13 +94,13 @@ class parseCommand extends ContainerAwareCommand
      */
     private function outputWriteLn($text)
     {
-        $style = new OutputFormatterStyle('red', null, array('bold', 'blink'));
-        $this->output->getFormatter()->setStyle('red', $style);
-        $style = new OutputFormatterStyle('blue', null, array('bold', 'blink'));
-        $this->output->getFormatter()->setStyle('blue', $style);
+        $style = new OutputFormatterStyle('red', null, ['bold', 'blink']);
+        self::$output->getFormatter()->setStyle('red', $style);
+        $style = new OutputFormatterStyle('blue', null, ['bold', 'blink']);
+        self::$output->getFormatter()->setStyle('blue', $style);
         $newTimeDate = new \DateTime();
         $newTimeDate = $newTimeDate->format(\DateTime::ATOM);
-        $this->output->writeln($this->delimer. $newTimeDate . ' | <blue>' . $text . '</blue> | Memory usage: <red>' . round(memory_get_usage() / (1024 * 1024)) . ' MB</red>' . $this->delimer);
+        self::$output->writeln(self::$delimer . $newTimeDate . ' | <blue>' . $text . '</blue> | Memory usage: <red>' . round(memory_get_usage() / (1024 * 1024)) . ' MB</red>' . self::$delimer);
     }
 
     /**
@@ -77,128 +113,75 @@ class parseCommand extends ContainerAwareCommand
         $this->outputWriteLn('Начало парсинга оффера ' . $offer->getName());
         $offerXmlUrl = $offer->getXmlParseUrl();
         $xmlReader = \XMLReader::open($offerXmlUrl);
-        $resultArray = array();
         $countIndex = 0;
         $checked = true;
         try {
-            while($xmlReader->read());
+            while ($xmlReader->read()) {
+            }
         } catch (\Exception $e) {
             $checked = false;
             $this->outputWriteLn('Ошибка: ' . $e->getMessage());
         }
         if ($checked) {
             $xmlReader = \XMLReader::open($offerXmlUrl);
-            while($xmlReader->read()) {
-                if($xmlReader->nodeType == \XMLReader::ELEMENT) {
-                    if($xmlReader->localName == 'offer') {
+            while ($xmlReader->read()) {
+                if ($xmlReader->nodeType == \XMLReader::ELEMENT) {
+                    if ($xmlReader->localName == 'offer') {
                         $groupId = $xmlReader->getAttribute('group_id');
-                        $externalId = $xmlReader->getAttribute('id');
-                        $oldGoodsByGroupId = null;
+                        self::$externalId = $xmlReader->getAttribute('id');
+                        self::$goods = null;
+                        self::$pictures = [];
                         if ($groupId) {
-                            $oldGoodsByGroupId = $this->em
+                            self::$goods = self::$em
                                 ->getRepository('AppBundle:Goods')
-                                ->findOneBy(array(
+                                ->findOneBy([
                                     'groupId' => $groupId,
                                     'Offer' => $offer,
-                                ));
+                                ]);
                         }
-                        if ($oldGoodsByGroupId) {
-                            $oldGoods = $oldGoodsByGroupId;
-                        } else {
-                            $oldGoods = $this->em
+                        if (!self::$goods) {
+                            self::$goods = self::$em
                                 ->getRepository('AppBundle:Goods')
-                                ->findOneBy(array(
-                                    'externalId' => $externalId,
+                                ->findOneBy([
+                                    'externalId' => self::$externalId,
                                     'Offer' => $offer,
-                                ));
+                                ]);
                         }
-                        if ($oldGoods) {
-                            do {
-                                $xmlReader->read();
-                                if ($xmlReader->nodeType != \XMLReader::END_ELEMENT) {
-                                    $tagName = $xmlReader->localName;
-                                    $xmlReader->read();
-                                    $value = $xmlReader->value;
-                                    print_r($tagName . ' - ' . $value . "\n");
-                                }
-                            } while ($xmlReader->localName != 'offer');
+                        if (self::$goods) {
+                            self::$goodsType = 'update';
                         } else {
-                            $newGoods = new Goods();
-                            $newGoods->setExternalId($externalId);
-                            $aliasName = '';
-                            do {
-                                $xmlReader->read();
-                                if ($xmlReader->nodeType != \XMLReader::END_ELEMENT) {
-                                    $tagName = $xmlReader->localName;
-                                    $xmlReader->read();
-                                    $value = $xmlReader->value;
-                                    switch ($tagName) {
-                                        case 'currencyId':
-                                            $newGoods->setCurrency($value);
-                                            break;
-                                        case 'description':
-                                            $newGoods->setDescription($value);
-                                            break;
-                                        case 'market_category':
-                                            $newGoods->setCategory($value);
-                                            break;
-                                        case 'model':
-                                            $newGoods->setModel($value);
-                                            break;
-                                        case 'name':
-                                            $aliasName = $externalId . '_' . $value;
-                                            $newGoods->setName($value);
-                                            break;
-                                        case 'price':
-                                            $newGoods->setPrice(floatval($value));
-                                            break;
-                                        case 'oldprice':
-                                            $newGoods->setOldPrice(floatval($value));
-                                            break;
-                                        case 'url':
-                                            $newGoods->setUrl($value);
-                                            break;
-                                        case 'vendorCode':
-                                            $newGoods->setVendorCode($value);
-                                            break;
-                                        case 'vendor':
-                                            $vendorAlias = $vendorName = iconv("UTF-8", "UTF-8//IGNORE", $value);
-                                            $vendorAlias = mb_strtolower($vendorAlias, 'UTF-8');
-                                            $vendorAlias = preg_replace('/[^a-zA-Zа-яА-Я0-9]/ui', '', $vendorAlias);
-                                            $vendorAlias = $this->TransUrl($vendorAlias);
-                                            $vendor = $this->em
-                                                ->getRepository('AppBundle:Vendor')
-                                                ->findOneBy(array(
-                                                    'alias' => $vendorAlias
-                                                ));
-                                            if (!$vendor) {
-                                                $vendor = new Vendor();
-                                                $vendor->setName($vendorName);
-                                                $vendor->setAlias($vendorAlias);
-                                                $this->em->persist($vendor);
-                                                $this->em->flush($vendor);
-                                            }
-                                            $newGoods->setVendor($vendor);
-                                            break;
-                                    }
-                                }
-                            } while ($xmlReader->localName != 'offer');
+                            self::$goodsType = 'insert';
+                            self::$aliasName = '';
+                            self::$goods = new Goods();
+                            self::$goods->setExternalId(self::$externalId);
+                            self::$goods->setOffer($offer);
                             if ($groupId) {
-                                $newGoods->setGroupId($groupId);
+                                self::$goods->setGroupId($groupId);
                             }
-                            $newGoods->setOffer($offer);
-                            $newGoods->setAlias($this->TransUrl($aliasName));
-                            $newGoods->setIsDelete(false);
-                            $this->em->persist($newGoods);
                         }
+                        do {
+                            $xmlReader->read();
+                            if ($xmlReader->nodeType != \XMLReader::END_ELEMENT) {
+                                $tagName = $xmlReader->localName;
+                                $xmlReader->read();
+                                $value = $xmlReader->value;
+                                $this->checkXmlItem($tagName, $value);
+                            }
+                        } while ($xmlReader->localName != 'offer');
+                        if (self::$pictures) {
+                            self::$goods->setPictures(self::$pictures);
+                        }
+                        self::$goods->setIsDelete(false);
+                        self::$goods->setVersion($version);
+                        self::$em->persist(self::$goods);
                         $countIndex++;
+
                         if ($countIndex > 0 && $countIndex % 100000 == 0) {
                             $this->outputWriteLn('Обработано ' . $countIndex . ' товаров!');
-                            $newGoods = null;
-                            $oldGoods = null;
-                            $this->em->flush();
-                            $this->em->clear('AppBundle\Entity\Goods');
-                            $this->em->clear('AppBundle\Entity\Vendor');
+                            self::$goods = null;
+                            self::$em->flush();
+                            self::$em->clear('AppBundle\Entity\Goods');
+                            self::$em->clear('AppBundle\Entity\Vendor');
                         }
                     }
                 }
@@ -207,109 +190,209 @@ class parseCommand extends ContainerAwareCommand
         }
 
         $offer->setVersion($version);
-        $this->em->persist($offer);
-        $this->em->flush();
+        self::$em->persist($offer);
+        self::$em->flush();
 
-        $this->outputWriteLn('Конец парсинга оффера');
+        $this->outputWriteLn('Конец парсинга оффера ' . $offer->getName());
 
     }
 
-    private function TransUrl($str)
+    /**
+     * @param $tagName string
+     * @param $value string
+     */
+    private function checkXmlItem($tagName, $value)
     {
-        $tr = array(
-            "А"=>"a",
-            "Б"=>"b",
-            "В"=>"v",
-            "Г"=>"g",
-            "Д"=>"d",
-            "Е"=>"e",
-            "Ё"=>"e",
-            "Ж"=>"j",
-            "З"=>"z",
-            "И"=>"i",
-            "Й"=>"y",
-            "К"=>"k",
-            "Л"=>"l",
-            "М"=>"m",
-            "Н"=>"n",
-            "О"=>"o",
-            "П"=>"p",
-            "Р"=>"r",
-            "С"=>"s",
-            "Т"=>"t",
-            "У"=>"u",
-            "Ф"=>"f",
-            "Х"=>"h",
-            "Ц"=>"ts",
-            "Ч"=>"ch",
-            "Ш"=>"sh",
-            "Щ"=>"sch",
-            "Ъ"=>"",
-            "Ы"=>"i",
-            "Ь"=>"j",
-            "Э"=>"e",
-            "Ю"=>"yu",
-            "Я"=>"ya",
-            "а"=>"a",
-            "б"=>"b",
-            "в"=>"v",
-            "г"=>"g",
-            "д"=>"d",
-            "е"=>"e",
-            "ё"=>"e",
-            "ж"=>"j",
-            "з"=>"z",
-            "и"=>"i",
-            "й"=>"y",
-            "к"=>"k",
-            "л"=>"l",
-            "м"=>"m",
-            "н"=>"n",
-            "о"=>"o",
-            "п"=>"p",
-            "р"=>"r",
-            "с"=>"s",
-            "т"=>"t",
-            "у"=>"u",
-            "ф"=>"f",
-            "х"=>"h",
-            "ц"=>"ts",
-            "ч"=>"ch",
-            "ш"=>"sh",
-            "щ"=>"sch",
-            "ъ"=>"y",
-            "ы"=>"i",
-            "ь"=>"j",
-            "э"=>"e",
-            "ю"=>"yu",
-            "я"=>"ya",
-            " "=> "_",
-            "."=> "",
-            "/"=> "_",
-            ","=>"_",
-            "-"=>"_",
-            "("=>"",
-            ")"=>"",
-            "["=>"",
-            "]"=>"",
-            "="=>"_",
-            "+"=>"_",
-            "*"=>"",
-            "?"=>"",
-            "\""=>"",
-            "'"=>"",
-            "&"=>"",
-            "%"=>"",
-            "#"=>"",
-            "@"=>"",
-            "!"=>"",
-            ";"=>"",
-            "№"=>"",
-            "^"=>"",
-            ":"=>"",
-            "~"=>"",
-            "\\"=>""
-        );
-        return strtr($str,$tr);
+        switch ($tagName) {
+            case 'currencyId':
+                if (self::$goodsType == 'insert') {
+                    self::$goods->setCurrency($value);
+                }
+                break;
+            case 'description':
+                if (self::$goodsType == 'insert') {
+                    self::$goods->setDescription($value);
+                }
+                break;
+            case 'market_category':
+                if (self::$goodsType == 'insert') {
+                    self::$goods->setCategory($value);
+                }
+                break;
+            case 'model':
+                if (self::$goodsType == 'insert') {
+                    self::$goods->setModel($value);
+                }
+                break;
+            case 'name':
+                if (self::$goodsType == 'insert') {
+                    self::$aliasName = self::$externalId . '_' . $value;
+                    self::$goods->setName($value);
+                }
+                break;
+            case 'price':
+                self::$goods->setPrice(floatval($value));
+                break;
+            case 'oldprice':
+                self::$goods->setOldPrice(floatval($value));
+                break;
+            case 'url':
+                self::$goods->setUrl($value);
+                break;
+            case 'vendorCode':
+                if (self::$goodsType == 'insert') {
+                    self::$goods->setVendorCode($value);
+                }
+                break;
+            case 'vendor':
+                if (self::$goodsType == 'insert' || (self::$goodsType == 'update' && !self::$goods->getVendor() && $value)) {
+                    self::setVendor($value);
+                }
+                break;
+            case 'picture':
+                if (self::$goodsType == 'insert' || (self::$goodsType == 'update' && !self::$goods->getPictures() && $value)) {
+                    self::$pictures[] = $value;
+                }
+                break;
+        }
+        if (self::$goodsType == 'insert') {
+            self::$goods->setAlias(self::TransUrl(self::$aliasName));
+        }
+    }
+
+    /**
+     * @param $value string
+     */
+    private static function setVendor($value)
+    {
+        $vendorAlias = $vendorName = iconv("UTF-8", "UTF-8//IGNORE", $value);
+        $vendorAlias = mb_strtolower($vendorAlias, 'UTF-8');
+        $vendorAlias = preg_replace('/[^a-zA-Zа-яА-Я0-9]/ui', '', $vendorAlias);
+        $vendorAlias = self::TransUrl($vendorAlias);
+        $vendor = self::$em
+            ->getRepository('AppBundle:Vendor')
+            ->findOneBy(['alias' => $vendorAlias]);
+        if (!$vendor) {
+            $vendor = new Vendor();
+            $vendor->setName($vendorName);
+            $vendor->setAlias($vendorAlias);
+            self::$em->persist($vendor);
+            self::$em->flush($vendor);
+        }
+        self::$goods->setVendor($vendor);
+    }
+
+    /**
+     * @param $str string
+     * @return string
+     */
+    private static function TransUrl($str)
+    {
+        $tr = [
+            "А" => "a",
+            "Б" => "b",
+            "В" => "v",
+            "Г" => "g",
+            "Д" => "d",
+            "Е" => "e",
+            "Ё" => "e",
+            "Ж" => "j",
+            "З" => "z",
+            "И" => "i",
+            "Й" => "y",
+            "К" => "k",
+            "Л" => "l",
+            "М" => "m",
+            "Н" => "n",
+            "О" => "o",
+            "П" => "p",
+            "Р" => "r",
+            "С" => "s",
+            "Т" => "t",
+            "У" => "u",
+            "Ф" => "f",
+            "Х" => "h",
+            "Ц" => "ts",
+            "Ч" => "ch",
+            "Ш" => "sh",
+            "Щ" => "sch",
+            "Ъ" => "",
+            "Ы" => "i",
+            "Ь" => "j",
+            "Э" => "e",
+            "Ю" => "yu",
+            "Я" => "ya",
+            "а" => "a",
+            "б" => "b",
+            "в" => "v",
+            "г" => "g",
+            "д" => "d",
+            "е" => "e",
+            "ё" => "e",
+            "ж" => "j",
+            "з" => "z",
+            "и" => "i",
+            "й" => "y",
+            "к" => "k",
+            "л" => "l",
+            "м" => "m",
+            "н" => "n",
+            "о" => "o",
+            "п" => "p",
+            "р" => "r",
+            "с" => "s",
+            "т" => "t",
+            "у" => "u",
+            "ф" => "f",
+            "х" => "h",
+            "ц" => "ts",
+            "ч" => "ch",
+            "ш" => "sh",
+            "щ" => "sch",
+            "ъ" => "y",
+            "ы" => "i",
+            "ь" => "j",
+            "э" => "e",
+            "ю" => "yu",
+            "я" => "ya",
+            " " => "_",
+            "." => "",
+            "/" => "_",
+            "," => "_",
+            "-" => "_",
+            "(" => "",
+            ")" => "",
+            "[" => "",
+            "]" => "",
+            "=" => "_",
+            "+" => "_",
+            "*" => "",
+            "?" => "",
+            "\"" => "",
+            "'" => "",
+            "&" => "",
+            "%" => "",
+            "#" => "",
+            "@" => "",
+            "!" => "",
+            ";" => "",
+            "№" => "",
+            "^" => "",
+            ":" => "",
+            "~" => "",
+            "\\" => ""
+        ];
+        return strtr($str, $tr);
+    }
+
+    /**
+     * @param $offer Offer
+     */
+    private function deleteGoodsByOffer($offer)
+    {
+        $connection = self::$em->getConnection();
+        $statement = $connection->prepare("UPDATE goods SET isDelete = 1 WHERE isDelete = 0 AND offerId = :offerId");
+        $statement->bindValue('offerId', $offer->getId());
+        $statement->execute();
     }
 }

@@ -83,6 +83,13 @@ class Offer
     private $version;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="isDelete", type="boolean")
+     */
+    private $isDelete;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -324,5 +331,29 @@ class Offer
     public function getGoods()
     {
         return $this->Goods;
+    }
+
+    /**
+     * Set isDelete
+     *
+     * @param boolean $isDelete
+     *
+     * @return Offer
+     */
+    public function setIsDelete($isDelete)
+    {
+        $this->isDelete = $isDelete;
+
+        return $this;
+    }
+
+    /**
+     * Get isDelete
+     *
+     * @return boolean
+     */
+    public function getIsDelete()
+    {
+        return $this->isDelete;
     }
 }

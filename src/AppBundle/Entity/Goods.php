@@ -121,11 +121,11 @@ class Goods
     private $oldPrice;
 
     /**
-     * @var string
+     * @var json_encode
      *
-     * @ORM\Column(name="picture", type="string", length=255, nullable=true)
+     * @ORM\Column(name="pictures", type="json_array", nullable=true)
      */
-    private $picture;
+    private $pictures;
 
     /**
      * @var string
@@ -135,11 +135,11 @@ class Goods
     private $url;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="modifiedTime", type="integer", nullable=true)
+     * @ORM\Column(name="version", type="string", length=255, nullable=true)
      */
-    private $modifiedTime;
+    private $version;
 
     /**
      * @var bool
@@ -407,30 +407,6 @@ class Goods
     }
 
     /**
-     * Set picture
-     *
-     * @param string $picture
-     *
-     * @return Goods
-     */
-    public function setPicture($picture)
-    {
-        $this->picture = $picture;
-
-        return $this;
-    }
-
-    /**
-     * Get picture
-     *
-     * @return string
-     */
-    public function getPicture()
-    {
-        return $this->picture;
-    }
-
-    /**
      * Set url
      *
      * @param string $url
@@ -452,30 +428,6 @@ class Goods
     public function getUrl()
     {
         return $this->url;
-    }
-
-    /**
-     * Set modifiedTime
-     *
-     * @param integer $modifiedTime
-     *
-     * @return Goods
-     */
-    public function setModifiedTime($modifiedTime)
-    {
-        $this->modifiedTime = $modifiedTime;
-
-        return $this;
-    }
-
-    /**
-     * Get modifiedTime
-     *
-     * @return integer
-     */
-    public function getModifiedTime()
-    {
-        return $this->modifiedTime;
     }
 
     /**
@@ -606,5 +558,53 @@ class Goods
     public function getAlias()
     {
         return $this->alias;
+    }
+
+    /**
+     * Set version
+     *
+     * @param string $version
+     *
+     * @return Goods
+     */
+    public function setVersion($version)
+    {
+        $this->version = $version;
+
+        return $this;
+    }
+
+    /**
+     * Get version
+     *
+     * @return string
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    /**
+     * Set pictures
+     *
+     * @param array $pictures
+     *
+     * @return Goods
+     */
+    public function setPictures($pictures)
+    {
+        $this->pictures = $pictures;
+
+        return $this;
+    }
+
+    /**
+     * Get pictures
+     *
+     * @return array
+     */
+    public function getPictures()
+    {
+        return $this->pictures;
     }
 }
