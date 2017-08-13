@@ -82,10 +82,13 @@ class parseCommand extends ContainerAwareCommand
                 'isDelete' => 1
             ]);
         foreach ($offers as $offer) {
-            $this->outputWriteLn('Удаление товаров оффера ' . $offer->getName());
+            $this->outputWriteLn('Логическое удаление товаров оффера ' . $offer->getName());
             $this->deleteGoodsByOffer($offer);
-            $this->outputWriteLn('Удаление товаров оффера ' . $offer->getName() . ' завершено');
+            $this->outputWriteLn('Логическое удаление товаров оффера ' . $offer->getName() . ' завершено');
         }
+        $this->outputWriteLn('Физическое удаление товаров без бренда');
+        $this->deleteGoodsByNoVendor();
+        $this->outputWriteLn('Физическое удаление товаров без бренда завершено');
     }
 
     /**
@@ -393,6 +396,16 @@ class parseCommand extends ContainerAwareCommand
         $connection = self::$em->getConnection();
         $statement = $connection->prepare("UPDATE goods SET isDelete = 1 WHERE isDelete = 0 AND offerId = :offerId");
         $statement->bindValue('offerId', $offer->getId());
+        $statement->execute();
+    }
+
+    /**
+     * Удаление товаров без бренда
+     */
+    private function deleteGoodsByNoVendor()
+    {
+        $connection = self::$em->getConnection();
+        $statement = $connection->prepare("DELETE FROM goods WHERE vendorId IS NULL");
         $statement->execute();
     }
 }
