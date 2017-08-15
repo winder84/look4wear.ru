@@ -1,9 +1,22 @@
-{% extends 'AppBundle:look4wear:base.html.twig' %}
+{% extends 'AppBundle:look4wear:layout.html.twig' %}
 
-{% block body %}
-    <div id="wrapper">
-        <div id="container">
-
-        </div>
-    </div>
+{% block content %}
+    {% if goods %}
+        <ul>
+        {% for goodsItem in goods %}
+            <li>
+                <ul>
+                    <li>{{ goodsItem.name }}</li>
+                    <li>{{ goodsItem.model }}</li>
+                    <li>{{ goodsItem.description }}</li>
+                    <li>
+                        {% for picture in goodsItem.pictures %}
+                            <img width="100" src="{{ picture|replace({'http:': ""}) }}">
+                        {% endfor %}
+                    </li>
+                </ul>
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}

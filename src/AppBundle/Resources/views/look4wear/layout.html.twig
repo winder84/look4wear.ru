@@ -1,0 +1,18 @@
+{% extends 'AppBundle:look4wear:base.html.twig' %}
+{% block metatags %}
+    {{ include('AppBundle:look4wear:meta.tags.html.twig', {'metaTags' : metaTags}) }}
+{% endblock %}
+{% block counters %}
+    {% if (app.environment == 'prod') and ('.lan' not in app.request.host) %}
+        {{ include('AppBundle:look4wear:counters.block.html.twig') }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <div id="wrapper">
+        <div id="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}
