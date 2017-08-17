@@ -52,6 +52,16 @@ class parseCommand extends ContainerAwareCommand
     /**
      * @var array
      */
+    protected static $paramsArray = [];
+
+    /**
+     * @var string
+     */
+    protected static $paramName = '';
+
+    /**
+     * @var array
+     */
     protected static $pictures = [];
 
     protected function configure()
@@ -113,11 +123,12 @@ class parseCommand extends ContainerAwareCommand
     {
         $version = $offer->getVersion();
         $version++;
-        $this->outputWriteLn('Начало парсинга оффера ' . $offer->getName());
+        $this->outputWriteLn('--- Начало парсинга оффера <red>' . $offer->getName() . '</red> ---');
         $offerXmlUrl = $offer->getXmlParseUrl();
         $xmlReader = \XMLReader::open($offerXmlUrl);
         $countIndex = 0;
         $checked = true;
+        $this->outputWriteLn('Проверка целостности XML');
         try {
             while ($xmlReader->read()) {
             }
@@ -125,6 +136,7 @@ class parseCommand extends ContainerAwareCommand
             $checked = false;
             $this->outputWriteLn('Ошибка: ' . $e->getMessage());
         }
+        $this->outputWriteLn('Проверка целостности XML Завершена');
         if ($checked) {
             $xmlReader = \XMLReader::open($offerXmlUrl);
             while ($xmlReader->read()) {
@@ -134,6 +146,8 @@ class parseCommand extends ContainerAwareCommand
                         self::$externalId = $xmlReader->getAttribute('id');
                         self::$goods = null;
                         self::$pictures = [];
+                        self::$paramsArray = [];
+                        self::$paramName = '';
                         if ($groupId) {
                             self::$goods = self::$em
                                 ->getRepository('AppBundle:Goods')
@@ -166,6 +180,9 @@ class parseCommand extends ContainerAwareCommand
                             $xmlReader->read();
                             if ($xmlReader->nodeType != \XMLReader::END_ELEMENT) {
                                 $tagName = $xmlReader->localName;
+                                if ($tagName == 'param') {
+                                    self::$paramName = $xmlReader->getAttribute('name');
+                                }
                                 $xmlReader->read();
                                 $value = $xmlReader->value;
                                 $this->checkXmlItem($tagName, $value);
@@ -174,13 +191,17 @@ class parseCommand extends ContainerAwareCommand
                         if (self::$pictures) {
                             self::$goods->setPictures(self::$pictures);
                         }
+                        if (self::$paramsArray) {
+                            self::$goods->setParams(self::$paramsArray);
+                        }
                         self::$goods->setIsDelete(false);
                         self::$goods->setVersion($version);
                         self::$em->persist(self::$goods);
                         $countIndex++;
 
+
                         if ($countIndex > 0 && $countIndex % 100000 == 0) {
-                            $this->outputWriteLn('Обработано ' . $countIndex . ' товаров!');
+                            $this->outputWriteLn('Обработано <red>' . $countIndex . '</red> товаров!');
                             self::$goods = null;
                             self::$em->flush();
                             self::$em->clear('AppBundle\Entity\Goods');
@@ -255,6 +276,11 @@ class parseCommand extends ContainerAwareCommand
             case 'picture':
                 if (self::$goodsType == 'insert' || (self::$goodsType == 'update' && !self::$goods->getPictures() && $value)) {
                     self::$pictures[] = $value;
+                }
+                break;
+            case 'param':
+                if (self::$goodsType == 'insert' && self::$paramName && $value) {
+                    self::$paramsArray[self::$paramName] = $value;
                 }
                 break;
         }

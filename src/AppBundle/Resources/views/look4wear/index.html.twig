@@ -14,6 +14,15 @@
                             <img width="100" src="{{ picture|replace({'http:': ""}) }}">
                         {% endfor %}
                     </li>
+                    {% if goodsItem.params %}
+                        <li>
+                            <ul>
+                                {% for paramName, paramValue in goodsItem.params %}
+                                    <li>{{ paramName }} : {{ paramValue }}</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endif %}
                 </ul>
             </li>
         {% endfor %}

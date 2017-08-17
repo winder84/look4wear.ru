@@ -72,9 +72,7 @@ class GoodsAdmin extends AbstractAdmin
             ->add('currency')
             ->add('price')
             ->add('oldPrice')
-            ->add('picture')
             ->add('url')
-            ->add('modifiedTime')
             ->add('isDelete')
         ;
     }
@@ -95,9 +93,7 @@ class GoodsAdmin extends AbstractAdmin
             ->add('currency')
             ->add('price')
             ->add('oldPrice')
-            ->add('picture')
             ->add('url')
-            ->add('modifiedTime')
             ->add('isDelete')
         ;
     }

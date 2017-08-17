@@ -38,12 +38,6 @@ class Goods
     private $Vendor;
 
     /**
-     * @ORM\ManyToMany(targetEntity="GoodsParamValue", inversedBy="Goods")
-     * @ORM\JoinTable(name="goodsParamValueLink")
-     */
-    private $GoodsParamValues;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="externalId", type="string")
@@ -149,12 +143,12 @@ class Goods
     private $isDelete;
 
     /**
-     * Constructor
+     * @var json_encode
+     *
+     * @ORM\Column(name="params", type="json_array", nullable=true)
      */
-    public function __construct()
-    {
-        $this->GoodsParamValues = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+    private $params;
+
 
     /**
      * Get id
@@ -188,6 +182,30 @@ class Goods
     public function getExternalId()
     {
         return $this->externalId;
+    }
+
+    /**
+     * Set alias
+     *
+     * @param string $alias
+     *
+     * @return Goods
+     */
+    public function setAlias($alias)
+    {
+        $this->alias = $alias;
+
+        return $this;
+    }
+
+    /**
+     * Get alias
+     *
+     * @return string
+     */
+    public function getAlias()
+    {
+        return $this->alias;
     }
 
     /**
@@ -407,6 +425,30 @@ class Goods
     }
 
     /**
+     * Set pictures
+     *
+     * @param array $pictures
+     *
+     * @return Goods
+     */
+    public function setPictures($pictures)
+    {
+        $this->pictures = $pictures;
+
+        return $this;
+    }
+
+    /**
+     * Get pictures
+     *
+     * @return array
+     */
+    public function getPictures()
+    {
+        return $this->pictures;
+    }
+
+    /**
      * Set url
      *
      * @param string $url
@@ -431,6 +473,30 @@ class Goods
     }
 
     /**
+     * Set version
+     *
+     * @param string $version
+     *
+     * @return Goods
+     */
+    public function setVersion($version)
+    {
+        $this->version = $version;
+
+        return $this;
+    }
+
+    /**
+     * Get version
+     *
+     * @return string
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    /**
      * Set isDelete
      *
      * @param boolean $isDelete
@@ -452,6 +518,30 @@ class Goods
     public function getIsDelete()
     {
         return $this->isDelete;
+    }
+
+    /**
+     * Set params
+     *
+     * @param array $params
+     *
+     * @return Goods
+     */
+    public function setParams($params)
+    {
+        $this->params = $params;
+
+        return $this;
+    }
+
+    /**
+     * Get params
+     *
+     * @return array
+     */
+    public function getParams()
+    {
+        return $this->params;
     }
 
     /**
@@ -500,111 +590,5 @@ class Goods
     public function getVendor()
     {
         return $this->Vendor;
-    }
-
-    /**
-     * Add goodsParamValue
-     *
-     * @param \AppBundle\Entity\GoodsParamValue $goodsParamValue
-     *
-     * @return Goods
-     */
-    public function addGoodsParamValue(\AppBundle\Entity\GoodsParamValue $goodsParamValue)
-    {
-        $this->GoodsParamValues[] = $goodsParamValue;
-
-        return $this;
-    }
-
-    /**
-     * Remove goodsParamValue
-     *
-     * @param \AppBundle\Entity\GoodsParamValue $goodsParamValue
-     */
-    public function removeGoodsParamValue(\AppBundle\Entity\GoodsParamValue $goodsParamValue)
-    {
-        $this->GoodsParamValues->removeElement($goodsParamValue);
-    }
-
-    /**
-     * Get goodsParamValues
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getGoodsParamValues()
-    {
-        return $this->GoodsParamValues;
-    }
-
-    /**
-     * Set alias
-     *
-     * @param string $alias
-     *
-     * @return Goods
-     */
-    public function setAlias($alias)
-    {
-        $this->alias = $alias;
-
-        return $this;
-    }
-
-    /**
-     * Get alias
-     *
-     * @return string
-     */
-    public function getAlias()
-    {
-        return $this->alias;
-    }
-
-    /**
-     * Set version
-     *
-     * @param string $version
-     *
-     * @return Goods
-     */
-    public function setVersion($version)
-    {
-        $this->version = $version;
-
-        return $this;
-    }
-
-    /**
-     * Get version
-     *
-     * @return string
-     */
-    public function getVersion()
-    {
-        return $this->version;
-    }
-
-    /**
-     * Set pictures
-     *
-     * @param array $pictures
-     *
-     * @return Goods
-     */
-    public function setPictures($pictures)
-    {
-        $this->pictures = $pictures;
-
-        return $this;
-    }
-
-    /**
-     * Get pictures
-     *
-     * @return array
-     */
-    public function getPictures()
-    {
-        return $this->pictures;
     }
 }
