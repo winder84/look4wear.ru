@@ -1,0 +1,42 @@
+{% extends 'AppBundle:look4wear:layout.html.twig' %}
+
+{% block content %}
+    <form action="/search" class="searchForm">
+        <div class="row">
+            <div class="input-group">
+                <input type="text" class="form-control" name="searchString" value="{{ searchString }}">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">Поиск</button>
+                </span>
+            </div><!-- /input-group -->
+        </div><!-- /.row -->
+    </form>
+    <div style="margin: 0 auto; max-width: 150px;">
+        <h3>Всего - {{ totalCount }}</h3>
+    </div>
+    {% if goods %}
+        <div class="row">
+            {% for goodsItem in goods %}
+                <div class="col-md-3">
+                    <div class="thumbnail">
+                        {% if goodsItem.pictures %}
+                            <img src="{{ goodsItem.pictures.0|replace({'http:': ""}) }}" data-src="{{ goodsItem.pictures.0|replace({'http:': ""}) }}" alt="...">
+                        {% endif %}
+                        <div class="caption">
+                            <h5>
+                                {{ goodsItem.getVendor.name }}
+                                <br />
+                                {{ goodsItem.name }}
+                            </h5>
+                            <p>Цена: {{ goodsItem.price }} руб</p>
+                            {#<p>{{ goodsItem.description|slice(0,100) }}</p>#}
+                            <p>
+                                <a href="#" class="btn btn-primary" role="button">Подробнее</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,14 @@
+
+.content {
+    max-width: 1248px;
+    margin: 0 auto;
+}
+
+.searchForm {
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+.searchForm .searchString {
+    min-width: 400px;
+}

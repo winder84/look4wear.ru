@@ -17,7 +17,7 @@ class DefaultController extends Controller
     /**
      * @var int
      */
-    protected static $resultsOnPage = 30;
+    protected static $resultsOnPage = 20;
 
     /**
      * @Route("/", name="homepage")
@@ -31,19 +31,20 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/search/{search}/{page}", name="search_page")
-     * @param $search
-     * @param $page
+     * @Route("/search", name="search_page")
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function searchAction($search, $page = 0)
+    public function searchAction(Request $request)
     {
         $matches = [];
+        $searchString = $request->get('searchString');
+        $page = $request->get('page');
         self::$em = $this->getDoctrine()->getManager();
         self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
         $sphinxSearch = $this->get('iakumai.sphinxsearch.search');
         $sphinxSearch->setLimits($page * self::$resultsOnPage, self::$resultsOnPage);
-        $searchGoods = $sphinxSearch->search($search, ['goods']);
+        $searchGoods = $sphinxSearch->search($searchString, ['goods']);
         if (isset($searchGoods['matches'])) {
             $matches = $searchGoods['matches'];
         }
@@ -61,10 +62,10 @@ class DefaultController extends Controller
         $query = $qb->getQuery();
         $goods = $query->getResult();
 
-        var_dump($totalCount);
-        return $this->render('AppBundle:look4wear:index.html.twig', [
+        return $this->render('AppBundle:look4wear:search.html.twig', [
             'goods' => $goods,
             'totalCount' => $totalCount,
+            'searchString' => $searchString,
         ]);
     }
 }

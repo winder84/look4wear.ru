@@ -3,8 +3,19 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}look4wear.ru - ищем одежду для Вас!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block stylesheets %}
+            {% stylesheets 'bundles/app/css/*' filter='cssrewrite' %}
+                <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
+            {% stylesheets '@bootstrap_css' %}
+                <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}"/>
+            {% endstylesheets %}
+        {% endblock %}
+        {% block javascripts %}
+            {% javascripts '@jquery' '@bootstrap_js' %}
+                <script type="text/javascript" src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+        {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
