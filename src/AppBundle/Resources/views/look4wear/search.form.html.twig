@@ -1,0 +1,10 @@
+<form action="/search" class="searchForm">
+    <div class="row">
+        <div class="input-group">
+            <input type="text" class="form-control" name="searchString" value="{% if searchString is defined %}{{ searchString }}{% endif %}">
+            <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">Поиск</button>
+                </span>
+        </div><!-- /input-group -->
+    </div><!-- /.row -->
+</form>

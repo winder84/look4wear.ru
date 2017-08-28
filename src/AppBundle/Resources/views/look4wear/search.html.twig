@@ -1,20 +1,11 @@
 {% extends 'AppBundle:look4wear:layout.html.twig' %}
 
 {% block content %}
-    <form action="/search" class="searchForm">
-        <div class="row">
-            <div class="input-group">
-                <input type="text" class="form-control" name="searchString" value="{{ searchString }}">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="submit">Поиск</button>
-                </span>
-            </div><!-- /input-group -->
-        </div><!-- /.row -->
-    </form>
-    <div style="margin: 0 auto; max-width: 150px;">
-        <h3>Всего - {{ totalCount }}</h3>
-    </div>
-    {% if goods %}
+    {{ include('AppBundle:look4wear:search.form.html.twig') }}
+    {% if goods is defined %}
+        <div style="margin: 0 auto; max-width: 150px;">
+            <h3>Всего - {{ totalCount }}</h3>
+        </div>
         <div class="row">
             {% for goodsItem in goods %}
                 <div class="col-md-3">
