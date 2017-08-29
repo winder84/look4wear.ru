@@ -12,3 +12,7 @@
 .searchForm .searchString {
     min-width: 400px;
 }
+
+.goodsThumbnailBlock {
+    height: 520px;
+}

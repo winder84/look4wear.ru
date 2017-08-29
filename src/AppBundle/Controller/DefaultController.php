@@ -44,7 +44,8 @@ class DefaultController extends Controller
         self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
         $sphinxSearch = $this->get('iakumai.sphinxsearch.search');
         $sphinxSearch->setLimits($page * self::$resultsOnPage, self::$resultsOnPage);
-        $searchGoods = $sphinxSearch->search($searchString, ['goods']);
+        $sphinxSearch->SetMatchMode(SPH_MATCH_EXTENDED);
+        $searchGoods = $sphinxSearch->query($searchString);
         if (isset($searchGoods['matches'])) {
             $matches = $searchGoods['matches'];
         }
