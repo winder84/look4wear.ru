@@ -16,3 +16,25 @@
 .goodsThumbnailBlock {
     height: 520px;
 }
+
+.searchStringBtn {
+    background-color: #333 !important;
+    background-image: linear-gradient(to bottom, #797979 0%, #151515 100%) !important;
+}
+
+.searchStringBtn, .searchStringInput {
+    margin: 0 15px;
+    z-index: 99999;
+}
+
+.goodsListImage {
+    max-width: 250px !important;
+}
+
+.goodsListImage:hover {
+    -moz-transform: scale(1.05);
+    -ms-transform: scale(1.05);
+    -webkit-transform: scale(1.05);
+    transform: scale(1.05);
+    transition-duration: 0.5s;
+}

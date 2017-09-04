@@ -1,30 +1,49 @@
 {% if goods is defined %}
-    <div style="margin: 0 auto; max-width: 150px;">
-        <h3>Всего - {{ totalCount }}</h3>
-    </div>
+    {#<div style="margin: 0 auto;">#}
+        {#<h4>Найдено {{ totalCount }} товара(ов):</h4>#}
+    {#</div>#}
     <div class="row">
         {% for goodsItem in goods %}
-            <div class="col-md-3">
-                <div class="thumbnail goodsThumbnailBlock">
+            <div class="col-sm-6 portfolio-item">
+                <a href="work-details.html" class="portfolio-link">
+                    <div class="caption">
+                        <div class="caption-content">
+                            <h3>
+                                {{ goodsItem.getVendor.name }}
+                                <br />
+                                {{ goodsItem.name }}
+                            </h3>
+                            <h4>Цена: {{ goodsItem.price }} руб</h4>
+                        </div>
+                    </div>
                     {% if goodsItem.pictures %}
-                        <img src="{{ goodsItem.pictures.0|replace({'http:': ""}) }}" data-src="{{ goodsItem.pictures.0|replace({'http:': ""}) }}" alt="...">
+                        <img class="img-responsive goodsListImage" src="{{ goodsItem.pictures.0|replace({'http:': ""}) }}" data-src="{{ goodsItem.pictures.0|replace({'http:': ""}) }}" alt="...">
                     {% else %}
                         <div style="width: 100%; height: 372px;"></div>
                     {% endif %}
-                    <div class="caption">
-                        <h5>
-                            {{ goodsItem.getVendor.name }}
-                            <br />
-                            {{ goodsItem.name }}
-                        </h5>
-                        <p>Цена: {{ goodsItem.price }} руб</p>
-                        {#<p>{{ goodsItem.description|slice(0,100) }}</p>#}
-                        <p>
-                            <a href="#" class="btn btn-primary" role="button">Подробнее</a>
-                        </p>
-                    </div>
-                </div>
+                </a>
             </div>
+            {#<div class="col-md-3">#}
+                {#<div class="thumbnail goodsThumbnailBlock">#}
+                    {#{% if goodsItem.pictures %}#}
+                        {#<img src="{{ goodsItem.pictures.0|replace({'http:': ""}) }}" data-src="{{ goodsItem.pictures.0|replace({'http:': ""}) }}" alt="...">#}
+                    {#{% else %}#}
+                        {#<div style="width: 100%; height: 372px;"></div>#}
+                    {#{% endif %}#}
+                    {#<div class="caption">#}
+                        {#<h5>#}
+                            {#{{ goodsItem.getVendor.name }}#}
+                            {#<br />#}
+                            {#{{ goodsItem.name }}#}
+                        {#</h5>#}
+                        {#<p>Цена: {{ goodsItem.price }} руб</p>#}
+                        {#<p>{{ goodsItem.description|slice(0,100) }}</p>#}
+                        {#<p>#}
+                            {#<a href="#" class="btn btn-primary" role="button">Подробнее</a>#}
+                        {#</p>#}
+                    {#</div>#}
+                {#</div>#}
+            {#</div>#}
         {% endfor %}
     </div>
 {% endif %}

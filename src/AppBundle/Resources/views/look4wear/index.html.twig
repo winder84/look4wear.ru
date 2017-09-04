@@ -1,7 +1,6 @@
 {% extends 'AppBundle:look4wear:layout.html.twig' %}
 
 {% block content %}
-    {{ include('AppBundle:look4wear:search.form.html.twig') }}
     {% if goods is defined %}
         <ul>
         {% for goodsItem in goods %}

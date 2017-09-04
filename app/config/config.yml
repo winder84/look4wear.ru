@@ -146,3 +146,11 @@ assetic:
             jquery:
                 inputs:
                     - %kernel.root_dir%/../vendor/components/jquery/jquery.js
+
+            adriya_js:
+                inputs:
+                    - %kernel.root_dir%/../src/AppBundle/Resources/public/adriya/js/bootstrap.min.js
+                    - %kernel.root_dir%/../src/AppBundle/Resources/public/adriya/js/jquery.fancybox.pack.js
+                    - %kernel.root_dir%/../src/AppBundle/Resources/public/adriya/js/retina.min.js
+                    - %kernel.root_dir%/../src/AppBundle/Resources/public/adriya/js/modernizr.js
+                    - %kernel.root_dir%/../src/AppBundle/Resources/public/adriya/js/main.js
