@@ -4,7 +4,7 @@
     {#</div>#}
     <div class="row">
         {% for goodsItem in goods %}
-            <div class="col-sm-6 portfolio-item">
+            <div class="col-sm-4 portfolio-item">
                 <a href="work-details.html" class="portfolio-link">
                     <div class="caption">
                         <div class="caption-content">
@@ -13,37 +13,25 @@
                                 <br />
                                 {{ goodsItem.name }}
                             </h3>
-                            <h4>Цена: {{ goodsItem.price }} руб</h4>
+                            <h4>
+                                Цена:
+                                {% if goodsItem.oldPrice %}
+                                    <span class="oldPrice">{{ goodsItem.oldPrice }} руб</span>
+                                    <br />
+                                {% endif %}
+                                <span class="goodsPrice">{{ goodsItem.price }} руб</span>
+                            </h4>
                         </div>
                     </div>
                     {% if goodsItem.pictures %}
-                        <img class="img-responsive goodsListImage" src="{{ goodsItem.pictures.0|replace({'http:': ""}) }}" data-src="{{ goodsItem.pictures.0|replace({'http:': ""}) }}" alt="...">
+                        <div class="goodsListImage">
+                            <img class="img-responsive" src="{{ goodsItem.pictures.0|replace({'http:': ""}) }}" data-src="{{ goodsItem.pictures.0|replace({'http:': ""}) }}" alt="...">
+                        </div>
                     {% else %}
-                        <div style="width: 100%; height: 372px;"></div>
+                        <div style="width: 100%; height: 333px;"></div>
                     {% endif %}
                 </a>
             </div>
-            {#<div class="col-md-3">#}
-                {#<div class="thumbnail goodsThumbnailBlock">#}
-                    {#{% if goodsItem.pictures %}#}
-                        {#<img src="{{ goodsItem.pictures.0|replace({'http:': ""}) }}" data-src="{{ goodsItem.pictures.0|replace({'http:': ""}) }}" alt="...">#}
-                    {#{% else %}#}
-                        {#<div style="width: 100%; height: 372px;"></div>#}
-                    {#{% endif %}#}
-                    {#<div class="caption">#}
-                        {#<h5>#}
-                            {#{{ goodsItem.getVendor.name }}#}
-                            {#<br />#}
-                            {#{{ goodsItem.name }}#}
-                        {#</h5>#}
-                        {#<p>Цена: {{ goodsItem.price }} руб</p>#}
-                        {#<p>{{ goodsItem.description|slice(0,100) }}</p>#}
-                        {#<p>#}
-                            {#<a href="#" class="btn btn-primary" role="button">Подробнее</a>#}
-                        {#</p>#}
-                    {#</div>#}
-                {#</div>#}
-            {#</div>#}
         {% endfor %}
     </div>
 {% endif %}

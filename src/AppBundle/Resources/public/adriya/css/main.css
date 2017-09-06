@@ -308,7 +308,7 @@ ul li {
 -------------------------------------------------------------------------------*/
 #portfolio .portfolio-item {
 	right: 0;
-	margin: 0 0 20px;
+	margin: 15px auto;
 	padding: 0 10px;
 	max-width: 290px;
 	max-height: 333px;
@@ -353,7 +353,7 @@ ul li {
 #portfolio .portfolio-item .portfolio-link .caption .caption-content h3 {
 	margin: 0;
 	color: #e9eaed;
-	font-size: 17px;
+	font-size: .6em;
 	letter-spacing: 4px;
 	text-transform: uppercase;
 	line-height: 1;
@@ -361,7 +361,7 @@ ul li {
 #portfolio .portfolio-item .portfolio-link .caption .caption-content h4 {
 	margin: 10px 0;
 	color: #e9eaed;
-	font-size: 12px;
+	font-size: .5em;
 	letter-spacing: 2px;
 	text-transform: uppercase;
 	line-height: 1;

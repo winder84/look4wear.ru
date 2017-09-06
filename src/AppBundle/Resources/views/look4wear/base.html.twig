@@ -17,7 +17,10 @@
             {% endstylesheets %}
         {% endblock %}
         {% block javascripts %}
-            {% javascripts '@jquery' '@bootstrap_js' '@adriya_js'%}
+            {% javascripts '@jquery' '@bootstrap_js' %}
+                <script type="text/javascript" src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+            {% javascripts 'bundles/app/adriya/js/*' %}
                 <script type="text/javascript" src="{{ asset_url }}"></script>
             {% endjavascripts %}
         {% endblock %}
