@@ -23,13 +23,11 @@
                             </h4>
                         </div>
                     </div>
-                    {% if goodsItem.pictures %}
-                        <div class="goodsListImage">
+                    <div class="goodsListImage">
+                        {% if goodsItem.pictures %}
                             <img class="img-responsive" src="{{ goodsItem.pictures.0|replace({'http:': ""}) }}" data-src="{{ goodsItem.pictures.0|replace({'http:': ""}) }}" alt="...">
-                        </div>
-                    {% else %}
-                        <div style="width: 100%; height: 333px;"></div>
-                    {% endif %}
+                        {% endif %}
+                    </div>
                 </a>
             </div>
         {% endfor %}
