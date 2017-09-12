@@ -112,7 +112,7 @@ ul li {
 	padding: 25px 10%;
 }
 #header.fixed .nav-toggle {
-	top: 18px;
+	top: 28px;
 }
 .navigation.open {
 	opacity: 0.9;
@@ -142,9 +142,9 @@ ul li {
 	height: 44px;
 	overflow: hidden;
 	position: fixed;
-	left: 5%;
+	right: 5%;
 	text-indent: 100%;
-	top: 32px;
+	top: 33px;
 	white-space: nowrap;
 	width: 44px;
 	z-index: 99999;
@@ -298,8 +298,7 @@ ul li {
 	right: 0;
 	margin: 15px auto;
 	padding: 0 10px;
-	width: 290px;
-	height: 333px;
+	max-height: 333px;
 }
 #portfolio .portfolio-item:hover .caption {
 	background: rgba(00,00,00,.9) !important;
