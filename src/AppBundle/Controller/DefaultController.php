@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Vendor;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,10 +25,65 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
         return $this->render('AppBundle:look4wear:index.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
         ));
+    }
+
+//    /**
+//     * @Route("/vendors", name="vendors")
+//     */
+//    public function vendorsAction(Request $request)
+//    {
+//        self::$em = $this->getDoctrine()->getManager();
+//        $vendorsCounts = [];
+//        $vendors = self::$em
+//            ->getRepository('AppBundle:Vendor')
+//            ->findBy([]);
+//        /** @var Vendor $vendor */
+//        foreach ($vendors as $vendor) {
+//            $sphinxSearch = $this->get('iakumai.sphinxsearch.search');
+//            $sphinxSearch->setLimits(0, self::$resultsOnPage);
+//            $sphinxSearch->SetMatchMode(SPH_MATCH_EXTENDED);
+//            $searchGoods = $sphinxSearch->query($vendor->getName());
+//            $totalCount = $searchGoods['total_found'];
+//            if ($totalCount > 2000) {
+//                $vendorsCounts[$vendor->getId()] = $totalCount;
+//            }
+//        }
+//        return $this->render('AppBundle:look4wear:vendors.html.twig', []);
+//    }
+
+    /**
+     * @Route("/vendor/{alias}", name="vendors")
+     */
+    public function vendorAction($alias, Request $request)
+    {
+        self::$em = $this->getDoctrine()->getManager();
+        $goods = [];
+        $totalCount = 0;
+        $vendor = self::$em
+            ->getRepository('AppBundle:Vendor')
+            ->findOneBy([
+                'alias' => $alias
+            ]);
+        if ($vendor) {
+            $qb = self::$em->createQueryBuilder();
+            $qb->select('Goods')
+                ->from('AppBundle:Goods', 'Goods')
+                ->where('Goods.Vendor = :vendorId')
+                ->andWhere('Goods.isDelete = 0')
+                ->setParameter('vendorId', $vendor->getId())
+                ->setMaxResults(self::$resultsOnPage);
+            $query = $qb->getQuery();
+            $goods = $query->getResult();
+            $totalCount = count($goods);
+        }
+
+        return $this->render('AppBundle:look4wear:vendor.html.twig', [
+            'goods' => $goods,
+            'totalCount' => $totalCount,
+        ]);
     }
 
     /**
