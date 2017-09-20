@@ -112,7 +112,7 @@ ul li {
 	padding: 25px 10%;
 }
 #header.fixed .nav-toggle {
-	top: 28px;
+	top: 30px;
 }
 .navigation.open {
 	opacity: 0.9;
@@ -123,10 +123,11 @@ ul li {
 	transition: opacity 0.5s;
 }
 .navigation {
-	float: right;
+	/*float: right;*/
 }
 .navigation li {
 	display: inline-block;
+	vertical-align: middle;
 }
 .navigation, .navigation a {
 	color: rgba(0, 0, 0, 1);
@@ -144,7 +145,7 @@ ul li {
 	position: fixed;
 	right: 5%;
 	text-indent: 100%;
-	top: 33px;
+	top: 36px;
 	white-space: nowrap;
 	width: 44px;
 	z-index: 99999;

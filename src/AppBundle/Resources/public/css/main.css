@@ -4,7 +4,6 @@
 }
 
 .searchForm {
-    margin: 30px auto 10px auto;
     max-width: 800px;
 }
 
@@ -19,6 +18,7 @@
 .searchStringBtn {
     background-color: #333 !important;
     background-image: linear-gradient(to bottom, #797979 0%, #151515 100%) !important;
+    z-index: 3 !important;
 }
 
 .searchStringBtn, .searchStringInput {
@@ -58,6 +58,18 @@
     text-decoration: underline;
 }
 
+.menuUl {
+    margin-top: 13px;
+}
+
+.menuUl a {
+    line-height: 2;
+}
+
+.searchStringInput {
+    border: 1px solid #333 !important;
+}
+
 @media screen and (max-width: 420px) {
     #portfolio .portfolio-item {
         width: 49%;
@@ -73,9 +85,24 @@
     }
 }
 
+@media screen and (max-width: 1024px) {
+    .searchFormLi {
+        float: none !important;
+        margin: 0 auto 20px auto !important;
+        width: 90% !important;
+    }
+}
+
 @media screen and (min-width: 768px) {
     .col-sm-4 {
         width: 25% !important;
+    }
+}
+
+@media screen and (min-width: 1201px) {
+    #header .logo {
+        float: left;
+        margin: 0 0 0 145px;
     }
 }
 
