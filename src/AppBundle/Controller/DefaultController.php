@@ -55,7 +55,7 @@ class DefaultController extends Controller
 //    }
 
     /**
-     * @Route("/vendor/{alias}", name="vendors")
+     * @Route("/vendor/{alias}", name="vendor")
      */
     public function vendorAction($alias, Request $request)
     {
@@ -87,6 +87,49 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/category/{alias}", name="category")
+     */
+    public function categoryAction($alias, Request $request)
+    {
+        $matches = [];
+        $goods = [];
+        $totalCount = 0;
+        $page = $request->get('page');
+        self::$em = $this->getDoctrine()->getManager();
+        self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
+        $category = self::$em
+            ->getRepository('AppBundle:Category')
+            ->findOneBy([
+                'alias' => $alias
+            ]);
+        if ($category) {
+            $searchString = $category->getSearchString();
+            $searchGoods = $this->searchByString($searchString, $page);
+            if (isset($searchGoods['matches'])) {
+                $matches = $searchGoods['matches'];
+            }
+            $totalCount = $searchGoods['total_found'];
+            $goodsIds = [];
+            foreach ($matches as $matchesKey => $matchesItem) {
+                $goodsIds[] = $matchesKey;
+            }
+            $qb = self::$em->createQueryBuilder();
+            $qb->select('Goods')
+                ->from('AppBundle:Goods', 'Goods')
+                ->where('Goods.id IN (:goodsIds)')
+                ->andWhere('Goods.isDelete = 0')
+                ->setParameter('goodsIds', $goodsIds);
+            $query = $qb->getQuery();
+            $goods = $query->getResult();
+        }
+
+        return $this->render('AppBundle:look4wear:vendor.html.twig', [
+            'goods' => $goods,
+            'totalCount' => $totalCount,
+        ]);
+    }
+
+    /**
      * @Route("/search", name="search_page")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -98,10 +141,7 @@ class DefaultController extends Controller
         $page = $request->get('page');
         self::$em = $this->getDoctrine()->getManager();
         self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
-        $sphinxSearch = $this->get('iakumai.sphinxsearch.search');
-        $sphinxSearch->setLimits($page * self::$resultsOnPage, self::$resultsOnPage);
-        $sphinxSearch->SetMatchMode(SPH_MATCH_EXTENDED);
-        $searchGoods = $sphinxSearch->query($searchString);
+        $searchGoods = $this->searchByString($searchString, $page);
         if (isset($searchGoods['matches'])) {
             $matches = $searchGoods['matches'];
         }
@@ -124,5 +164,13 @@ class DefaultController extends Controller
             'totalCount' => $totalCount,
             'searchString' => $searchString,
         ]);
+    }
+
+    private function searchByString($searchString, $page)
+    {
+        $sphinxSearch = $this->get('iakumai.sphinxsearch.search');
+        $sphinxSearch->setLimits($page * self::$resultsOnPage, self::$resultsOnPage);
+        $sphinxSearch->SetMatchMode(SPH_MATCH_EXTENDED);
+        return $sphinxSearch->query($searchString);
     }
 }
