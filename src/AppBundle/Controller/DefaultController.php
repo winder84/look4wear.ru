@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Category;
 use AppBundle\Entity\Vendor;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -97,13 +98,18 @@ class DefaultController extends Controller
         $page = $request->get('page');
         self::$em = $this->getDoctrine()->getManager();
         self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
+        /** @var Category $category */
         $category = self::$em
             ->getRepository('AppBundle:Category')
             ->findOneBy([
                 'alias' => $alias
             ]);
         if ($category) {
+            $excludeWords = explode(';', $category->getExcludeWords());
             $searchString = $category->getSearchString();
+            if (array_filter($excludeWords)) {
+                $searchString .= ' -' . implode(' -', $excludeWords);
+            }
             $searchGoods = $this->searchByString($searchString, $page);
             if (isset($searchGoods['matches'])) {
                 $matches = $searchGoods['matches'];
@@ -123,7 +129,7 @@ class DefaultController extends Controller
             $goods = $query->getResult();
         }
 
-        return $this->render('AppBundle:look4wear:vendor.html.twig', [
+        return $this->render('AppBundle:look4wear:category.html.twig', [
             'goods' => $goods,
             'totalCount' => $totalCount,
         ]);
