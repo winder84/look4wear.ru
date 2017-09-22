@@ -35,11 +35,7 @@ class CategoryAdmin extends AbstractAdmin
         $listMapper
             ->add('id')
             ->add('name')
-            ->add('parent', 'choice', array(
-                'editable' => true,
-                'class' => 'AppBundle\Entity\Category',
-                'choice_label' => 'name',
-            ))
+            ->add('category')
             ->add('title')
             ->add('alias')
             ->add('searchString')

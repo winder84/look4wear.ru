@@ -136,6 +136,63 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/filter/{category}/{vendor}", name="filter")
+     */
+    public function filterAction($category, $vendor, Request $request)
+    {
+        $matches = [];
+        $goods = [];
+        $totalCount = 0;
+        $page = $request->get('page');
+        self::$em = $this->getDoctrine()->getManager();
+        self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
+        /** @var Category $category */
+        $category = self::$em
+            ->getRepository('AppBundle:Category')
+            ->findOneBy([
+                'alias' => $category
+            ]);
+        /** @var Category $category */
+        $vendor = self::$em
+            ->getRepository('AppBundle:Vendor')
+            ->findOneBy([
+                'alias' => $vendor
+            ]);
+        if ($category) {
+            $excludeWords = explode(';', $category->getExcludeWords());
+            $searchString = $category->getSearchString();
+            if ($vendor) {
+                $searchString .= ' ' . $vendor->getName();
+            }
+            if (array_filter($excludeWords)) {
+                $searchString .= ' -' . implode(' -', $excludeWords);
+            }
+            $searchGoods = $this->searchByString($searchString, $page);
+            if (isset($searchGoods['matches'])) {
+                $matches = $searchGoods['matches'];
+            }
+            $totalCount = $searchGoods['total_found'];
+            $goodsIds = [];
+            foreach ($matches as $matchesKey => $matchesItem) {
+                $goodsIds[] = $matchesKey;
+            }
+            $qb = self::$em->createQueryBuilder();
+            $qb->select('Goods')
+                ->from('AppBundle:Goods', 'Goods')
+                ->where('Goods.id IN (:goodsIds)')
+                ->andWhere('Goods.isDelete = 0')
+                ->setParameter('goodsIds', $goodsIds);
+            $query = $qb->getQuery();
+            $goods = $query->getResult();
+        }
+
+        return $this->render('AppBundle:look4wear:filter.html.twig', [
+            'goods' => $goods,
+            'totalCount' => $totalCount,
+        ]);
+    }
+
+    /**
      * @Route("/search", name="search_page")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
