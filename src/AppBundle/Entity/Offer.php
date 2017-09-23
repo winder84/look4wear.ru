@@ -78,7 +78,7 @@ class Offer
     /**
      * @var int
      *
-     * @ORM\Column(name="version", type="integer", unique=true)
+     * @ORM\Column(name="version", type="integer")
      */
     private $version;
 
