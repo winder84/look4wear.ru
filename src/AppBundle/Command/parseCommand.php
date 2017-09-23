@@ -64,6 +64,11 @@ class parseCommand extends ContainerAwareCommand
      */
     protected static $pictures = [];
 
+    /** @var  string */
+    protected static $tmpFilePath;
+
+    protected static $ctx;
+
     protected function configure()
     {
         $this
@@ -76,6 +81,9 @@ class parseCommand extends ContainerAwareCommand
         self::$em = $this->getContainer()->get('doctrine')->getManager();
         self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
         self::$output = $output;
+        self::$ctx = stream_context_create();
+        self::$tmpFilePath = '/tmp/tmpFile.xml';
+        stream_context_set_params(self::$ctx, array("notification" => array($this, 'stream_notification_callback')));
         $offers = self::$em
             ->getRepository('AppBundle:Offer')
             ->findBy([
@@ -125,7 +133,10 @@ class parseCommand extends ContainerAwareCommand
         $version++;
         $this->outputWriteLn('--- Начало парсинга оффера <red>' . $offer->getName() . '</red> ---');
         $offerXmlUrl = $offer->getXmlParseUrl();
-        $xmlReader = \XMLReader::open($offerXmlUrl);
+        $xmlContent = file_get_contents($offerXmlUrl, false, self::$ctx);
+        file_put_contents(self::$tmpFilePath, $xmlContent);
+        print_r("\n");
+        $xmlReader = \XMLReader::open(self::$tmpFilePath);
         $countIndex = 0;
         $checked = true;
         $this->outputWriteLn('Проверка целостности XML');
@@ -433,5 +444,38 @@ class parseCommand extends ContainerAwareCommand
         $connection = self::$em->getConnection();
         $statement = $connection->prepare("DELETE FROM goods WHERE vendorId IS NULL");
         $statement->execute();
+    }
+
+    private function stream_notification_callback($notification_code, $severity, $message, $message_code, $bytes_transferred, $bytes_max) {
+        switch($notification_code) {
+            case STREAM_NOTIFY_RESOLVE:
+            case STREAM_NOTIFY_AUTH_REQUIRED:
+            case STREAM_NOTIFY_COMPLETED:
+                printf("\r\n");
+                break;
+            case STREAM_NOTIFY_FAILURE:
+            case STREAM_NOTIFY_AUTH_RESULT:
+//            var_dump($notification_code, $severity, $message, $message_code, $bytes_transferred, $bytes_max);
+                /* Игнорируем */
+                break;
+            case STREAM_NOTIFY_REDIRECTED:
+                /* Игнорируем */
+                break;
+            case STREAM_NOTIFY_CONNECT:
+                /* Игнорируем */
+                break;
+            case STREAM_NOTIFY_FILE_SIZE_IS:
+                /* Игнорируем */
+                break;
+            case STREAM_NOTIFY_MIME_TYPE_IS:
+                /* Игнорируем */
+                break;
+            case STREAM_NOTIFY_PROGRESS:
+                $fileSize = round($bytes_transferred / (1024 * 1024), 1);
+                $newTimeDate = new \DateTime();
+                $newTimeDate = $newTimeDate->format(\DateTime::ATOM);
+                printf("\r" . self::$delimer . $newTimeDate . ' | --- Скачивание файла : ' . $fileSize . ' MB --- |' . ' Memory usage: ' . round(memory_get_usage() / (1024 * 1024)) . ' MB' .  self::$delimer);
+                break;
+        }
     }
 }
