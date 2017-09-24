@@ -211,7 +211,7 @@ class parseCommand extends ContainerAwareCommand
                         $countIndex++;
 
 
-                        if ($countIndex > 0 && $countIndex % 100000 == 0) {
+                        if ($countIndex > 0 && $countIndex % 50000 == 0) {
                             $this->outputWriteLn('Обработано <red>' . $countIndex . '</red> товаров!');
                             self::$goods = null;
                             self::$em->flush();
@@ -261,7 +261,7 @@ class parseCommand extends ContainerAwareCommand
                 break;
             case 'name':
                 if (self::$goodsType == 'insert') {
-                    self::$aliasName = self::$externalId . '_' . $value;
+                    self::$aliasName = self::$externalId . '_' . mb_substr($value, 0, 50, 'UTF-8');
                     self::$goods->setName($value);
                 }
                 break;
