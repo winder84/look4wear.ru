@@ -261,7 +261,8 @@ class parseCommand extends ContainerAwareCommand
                 break;
             case 'name':
                 if (self::$goodsType == 'insert') {
-                    self::$aliasName = self::$externalId . '_' . mb_substr($value, 0, 50, 'UTF-8');
+                    $value = mb_substr($value, 0, 50, 'UTF-8');
+                    self::$aliasName = self::$externalId . '_' . $value;
                     self::$goods->setName($value);
                 }
                 break;
