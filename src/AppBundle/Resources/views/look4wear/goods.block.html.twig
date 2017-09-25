@@ -5,7 +5,7 @@
     <div class="row">
         {% for goodsItem in goods %}
             <div class="col-sm-4 portfolio-item">
-                <a href="work-details.html" class="portfolio-link">
+                <a target="_blank" href="{{ goodsItem.url|replace({'http:': ''}) }}" class="portfolio-link">
                     <div class="caption">
                         <div class="caption-content">
                             <h3>
