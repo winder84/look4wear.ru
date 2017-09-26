@@ -149,7 +149,7 @@ class parseCommand extends ContainerAwareCommand
         }
         $this->outputWriteLn('Проверка целостности XML Завершена');
         if ($checked) {
-            $xmlReader = \XMLReader::open($offerXmlUrl);
+            $xmlReader = \XMLReader::open(self::$tmpFilePath);
             while ($xmlReader->read()) {
                 if ($xmlReader->nodeType == \XMLReader::ELEMENT) {
                     if ($xmlReader->localName == 'offer') {
