@@ -35,6 +35,11 @@ class parseCommand extends ContainerAwareCommand
     protected static $goods = null;
 
     /**
+     * @var array
+     */
+    protected static $goodsGroupIds = [];
+
+    /**
      * @var string
      */
     protected static $externalId = '';
@@ -90,6 +95,7 @@ class parseCommand extends ContainerAwareCommand
                 'isDelete' => 0
             ]);
         foreach ($offers as $offer) {
+            self::$goodsGroupIds = [];
             $this->parseOffer($offer);
         }
 
@@ -160,12 +166,16 @@ class parseCommand extends ContainerAwareCommand
                         self::$paramsArray = [];
                         self::$paramName = '';
                         if ($groupId) {
+                            if (isset(self::$goodsGroupIds[$offer->getId()][$groupId])) {
+                                continue;
+                            }
                             self::$goods = self::$em
                                 ->getRepository('AppBundle:Goods')
                                 ->findOneBy([
                                     'groupId' => $groupId,
                                     'Offer' => $offer,
                                 ]);
+                            self::$goodsGroupIds[$offer->getId()][$groupId] = $groupId;
                         }
                         if (!self::$goods) {
                             self::$goods = self::$em

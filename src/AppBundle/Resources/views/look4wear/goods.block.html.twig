@@ -1,10 +1,10 @@
 {% if goods is defined %}
-    {#<div style="margin: 0 auto;">#}
-        {#<h4>Найдено {{ totalCount }} товара(ов):</h4>#}
-    {#</div>#}
+    <div style="margin: 0 auto; width: 40%;">
+        <h4>Найдено {{ totalCount }} товара(ов):</h4>
+    </div>
     <div class="row">
         {% for goodsItem in goods %}
-            <div class="col-sm-4 portfolio-item">
+            <div class="col-sm-4 portfolio-item" data-goods-id="{{ goodsItem.id }}">
                 <a target="_blank" rel="nofollow" href="{{ goodsItem.url|replace({'http:': ''}) }}" class="portfolio-link">
                     <div class="caption">
                         <div class="caption-content">
