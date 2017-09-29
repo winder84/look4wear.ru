@@ -305,6 +305,7 @@ ul li {
 	background: rgba(00,00,00,.9) !important;
 }
 #portfolio .portfolio-item .portfolio-link {
+	height: 100%;
 	max-width: 290px;
 	display: block;
 	position: relative;
