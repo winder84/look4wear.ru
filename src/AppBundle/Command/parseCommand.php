@@ -159,6 +159,7 @@ class parseCommand extends ContainerAwareCommand
             while ($xmlReader->read()) {
                 if ($xmlReader->nodeType == \XMLReader::ELEMENT) {
                     if ($xmlReader->localName == 'offer') {
+                        $groupId = $xmlReader->getAttribute('group_id');
                         self::$externalId = $xmlReader->getAttribute('id');
                         self::$goods = null;
                         self::$pictures = [];
