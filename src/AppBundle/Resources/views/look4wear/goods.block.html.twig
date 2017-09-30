@@ -25,7 +25,7 @@
                     </div>
                     <div class="goodsListImage">
                         {% if goodsItem.pictures %}
-                            <img class="img-responsive" src="{{ goodsItem.pictures.0|replace({'http:': ""}) }}" data-src="{{ goodsItem.pictures.0|replace({'http:': ""}) }}" alt="...">
+                            <img class="img-responsive" src="{{ goodsItem.pictures.0 | imagine_filter('my_thumb') }}" alt="..." />
                         {% endif %}
                     </div>
                 </a>

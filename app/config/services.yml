@@ -7,3 +7,9 @@ services:
     #service_name:
     #    class: AppBundle\Directory\ClassName
     #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']
+    app.imagine.cdn_data_loader:
+        class: "%liip_imagine.binary.loader.stream.class%"
+        arguments:
+            - '' # if you store full path in the database
+        tags:
+            - { name: 'liip_imagine.binary.loader', loader: 'cdn_data_loader' }

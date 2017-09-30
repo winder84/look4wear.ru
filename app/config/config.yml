@@ -146,3 +146,13 @@ assetic:
             jquery:
                 inputs:
                     - %kernel.root_dir%/../vendor/components/jquery/jquery.js
+
+liip_imagine :
+    data_loader: cdn_data_loader
+    filter_sets :
+        cache : ~
+        my_thumb :
+            quality : 75
+            filters :
+                thumbnail  : { size : [272, ], mode : outbound }
+#                background : { size : [124, 94], position : center, color : '#000000' }
