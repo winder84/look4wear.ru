@@ -13,3 +13,9 @@ services:
             - '' # if you store full path in the database
         tags:
             - { name: 'liip_imagine.binary.loader', loader: 'cdn_data_loader' }
+
+    app.my_replace:
+        class: AppBundle\Twig\AppExtension
+        arguments: [@service_container]
+        tags:
+            - { name: twig.extension }
