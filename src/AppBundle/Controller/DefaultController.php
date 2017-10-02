@@ -232,7 +232,7 @@ class DefaultController extends Controller
     private function searchByString($searchString, $page)
     {
         $sphinxSearch = $this->get('iakumai.sphinxsearch.search');
-        $sphinxSearch->setLimits($page * self::$resultsOnPage, self::$resultsOnPage);
+        $sphinxSearch->setLimits($page * self::$resultsOnPage, self::$resultsOnPage, 1000000);
         $sphinxSearch->SetMatchMode(SPH_MATCH_EXTENDED);
         return $sphinxSearch->query($searchString);
     }
