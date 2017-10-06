@@ -71,10 +71,15 @@ class Category
     private $isActive = false;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Category")
-     * @ORM\JoinColumn(name="parentId", referencedColumnName="id", nullable=true, unique=false)
+     * @OneToMany(targetEntity="Category", mappedBy="parentCategory")
      */
-    private $category;
+    private $childrenCategories;
+
+    /**
+     * @ManyToOne(targetEntity="Category", inversedBy="childrenCategories")
+     * @JoinColumn(name="parentId", referencedColumnName="id")
+     */
+    private $parentCategory;
 
     public function __toString()
     {
@@ -264,29 +269,5 @@ class Category
     public function getIsActive()
     {
         return $this->isActive;
-    }
-
-    /**
-     * Set category
-     *
-     * @param \AppBundle\Entity\Category $category
-     *
-     * @return Category
-     */
-    public function setCategory(\AppBundle\Entity\Category $category = null)
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
-    /**
-     * Get category
-     *
-     * @return \AppBundle\Entity\Category
-     */
-    public function getCategory()
-    {
-        return $this->category;
     }
 }

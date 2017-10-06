@@ -35,7 +35,7 @@ class CategoryAdmin extends AbstractAdmin
         $listMapper
             ->add('id')
             ->add('name')
-            ->add('category')
+            ->add('parentCategory')
             ->add('title')
             ->add('alias')
             ->add('searchString')
@@ -61,7 +61,7 @@ class CategoryAdmin extends AbstractAdmin
             ->add('searchString')
             ->add('excludeWords')
             ->add('keywords')
-            ->add('category', EntityType::class, array(
+            ->add('parentCategory', EntityType::class, array(
                 'class' => 'AppBundle:Category',
                 'choice_label' => 'name',
                 'label' => 'Родительская категория',
