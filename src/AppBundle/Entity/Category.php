@@ -270,4 +270,62 @@ class Category
     {
         return $this->isActive;
     }
+
+    /**
+     * Add childrenCategory
+     *
+     * @param \AppBundle\Entity\Category $childrenCategory
+     *
+     * @return Category
+     */
+    public function addChildrenCategory(\AppBundle\Entity\Category $childrenCategory)
+    {
+        $this->childrenCategories[] = $childrenCategory;
+
+        return $this;
+    }
+
+    /**
+     * Remove childrenCategory
+     *
+     * @param \AppBundle\Entity\Category $childrenCategory
+     */
+    public function removeChildrenCategory(\AppBundle\Entity\Category $childrenCategory)
+    {
+        $this->childrenCategories->removeElement($childrenCategory);
+    }
+
+    /**
+     * Get childrenCategories
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getChildrenCategories()
+    {
+        return $this->childrenCategories;
+    }
+
+    /**
+     * Set parentCategory
+     *
+     * @param \AppBundle\Entity\Category $parentCategory
+     *
+     * @return Category
+     */
+    public function setParentCategory(\AppBundle\Entity\Category $parentCategory = null)
+    {
+        $this->parentCategory = $parentCategory;
+
+        return $this;
+    }
+
+    /**
+     * Get parentCategory
+     *
+     * @return \AppBundle\Entity\Category
+     */
+    public function getParentCategory()
+    {
+        return $this->parentCategory;
+    }
 }
