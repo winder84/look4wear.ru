@@ -72,7 +72,7 @@ class Category
 
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Category")
-     * @ORM\JoinColumn(name="parentId", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="parentId", referencedColumnName="id", nullable=true, unique=false)
      */
     private $category;
 
