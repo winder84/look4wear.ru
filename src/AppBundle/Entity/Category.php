@@ -71,13 +71,13 @@ class Category
     private $isActive = false;
 
     /**
-     * @OneToMany(targetEntity="Category", mappedBy="parentCategory")
+     * @ORM\OneToMany(targetEntity="Category", mappedBy="parentCategory")
      */
     private $childrenCategories;
 
     /**
-     * @ManyToOne(targetEntity="Category", inversedBy="childrenCategories")
-     * @JoinColumn(name="parentId", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="childrenCategories")
+     * @ORM\JoinColumn(name="parentId", referencedColumnName="id")
      */
     private $parentCategory;
 
