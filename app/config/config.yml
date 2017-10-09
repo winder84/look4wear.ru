@@ -154,5 +154,5 @@ liip_imagine :
         my_thumb :
             quality : 75
             filters :
-                thumbnail  : { size : [272, ], mode : outbound }
+                thumbnail  : { size : [544, ], mode : outbound }
 #                background : { size : [124, 94], position : center, color : '#000000' }
