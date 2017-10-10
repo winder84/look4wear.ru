@@ -89,6 +89,19 @@
     max-width: none !important;
 }
 
+.titleDiv {
+    width: 100%;
+    text-align: center;
+}
+
+.titleDiv h1 {
+    font-size: 2em;
+}
+
+.childrenCategoryLink h4 {
+    display: inline-block;
+    font-size: 1.3em;
+}
 @media screen and (max-width: 420px) {
     #portfolio .portfolio-item {
         width: 49%;

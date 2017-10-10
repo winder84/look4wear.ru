@@ -7,7 +7,15 @@
 <!--<![endif]-->
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}look4wear.ru - ищем одежду для Вас!{% endblock %}</title>
+        <title>
+            {% block title %}
+                {% if seoTitle %}
+                    {{ seoTitle }}
+                {% else %}
+                    look4wear.ru - ищем одежду для Вас!
+                {% endif %}
+            {% endblock %}
+        </title>
         {% block stylesheets %}
             {% stylesheets 'bundles/app/adriya/css/*' 'bundles/app/css/*' filter='cssrewrite' %}
                 <link rel="stylesheet" href="{{ asset_url }}" />

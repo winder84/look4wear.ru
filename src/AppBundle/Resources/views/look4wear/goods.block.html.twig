@@ -1,7 +1,17 @@
 {% if goods is defined %}
-    <div style="margin: 0 auto; width: 40%;">
-        <h4>Найдено {{ totalCount }} товара(ов):</h4>
-    </div>
+    {% if pageTitle %}
+        <div class="titleDiv">
+            <h1>{{ pageTitle }}</h1>
+        </div>
+    {% endif %}
+    {% if category and category.childrenCategories|length > 0 %}
+        {% for childrenCategory in category.childrenCategories %}
+            {% if not loop.first %}
+                |
+            {% endif %}
+            <a class="childrenCategoryLink" href="/category/{{ childrenCategory.alias }}"><h4>{{ childrenCategory.name }}</h4></a>
+        {% endfor %}
+    {% endif %}
     <div class="row">
         {% for goodsItem in goods %}
             <div class="col-sm-4 portfolio-item" data-goods-id="{{ goodsItem.id }}">
@@ -11,7 +21,7 @@
                             <h3>
                                 {{ goodsItem.getVendor.name }}
                                 <br />
-                                {{ goodsItem.name|slice(0,30) }}...
+                                {{ goodsItem.name|length > 30 ? goodsItem.name|slice(0, 30) ~ '...' : goodsItem.name  }}
                             </h3>
                             <h4>
                                 Цена:

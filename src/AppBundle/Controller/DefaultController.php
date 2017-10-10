@@ -132,6 +132,9 @@ class DefaultController extends Controller
         return $this->render('AppBundle:look4wear:category.html.twig', [
             'goods' => $goods,
             'totalCount' => $totalCount,
+            'pageTitle' => $category->getTitle(),
+            'seoTitle' => $category->getSeoTitle(),
+            'category' => $category,
         ]);
     }
 

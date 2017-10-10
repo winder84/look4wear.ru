@@ -20,6 +20,7 @@ class CategoryAdmin extends AbstractAdmin
             ->add('id')
             ->add('name')
             ->add('title')
+            ->add('seoTitle')
             ->add('alias')
             ->add('searchString')
             ->add('excludeWords')
@@ -57,6 +58,7 @@ class CategoryAdmin extends AbstractAdmin
         $formMapper
             ->add('name')
             ->add('title')
+            ->add('seoTitle')
             ->add('alias')
             ->add('searchString')
             ->add('excludeWords')
@@ -80,6 +82,7 @@ class CategoryAdmin extends AbstractAdmin
         $showMapper
             ->add('name')
             ->add('title')
+            ->add('seoTitle')
             ->add('alias')
             ->add('searchString')
             ->add('excludeWords')

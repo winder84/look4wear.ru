@@ -38,6 +38,13 @@ class Category
     /**
      * @var string
      *
+     * @ORM\Column(name="seoTitle", type="string", length=255, nullable=true)
+     */
+    private $seoTitle;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="alias", type="string", length=255, unique=true)
      */
     private $alias;
@@ -327,5 +334,29 @@ class Category
     public function getParentCategory()
     {
         return $this->parentCategory;
+    }
+
+    /**
+     * Set seoTitle
+     *
+     * @param string $seoTitle
+     *
+     * @return Category
+     */
+    public function setSeoTitle($seoTitle)
+    {
+        $this->seoTitle = $seoTitle;
+
+        return $this;
+    }
+
+    /**
+     * Get seoTitle
+     *
+     * @return string
+     */
+    public function getSeoTitle()
+    {
+        return $this->seoTitle;
     }
 }
