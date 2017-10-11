@@ -100,7 +100,10 @@
 
 .childrenCategoryLink h4 {
     display: inline-block;
-    font-size: 1.3em;
+    font-size: 1.2em;
+    color: rgba(0, 0, 0, 1);
+    letter-spacing: -1px;
+    margin: 10px;
 }
 @media screen and (max-width: 420px) {
     #portfolio .portfolio-item {

@@ -94,8 +94,9 @@ class DefaultController extends Controller
     {
         $matches = [];
         $goods = [];
+        $pagination = [];
         $totalCount = 0;
-        $page = $request->get('page');
+        $childrenCategories = [];
         self::$em = $this->getDoctrine()->getManager();
         self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
         /** @var Category $category */
@@ -110,7 +111,7 @@ class DefaultController extends Controller
             if (array_filter($excludeWords)) {
                 $searchString .= ' -' . implode(' -', $excludeWords);
             }
-            $searchGoods = $this->searchByString($searchString, $page);
+            $searchGoods = $this->searchByString($searchString, $request->query->getInt('page', 1));
             if (isset($searchGoods['matches'])) {
                 $matches = $searchGoods['matches'];
             }
@@ -126,15 +127,22 @@ class DefaultController extends Controller
                 ->andWhere('Goods.isDelete = 0')
                 ->setParameter('goodsIds', $goodsIds);
             $query = $qb->getQuery();
-            $goods = $query->getResult();
+            $paginator  = $this->get('knp_paginator');
+            $pagination = $paginator->paginate(
+                $query, /* query NOT result */
+                $request->query->getInt('page', 1)/*page number*/,
+                self::$resultsOnPage/*limit per page*/
+            );
+            $childrenCategories = $category->getChildrenCategories();
         }
 
         return $this->render('AppBundle:look4wear:category.html.twig', [
             'goods' => $goods,
+            'pagination' => $pagination,
             'totalCount' => $totalCount,
             'pageTitle' => $category->getTitle(),
             'seoTitle' => $category->getSeoTitle(),
-            'category' => $category,
+            'childrenCategories' => $childrenCategories,
         ]);
     }
 
@@ -235,7 +243,7 @@ class DefaultController extends Controller
     private function searchByString($searchString, $page)
     {
         $sphinxSearch = $this->get('iakumai.sphinxsearch.search');
-        $sphinxSearch->setLimits($page * self::$resultsOnPage, self::$resultsOnPage, 1000000);
+        $sphinxSearch->setLimits(0, 1000000, 1000000);
         $sphinxSearch->SetMatchMode(SPH_MATCH_EXTENDED);
         return $sphinxSearch->query($searchString);
     }

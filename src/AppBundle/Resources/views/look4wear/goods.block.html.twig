@@ -1,19 +1,19 @@
-{% if goods is defined %}
+{% if pagination is defined %}
     {% if pageTitle %}
         <div class="titleDiv">
             <h1>{{ pageTitle }}</h1>
         </div>
     {% endif %}
-    {% if category and category.childrenCategories|length > 0 %}
-        {% for childrenCategory in category.childrenCategories %}
+    {% if childrenCategories|length > 0 %}
+        {% for childrenCategory in childrenCategories %}
             {% if not loop.first %}
-                |
+                &bull;
             {% endif %}
             <a class="childrenCategoryLink" href="/category/{{ childrenCategory.alias }}"><h4>{{ childrenCategory.name }}</h4></a>
         {% endfor %}
     {% endif %}
     <div class="row">
-        {% for goodsItem in goods %}
+        {% for goodsItem in pagination %}
             <div class="col-sm-4 portfolio-item" data-goods-id="{{ goodsItem.id }}">
                 <a target="_blank" rel="nofollow" href="{{ goodsItem.url|replace({'http:': ''}) }}" class="portfolio-link">
                     <div class="caption">
@@ -41,5 +41,8 @@
                 </a>
             </div>
         {% endfor %}
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
     </div>
 {% endif %}
