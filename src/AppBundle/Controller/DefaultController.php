@@ -126,15 +126,19 @@ class DefaultController extends Controller
         ]);
     }
 
+
     /**
      * @Route("/filter/{category}/{vendor}", name="filter")
+     * @param $category
+     * @param $vendor
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function filterAction($category, $vendor, Request $request)
     {
         $matches = [];
-        $goods = [];
+        $childrenCategories = [];
         $totalCount = 0;
-        $page = $request->get('page');
         self::$em = $this->getDoctrine()->getManager();
         self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
         /** @var Category $category */
@@ -158,28 +162,20 @@ class DefaultController extends Controller
             if (array_filter($excludeWords)) {
                 $searchString .= ' -' . implode(' -', $excludeWords);
             }
-            $searchGoods = $this->searchByString($searchString, $page);
+            $searchGoods = $this->searchByString($searchString, $request->query->getInt('page', 1));
             if (isset($searchGoods['matches'])) {
                 $matches = $searchGoods['matches'];
             }
             $totalCount = $searchGoods['total_found'];
-            $goodsIds = [];
-            foreach ($matches as $matchesKey => $matchesItem) {
-                $goodsIds[] = $matchesKey;
-            }
-            $qb = self::$em->createQueryBuilder();
-            $qb->select('Goods')
-                ->from('AppBundle:Goods', 'Goods')
-                ->where('Goods.id IN (:goodsIds)')
-                ->andWhere('Goods.isDelete = 0')
-                ->setParameter('goodsIds', $goodsIds);
-            $query = $qb->getQuery();
-            $goods = $query->getResult();
+            $childrenCategories = $category->getChildrenCategories();
         }
 
         return $this->render('AppBundle:look4wear:filter.html.twig', [
-            'goods' => $goods,
+            'goods' => $matches,
             'totalCount' => $totalCount,
+            'seoTitle' => '',
+            'pageTitle' => '',
+            'childrenCategories' => $childrenCategories,
         ]);
     }
 
