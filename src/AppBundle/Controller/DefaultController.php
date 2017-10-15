@@ -149,6 +149,7 @@ class DefaultController extends Controller
         $matches = [];
         $childrenCategories = [];
         $totalCount = 0;
+        $pageTitle = '';
         self::$em = $this->getDoctrine()->getManager();
         self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
         /** @var Category $category */
@@ -184,12 +185,15 @@ class DefaultController extends Controller
                 'totalPagesCount' => floor($totalCount / self::$resultsOnPage),
             ];
         }
+        if ($category && $vendor) {
+            $pageTitle = ucfirst($category->getTitle()) . ' ' . $vendor->getName();
+        }
 
         return $this->render('AppBundle:look4wear:filter.html.twig', [
             'goods' => $matches,
             'totalCount' => $totalCount,
             'seoTitle' => '',
-            'pageTitle' => '',
+            'pageTitle' => $pageTitle,
             'childrenCategories' => $childrenCategories,
             'pagination' => $pagination,
         ]);
