@@ -89,6 +89,9 @@ class DefaultController extends Controller
 
     /**
      * @Route("/category/{alias}", name="category")
+     * @param $alias
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function categoryAction($alias, Request $request)
     {
@@ -109,7 +112,7 @@ class DefaultController extends Controller
             if (array_filter($excludeWords)) {
                 $searchString .= ' -' . implode(' -', $excludeWords);
             }
-            $searchGoods = $this->searchByString($searchString, $request->query->getInt('page', 1));
+            $searchGoods = $this->searchByString($searchString, $request->query->getInt('page', 0));
             if (isset($searchGoods['matches'])) {
                 $matches = $searchGoods['matches'];
             }
@@ -162,7 +165,7 @@ class DefaultController extends Controller
             if (array_filter($excludeWords)) {
                 $searchString .= ' -' . implode(' -', $excludeWords);
             }
-            $searchGoods = $this->searchByString($searchString, $request->query->getInt('page', 1));
+            $searchGoods = $this->searchByString($searchString, $request->query->getInt('page', 0));
             if (isset($searchGoods['matches'])) {
                 $matches = $searchGoods['matches'];
             }
@@ -188,8 +191,7 @@ class DefaultController extends Controller
     {
         $matches = [];
         $searchString = $request->get('searchString');
-        $page = $request->get('page');
-        $searchGoods = $this->searchByString($searchString, $page);
+        $searchGoods = $this->searchByString($searchString, $request->query->getInt('page', 0));
         if (isset($searchGoods['matches'])) {
             $matches = $searchGoods['matches'];
         }
@@ -205,6 +207,11 @@ class DefaultController extends Controller
         ]);
     }
 
+    /**
+     * @param $searchString
+     * @param $page
+     * @return mixed
+     */
     private function searchByString($searchString, $page)
     {
         $sphinxSearch = $this->get('iakumai.sphinxsearch.search');
