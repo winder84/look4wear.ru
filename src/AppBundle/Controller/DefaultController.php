@@ -189,8 +189,6 @@ class DefaultController extends Controller
         $matches = [];
         $searchString = $request->get('searchString');
         $page = $request->get('page');
-        self::$em = $this->getDoctrine()->getManager();
-        self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
         $searchGoods = $this->searchByString($searchString, $page);
         if (isset($searchGoods['matches'])) {
             $matches = $searchGoods['matches'];
@@ -201,7 +199,7 @@ class DefaultController extends Controller
             'goods' => $matches,
             'seoTitle' => '',
             'pageTitle' => '',
-            'childrenCategories' => '',
+            'childrenCategories' => [],
             'totalCount' => $totalCount,
             'searchString' => $searchString,
         ]);
