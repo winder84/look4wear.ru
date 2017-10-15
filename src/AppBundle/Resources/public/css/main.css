@@ -105,6 +105,13 @@
     letter-spacing: -1px;
     margin: 10px;
 }
+
+.goodsListImage {
+    background-image: url("../images/loader.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 @media screen and (max-width: 420px) {
     #portfolio .portfolio-item {
         width: 49%;

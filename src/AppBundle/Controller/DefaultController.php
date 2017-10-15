@@ -93,8 +93,6 @@ class DefaultController extends Controller
     public function categoryAction($alias, Request $request)
     {
         $matches = [];
-        $goods = [];
-        $pagination = [];
         $totalCount = 0;
         $childrenCategories = [];
         self::$em = $this->getDoctrine()->getManager();
@@ -116,29 +114,11 @@ class DefaultController extends Controller
                 $matches = $searchGoods['matches'];
             }
             $totalCount = $searchGoods['total_found'];
-            $goodsIds = [];
-            foreach ($matches as $matchesKey => $matchesItem) {
-                $goodsIds[] = $matchesKey;
-            }
-            $qb = self::$em->createQueryBuilder();
-            $qb->select('Goods')
-                ->from('AppBundle:Goods', 'Goods')
-                ->where('Goods.id IN (:goodsIds)')
-                ->andWhere('Goods.isDelete = 0')
-                ->setParameter('goodsIds', $goodsIds);
-            $query = $qb->getQuery();
-            $paginator  = $this->get('knp_paginator');
-            $pagination = $paginator->paginate(
-                $query, /* query NOT result */
-                $request->query->getInt('page', 1)/*page number*/,
-                self::$resultsOnPage/*limit per page*/
-            );
             $childrenCategories = $category->getChildrenCategories();
         }
 
         return $this->render('AppBundle:look4wear:category.html.twig', [
-            'goods' => $goods,
-            'pagination' => $pagination,
+            'goods' => $matches,
             'totalCount' => $totalCount,
             'pageTitle' => $category->getTitle(),
             'seoTitle' => $category->getSeoTitle(),
@@ -220,21 +200,12 @@ class DefaultController extends Controller
             $matches = $searchGoods['matches'];
         }
         $totalCount = $searchGoods['total_found'];
-        $goodsIds = [];
-        foreach ($matches as $matchesKey => $matchesItem) {
-            $goodsIds[] = $matchesKey;
-        }
-        $qb = self::$em->createQueryBuilder();
-        $qb->select('Goods')
-            ->from('AppBundle:Goods', 'Goods')
-            ->where('Goods.id IN (:goodsIds)')
-            ->andWhere('Goods.isDelete = 0')
-            ->setParameter('goodsIds', $goodsIds);
-        $query = $qb->getQuery();
-        $goods = $query->getResult();
 
         return $this->render('AppBundle:look4wear:search.html.twig', [
-            'goods' => $goods,
+            'goods' => $matches,
+            'seoTitle' => '',
+            'pageTitle' => '',
+            'childrenCategories' => '',
             'totalCount' => $totalCount,
             'searchString' => $searchString,
         ]);
@@ -243,7 +214,7 @@ class DefaultController extends Controller
     private function searchByString($searchString, $page)
     {
         $sphinxSearch = $this->get('iakumai.sphinxsearch.search');
-        $sphinxSearch->setLimits(0, 1000000, 1000000);
+        $sphinxSearch->setLimits($page * self::$resultsOnPage, self::$resultsOnPage, 100000);
         $sphinxSearch->SetMatchMode(SPH_MATCH_EXTENDED);
         return $sphinxSearch->query($searchString);
     }

@@ -1,4 +1,4 @@
-{% if pagination is defined %}
+{% if goods is defined %}
     {% if pageTitle %}
         <div class="titleDiv">
             <h1>{{ pageTitle }}</h1>
@@ -13,36 +13,33 @@
         {% endfor %}
     {% endif %}
     <div class="row">
-        {% for goodsItem in pagination %}
-            <div class="col-sm-4 portfolio-item" data-goods-id="{{ goodsItem.id }}">
-                <a target="_blank" rel="nofollow" href="{{ goodsItem.url|replace({'http:': ''}) }}" class="portfolio-link">
+        {% for goodsItem in goods %}
+            <div class="col-sm-4 portfolio-item" data-goods-id="{{ goodsItem.attrs.goodsid }}">
+                <a target="_blank" rel="nofollow" href="{{ goodsItem.attrs.url|replace({'http:': ''}) }}" class="portfolio-link">
                     <div class="caption">
                         <div class="caption-content">
                             <h3>
-                                {{ goodsItem.getVendor.name }}
+                                {{ goodsItem.attrs.vendorname }}
                                 <br />
-                                {{ goodsItem.name|length > 30 ? goodsItem.name|slice(0, 30) ~ '...' : goodsItem.name  }}
+                                {{ goodsItem.attrs.name|length > 30 ? goodsItem.attrs.name|slice(0, 30) ~ '...' : goodsItem.attrs.name  }}
                             </h3>
                             <h4>
                                 Цена:
-                                {% if goodsItem.oldPrice %}
-                                    <span class="oldPrice">{{ goodsItem.oldPrice }} руб</span>
+                                {% if goodsItem.attrs.oldprice %}
+                                    <span class="oldPrice">{{ goodsItem.attrs.oldprice }} руб</span>
                                     <br />
                                 {% endif %}
-                                <span class="goodsPrice">{{ goodsItem.price }} руб</span>
+                                <span class="goodsPrice">{{ goodsItem.attrs.price }} руб</span>
                             </h4>
                         </div>
                     </div>
                     <div class="goodsListImage">
-                        {% if goodsItem.pictures %}
-                            <img class="img-responsive" src="{{ goodsItem.pictures.0 | my_replace | imagine_filter('my_thumb') }}" alt="..." />
+                        {% if goodsItem.attrs.pictures %}
+                            <img class="img-responsive" src="{{ goodsItem.attrs.pictures| json_decode.0 | my_replace | imagine_filter('my_thumb') }}" alt="..." />
                         {% endif %}
                     </div>
                 </a>
             </div>
         {% endfor %}
-        <div class="navigation">
-            {{ knp_pagination_render(pagination) }}
-        </div>
     </div>
 {% endif %}
