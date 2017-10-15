@@ -112,6 +112,31 @@
     background-position: center;
 }
 
+.paginationUl {
+    width: 100%;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.paginationUl li {
+    display: inline-block;
+    font-size: 1.2em;
+    margin: 0 0.2em;
+    color: white;
+}
+
+.paginationUl li a {
+    color: white;
+    cursor: pointer;
+    padding: 0.3em 0.6em;
+    background: rgba(58,54,54,.9);
+}
+
+.paginationUl .currentPage {
+    background: #c5620c;
+    padding: 5px 10px;
+}
+
 @media screen and (max-width: 420px) {
     #portfolio .portfolio-item {
         width: 49%;

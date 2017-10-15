@@ -98,6 +98,7 @@ class DefaultController extends Controller
         $matches = [];
         $totalCount = 0;
         $childrenCategories = [];
+        $pagination = null;
         self::$em = $this->getDoctrine()->getManager();
         self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
         /** @var Category $category */
@@ -118,6 +119,11 @@ class DefaultController extends Controller
             }
             $totalCount = $searchGoods['total_found'];
             $childrenCategories = $category->getChildrenCategories();
+            $pagination = [
+                'url' => '/category/' . $alias . '?',
+                'currentPage' => $request->query->getInt('page', 1),
+                'totalPagesCount' => floor($totalCount / self::$resultsOnPage),
+            ];
         }
 
         return $this->render('AppBundle:look4wear:category.html.twig', [
@@ -126,18 +132,19 @@ class DefaultController extends Controller
             'pageTitle' => $category->getTitle(),
             'seoTitle' => $category->getSeoTitle(),
             'childrenCategories' => $childrenCategories,
+            'pagination' => $pagination,
         ]);
     }
 
 
     /**
-     * @Route("/filter/{category}/{vendor}", name="filter")
-     * @param $category
-     * @param $vendor
+     * @Route("/filter/{categoryAlias}/{vendorAlias}", name="filter")
+     * @param $categoryAlias
+     * @param $vendorAlias
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function filterAction($category, $vendor, Request $request)
+    public function filterAction($categoryAlias, $vendorAlias, Request $request)
     {
         $matches = [];
         $childrenCategories = [];
@@ -148,13 +155,13 @@ class DefaultController extends Controller
         $category = self::$em
             ->getRepository('AppBundle:Category')
             ->findOneBy([
-                'alias' => $category
+                'alias' => $categoryAlias
             ]);
         /** @var Category $category */
         $vendor = self::$em
             ->getRepository('AppBundle:Vendor')
             ->findOneBy([
-                'alias' => $vendor
+                'alias' => $vendorAlias
             ]);
         if ($category) {
             $excludeWords = explode(';', $category->getExcludeWords());
@@ -171,6 +178,11 @@ class DefaultController extends Controller
             }
             $totalCount = $searchGoods['total_found'];
             $childrenCategories = $category->getChildrenCategories();
+            $pagination = [
+                'url' => '/filter/' . $categoryAlias . '/' . $vendorAlias . '?',
+                'currentPage' => $request->query->getInt('page', 1),
+                'totalPagesCount' => floor($totalCount / self::$resultsOnPage),
+            ];
         }
 
         return $this->render('AppBundle:look4wear:filter.html.twig', [
@@ -179,6 +191,7 @@ class DefaultController extends Controller
             'seoTitle' => '',
             'pageTitle' => '',
             'childrenCategories' => $childrenCategories,
+            'pagination' => $pagination,
         ]);
     }
 
@@ -196,6 +209,11 @@ class DefaultController extends Controller
             $matches = $searchGoods['matches'];
         }
         $totalCount = $searchGoods['total_found'];
+        $pagination = [
+            'url' => '/search' . '?searchString=' .$searchString . '&',
+            'currentPage' => $request->query->getInt('page', 1),
+            'totalPagesCount' => floor($totalCount / self::$resultsOnPage),
+        ];
 
         return $this->render('AppBundle:look4wear:search.html.twig', [
             'goods' => $matches,
@@ -204,6 +222,7 @@ class DefaultController extends Controller
             'childrenCategories' => [],
             'totalCount' => $totalCount,
             'searchString' => $searchString,
+            'pagination' => $pagination,
         ]);
     }
 
@@ -218,5 +237,15 @@ class DefaultController extends Controller
         $sphinxSearch->setLimits($page * self::$resultsOnPage, self::$resultsOnPage, 100000);
         $sphinxSearch->SetMatchMode(SPH_MATCH_EXTENDED);
         return $sphinxSearch->query($searchString);
+    }
+
+    private function getPagination($url, $currentPage, $goodsPerPage, $totalCount)
+    {
+        $pagesCount = ceil($totalCount / $goodsPerPage);
+        return $this->render('AppBundle:look4wear:pagination.html.twig', [
+            'url' => $url,
+            'currentPage' => $currentPage,
+            'pagesCount' => $pagesCount,
+        ])->getContent();
     }
 }

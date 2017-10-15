@@ -42,4 +42,7 @@
             </div>
         {% endfor %}
     </div>
+    {% if pagination is defined %}
+        {{ include('AppBundle:look4wear:pagination.html.twig', { 'pagination': pagination }) }}
+    {% endif %}
 {% endif %}
