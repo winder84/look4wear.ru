@@ -110,9 +110,9 @@ class parseCommand extends ContainerAwareCommand
             $this->deleteGoodsByOffer($offer);
             $this->outputWriteLn('Логическое удаление товаров оффера ' . $offer->getName() . ' завершено');
         }
-        $this->outputWriteLn('Физическое удаление товаров без бренда');
-        $this->deleteGoodsByNoVendor();
-        $this->outputWriteLn('Физическое удаление товаров без бренда завершено');
+//        $this->outputWriteLn('Физическое удаление товаров без бренда');
+//        $this->deleteGoodsByNoVendor();
+//        $this->outputWriteLn('Физическое удаление товаров без бренда завершено');
     }
 
     /**
