@@ -141,6 +141,7 @@ class parseCommand extends ContainerAwareCommand
         $offerXmlUrl = $offer->getXmlParseUrl();
         $xmlContent = file_get_contents($offerXmlUrl, false, self::$ctx);
         file_put_contents(self::$tmpFilePath, $xmlContent);
+        $xmlContent = null;
         print_r("\n");
         $xmlReader = \XMLReader::open(self::$tmpFilePath);
         $countIndex = 0;
