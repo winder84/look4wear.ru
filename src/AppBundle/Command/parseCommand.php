@@ -476,8 +476,6 @@ class parseCommand extends ContainerAwareCommand
         } else {
             $progress = round( $downloaded_size * 100 / $download_size );
         }
-        var_dump($download_size);
-        var_dump($downloaded_size);
         if ( $progress > $previousProgress) {
             $fileSize = round($downloaded_size / (1024 * 1024), 1);
             $newTimeDate = new \DateTime();
