@@ -142,7 +142,7 @@ class parseCommand extends ContainerAwareCommand
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $offerXmlUrl );
         curl_setopt($ch, CURLOPT_NOPROGRESS, false);
-        curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, 'progressCallback');
+        curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, [$this, 'progressCallback']);
         curl_setopt($ch, CURLOPT_FILE, $targetFile);
         curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
