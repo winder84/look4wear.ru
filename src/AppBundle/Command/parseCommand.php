@@ -86,9 +86,7 @@ class parseCommand extends ContainerAwareCommand
         self::$em = $this->getContainer()->get('doctrine')->getManager();
         self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
         self::$output = $output;
-        self::$ctx = stream_context_create();
         self::$tmpFilePath = '/tmp/tmpFile.xml';
-        stream_context_set_params(self::$ctx, array("notification" => array($this, 'stream_notification_callback')));
         $offers = self::$em
             ->getRepository('AppBundle:Offer')
             ->findBy([
@@ -139,8 +137,19 @@ class parseCommand extends ContainerAwareCommand
         $version++;
         $this->outputWriteLn('--- Начало парсинга оффера <red>' . $offer->getName() . '</red> ---');
         $offerXmlUrl = $offer->getXmlParseUrl();
-        $xmlContent = file_get_contents($offerXmlUrl, false, self::$ctx);
-        file_put_contents(self::$tmpFilePath, $xmlContent);
+
+        $targetFile = fopen(self::$tmpFilePath, 'w');
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $offerXmlUrl );
+        curl_setopt($ch, CURLOPT_NOPROGRESS, false);
+        curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, 'progressCallback');
+        curl_setopt($ch, CURLOPT_FILE, $targetFile);
+        curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_exec($ch);
+        curl_close($ch);
+        fclose($targetFile);
+        $this->outputWriteLn('--- Файл скачан ---');
         $xmlContent = null;
         print_r("\n");
         $xmlReader = \XMLReader::open(self::$tmpFilePath);
@@ -458,36 +467,23 @@ class parseCommand extends ContainerAwareCommand
         $statement->execute();
     }
 
-    private function stream_notification_callback($notification_code, $severity, $message, $message_code, $bytes_transferred, $bytes_max) {
-        switch($notification_code) {
-            case STREAM_NOTIFY_RESOLVE:
-            case STREAM_NOTIFY_AUTH_REQUIRED:
-            case STREAM_NOTIFY_COMPLETED:
-                printf("\r\n");
-                break;
-            case STREAM_NOTIFY_FAILURE:
-            case STREAM_NOTIFY_AUTH_RESULT:
-//            var_dump($notification_code, $severity, $message, $message_code, $bytes_transferred, $bytes_max);
-                /* Игнорируем */
-                break;
-            case STREAM_NOTIFY_REDIRECTED:
-                /* Игнорируем */
-                break;
-            case STREAM_NOTIFY_CONNECT:
-                /* Игнорируем */
-                break;
-            case STREAM_NOTIFY_FILE_SIZE_IS:
-                /* Игнорируем */
-                break;
-            case STREAM_NOTIFY_MIME_TYPE_IS:
-                /* Игнорируем */
-                break;
-            case STREAM_NOTIFY_PROGRESS:
-                $fileSize = round($bytes_transferred / (1024 * 1024), 1);
-                $newTimeDate = new \DateTime();
-                $newTimeDate = $newTimeDate->format(\DateTime::ATOM);
-                printf("\r" . self::$delimer . $newTimeDate . ' | --- Скачивание файла : ' . $fileSize . ' MB --- |' . ' Memory usage: ' . round(memory_get_usage() / (1024 * 1024)) . ' MB' .  self::$delimer);
-                break;
+    function progressCallback($resource, $download_size, $downloaded_size, $upload_size, $uploaded_size)
+    {
+        static $previousProgress = 0;
+
+        if ( $download_size == 0 ) {
+            $progress = 0;
+        } else {
+            $progress = round( $downloaded_size * 100 / $download_size );
         }
+        var_dump($download_size);
+        var_dump($downloaded_size);
+        if ( $progress > $previousProgress) {
+            $fileSize = round($downloaded_size / (1024 * 1024), 1);
+            $newTimeDate = new \DateTime();
+            $newTimeDate = $newTimeDate->format(\DateTime::ATOM);
+            printf("\r" . self::$delimer . $newTimeDate . ' | --- Скачивание файла : ' . $fileSize . ' MB --- |' . ' Memory usage: ' . round(memory_get_usage() / (1024 * 1024)) . ' MB' .  self::$delimer);
+        }
+
     }
 }
