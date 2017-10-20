@@ -123,6 +123,8 @@ class parseCommand extends ContainerAwareCommand
         self::$output->getFormatter()->setStyle('red', $style);
         $style = new OutputFormatterStyle('blue', null, ['bold', 'blink']);
         self::$output->getFormatter()->setStyle('blue', $style);
+        $style = new OutputFormatterStyle('yellow', null, ['bold', 'blink']);
+        self::$output->getFormatter()->setStyle('yellow', $style);
         $newTimeDate = new \DateTime();
         $newTimeDate = $newTimeDate->format(\DateTime::ATOM);
         self::$output->writeln(self::$delimer . $newTimeDate . ' | <blue>' . $text . '</blue> | Memory usage: <red>' . round(memory_get_usage() / (1024 * 1024)) . ' MB</red>' . self::$delimer);
