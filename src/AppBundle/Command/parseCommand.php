@@ -135,7 +135,7 @@ class parseCommand extends ContainerAwareCommand
     {
         $version = $offer->getVersion();
         $version++;
-        $this->outputWriteLn('--- Начало парсинга оффера <red>' . $offer->getName() . '</red> ---');
+        $this->outputWriteLn('--- Начало парсинга оффера <yellow>' . $offer->getName() . '</yellow> ---');
         $offerXmlUrl = $offer->getXmlParseUrl();
 
         $targetFile = fopen(self::$tmpFilePath, 'w');
