@@ -149,9 +149,8 @@ class parseCommand extends ContainerAwareCommand
         curl_exec($ch);
         curl_close($ch);
         fclose($targetFile);
-        $this->outputWriteLn('--- Файл скачан ---');
+        $this->outputWriteLn('--- Файл скачан | Размер: ' . round(filesize(self::$tmpFilePath) / (1024 * 1024), 1) . ' ---');
         $xmlContent = null;
-        print_r("\n");
         $xmlReader = \XMLReader::open(self::$tmpFilePath);
         $countIndex = 0;
         $checked = true;
