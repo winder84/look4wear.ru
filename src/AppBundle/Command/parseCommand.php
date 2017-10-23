@@ -8,6 +8,7 @@ use AppBundle\Entity\Vendor;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -78,7 +79,12 @@ class parseCommand extends ContainerAwareCommand
     {
         $this
             ->setName('main:parse')
-            ->setDescription('Parse offers');
+            ->setDescription('Parse offers')
+            ->addArgument(
+                'offerId',
+                InputArgument::OPTIONAL,
+                'Who do you want to parse?'
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -87,11 +93,14 @@ class parseCommand extends ContainerAwareCommand
         self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
         self::$output = $output;
         self::$tmpFilePath = '/tmp/tmpFile.xml';
+        $offerId = intval($input->getArgument('offerId'));
+        $offersArgs = ['isDelete' => 0];
+        if ($offerId) {
+            $offersArgs['id'] = $offerId;
+        }
         $offers = self::$em
             ->getRepository('AppBundle:Offer')
-            ->findBy([
-                'isDelete' => 0
-            ]);
+            ->findBy($offersArgs);
         foreach ($offers as $offer) {
             self::$goodsGroupIds = [];
             $this->parseOffer($offer);
@@ -151,7 +160,8 @@ class parseCommand extends ContainerAwareCommand
         curl_exec($ch);
         curl_close($ch);
         fclose($targetFile);
-        $this->outputWriteLn('Файл скачан | Размер: ' . round(filesize(self::$tmpFilePath) / (1024 * 1024), 1) . ' MB');
+        $fileSize = round(filesize(self::$tmpFilePath) / (1024 * 1024), 1);
+        $this->outputWriteLn('Файл скачан | Размер: ' . $fileSize . ' MB');
         $xmlContent = null;
         $xmlReader = \XMLReader::open(self::$tmpFilePath);
         $countIndex = 0;
