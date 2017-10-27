@@ -341,7 +341,7 @@ ul li {
 	margin-top: -12px;
 }
 #portfolio .portfolio-item .portfolio-link .caption .caption-content h3 {
-	margin: 0;
+	margin: 5px 0 0 0;
 	color: #e9eaed;
 	font-size: .6em;
 	letter-spacing: 4px;
