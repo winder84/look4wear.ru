@@ -242,13 +242,13 @@ class parseCommand extends ContainerAwareCommand
                         $countIndex++;
 
                         if ($countIndex > 0 && $countIndex % 10000 == 0) {
+                            if ($countIndex % 50000 == 0) {
+                                $this->outputWriteLn('Обработано <red>' . $countIndex . '</red> товаров!');
+                            }
                             self::$goods = null;
                             self::$em->flush();
                             self::$em->clear('AppBundle\Entity\Goods');
                             self::$em->clear('AppBundle\Entity\Vendor');
-                        }
-                        if ($countIndex > 0 && $countIndex % 50000 == 0) {
-                            $this->outputWriteLn('Обработано <red>' . $countIndex . '</red> товаров!');
                         }
                     }
                 }
