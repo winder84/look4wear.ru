@@ -94,7 +94,7 @@ ul li {
 }
 #header .header-content {
 	margin: 0 auto;
-	padding: 40px 10%;
+	padding: 40px 10% 0 10%;
 	width: 100%;
 	-moz-transition: padding 0.3s;
 	-o-transition: padding 0.3s;

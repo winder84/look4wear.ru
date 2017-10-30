@@ -9,7 +9,7 @@
             {% if not loop.first %}
                 &bull;
             {% endif %}
-            <a class="childrenCategoryLink" href="/category/{{ childrenCategory.alias }}"><h4>{{ childrenCategory.name }}</h4></a>
+            <a class="childrenCategoryLink{% if category.id == childrenCategory.id %} activeCategoryLink{% endif %}" href="/category/{{ childrenCategory.alias }}"><h4>{{ childrenCategory.name }}</h4></a>
         {% endfor %}
     {% endif %}
     <div class="row">

@@ -118,7 +118,11 @@ class DefaultController extends Controller
                 $matches = $searchGoods['matches'];
             }
             $totalCount = $searchGoods['total_found'];
-            $childrenCategories = $category->getChildrenCategories();
+            if (count($category->getChildrenCategories()) > 0) {
+                $childrenCategories = $category->getChildrenCategories();
+            } else {
+                $childrenCategories = $category->getParentCategory()->getChildrenCategories();
+            }
             $pagination = [
                 'url' => '/category/' . $alias . '?',
                 'currentPage' => $request->query->getInt('page', 1),
@@ -127,6 +131,8 @@ class DefaultController extends Controller
         }
 
         return $this->render('AppBundle:look4wear:category.html.twig', [
+            'breadcrumbs' => $this->getBreadcrumbs($category),
+            'category' => $category,
             'goods' => $matches,
             'totalCount' => $totalCount,
             'pageTitle' => $category->getTitle(),
@@ -243,13 +249,20 @@ class DefaultController extends Controller
         return $sphinxSearch->query($searchString);
     }
 
-    private function getPagination($url, $currentPage, $goodsPerPage, $totalCount)
+    /**
+     * @param Category $category
+     * @return array
+     */
+    private function getBreadcrumbs(Category $category)
     {
-        $pagesCount = ceil($totalCount / $goodsPerPage);
-        return $this->render('AppBundle:look4wear:pagination.html.twig', [
-            'url' => $url,
-            'currentPage' => $currentPage,
-            'pagesCount' => $pagesCount,
-        ])->getContent();
+        $breadcrumbs = [];
+        $parentCategory = $category->getParentCategory();
+        while ($parentCategory) {
+            $breadcrumbs[] = ['link' => '/category/' . $parentCategory->getAlias(), 'title' => $parentCategory->getName()];
+            $parentCategory = $parentCategory->getParentCategory();
+        }
+        $breadcrumbs[] = ['link' => '/', 'title' => 'Главная'];
+
+        return array_reverse($breadcrumbs);
     }
 }

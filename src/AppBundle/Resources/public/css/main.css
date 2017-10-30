@@ -106,6 +106,10 @@
     margin: 10px;
 }
 
+.activeCategoryLink h4 {
+    color: #c5620c;
+}
+
 .goodsListImage {
     background-image: url("../images/loader.gif");
     background-repeat: no-repeat;
