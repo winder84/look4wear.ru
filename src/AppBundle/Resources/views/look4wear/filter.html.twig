@@ -2,4 +2,38 @@
 
 {% block content %}
     {{ include('AppBundle:look4wear:goods.block.html.twig', { 'goods': goods }) }}
+    {% if categoryTopVendorsResult %}
+        <div class="titleDiv">
+            <h3>Другие бренды этой категории:</h3>
+        </div>
+        {% if categoryTopVendorsResult|length > 0 %}
+            {% for categoryTopVendor in categoryTopVendorsResult %}
+                {% if loop.index <= 15 %}
+                    <a href="/filter/{{ category.alias }}/{{ categoryTopVendor.alias }}"
+                       title="{{ category.title }} {{ categoryTopVendor.name }}. Товаров: {{ categoryTopVendor.count }} шт."
+                       class="categoryTopVendor"
+                    >
+                        {{ categoryTopVendor.name }}
+                    </a>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+    {% if otherCategories %}
+        <div class="titleDiv">
+            <h3>Другие категории этого бренда:</h3>
+        </div>
+        {% if otherCategories|length > 0 %}
+            {% for alias, otherCategory in otherCategories %}
+                {% if loop.index <= 15 %}
+                    <a href="/filter/{{ alias }}/{{ vendorAlias }}"
+                       title="{{ otherCategory.title }} {{ otherCategory.vendorName }}. Товаров: {{ otherCategory.count }} шт."
+                       class="categoryTopVendor"
+                    >
+                        {{ otherCategory.title }}
+                    </a>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endif %}
 {% endblock %}

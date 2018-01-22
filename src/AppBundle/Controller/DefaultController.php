@@ -27,7 +27,7 @@ class DefaultController extends Controller
     public function indexAction(Request $request)
     {
         return $this->render('AppBundle:look4wear:index.html.twig', array(
-            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
+            'base_dir' => realpath($this->container->getParameter('kernel.root_dir') . '/..') . DIRECTORY_SEPARATOR,
         ));
     }
 
@@ -210,9 +210,56 @@ class DefaultController extends Controller
                 'currentPage' => $request->query->getInt('page', 1),
                 'totalPagesCount' => floor($totalCount / self::$resultsOnPage),
             ];
+            $categoryTopVendors = $category->getData()['topVendors'];
+            $categoryTopVendorsResult = [];
+            if ($categoryTopVendors) {
+                foreach ($categoryTopVendors as $categoryTopVendorAlias => $categoryTopVendorCount) {
+                    $categoryTopVendor = self::$em
+                        ->getRepository('AppBundle:Vendor')
+                        ->findOneBy([
+                            'alias' => $categoryTopVendorAlias
+                        ]);
+                    if ($categoryTopVendor && $categoryTopVendorAlias != $vendorAlias) {
+                        $categoryTopVendorsResult[] = [
+                            'alias' => $categoryTopVendorAlias,
+                            'name' => $categoryTopVendor->getName(),
+                            'count' => $categoryTopVendorCount,
+                        ];
+                    }
+                }
+            }
         }
         if ($category && $vendor) {
             $pageTitle = ucfirst($category->getTitle()) . ' ' . $vendor->getName();
+        }
+
+        $otherCategories = [];
+        $otherCategoriesResult = [];
+        $allCategories = [];
+        $qb = self::$em->createQueryBuilder();
+        $qb->select('c')
+            ->from('AppBundle:Category', 'c')
+            ->where('c.parentCategory != 0');
+        $categories = $qb->getQuery()->getResult();
+        /** @var Category $category */
+        foreach ($categories as $categoryItem) {
+            $allCategories[$categoryItem->getAlias()] = $categoryItem->getTitle();
+            $newSearchString = $categoryItem->getSearchString() . ' ' . $vendorAlias;
+            $newSearchGoods = $this->searchByStringAndLimit($newSearchString, 1);
+            if (isset($newSearchGoods['matches'])) {
+                $otherCategories[$categoryItem->getAlias()] = $newSearchGoods['total_found'];
+            }
+        }
+        arsort($otherCategories);
+        $otherCategories = array_slice($otherCategories, 0, 20);
+        foreach ($otherCategories as $otherCategoryKey => $otherCategoryCount) {
+            $otherCategoriesResult[$otherCategoryKey] = [
+                'title' => $allCategories[$otherCategoryKey],
+                'count' => $otherCategoryCount,
+            ];
+            if ($vendor) {
+                $otherCategoriesResult[$otherCategoryKey]['vendorName'] = $vendor->getName();
+            }
         }
 
         return $this->render('AppBundle:look4wear:filter.html.twig', [
@@ -223,6 +270,9 @@ class DefaultController extends Controller
             'childrenCategories' => $childrenCategories,
             'pagination' => $pagination,
             'category' => $category,
+            'categoryTopVendorsResult' => $categoryTopVendorsResult,
+            'otherCategories' => $otherCategoriesResult,
+            'vendorAlias' => $vendorAlias,
         ]);
     }
 
@@ -241,7 +291,7 @@ class DefaultController extends Controller
         }
         $totalCount = $searchGoods['total_found'];
         $pagination = [
-            'url' => '/search' . '?searchString=' .$searchString . '&',
+            'url' => '/search' . '?searchString=' . $searchString . '&',
             'currentPage' => $request->query->getInt('page', 1),
             'totalPagesCount' => floor($totalCount / self::$resultsOnPage),
         ];
