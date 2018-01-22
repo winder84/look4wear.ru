@@ -194,7 +194,7 @@ class DefaultController extends Controller
             $excludeWords = explode(';', $category->getExcludeWords());
             $searchString = $category->getSearchString();
             if ($vendor) {
-                $searchString .= ' ' . $vendor->getName();
+                $searchString .= ' ' . $vendorAlias;
             }
             if (array_filter($excludeWords)) {
                 $searchString .= ' -' . implode(' -', $excludeWords);
