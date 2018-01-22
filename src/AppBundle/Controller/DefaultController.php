@@ -129,10 +129,30 @@ class DefaultController extends Controller
                 'totalPagesCount' => floor($totalCount / self::$resultsOnPage),
             ];
         }
+        $categoryTopVendors = $category->getData()['topVendors'];
+        $categoryTopVendorsResult = [];
+        if ($categoryTopVendors) {
+            foreach ($categoryTopVendors as $categoryTopVendorAlias => $categoryTopVendorCount) {
+                $categoryTopVendor = self::$em
+                    ->getRepository('AppBundle:Vendor')
+                    ->findOneBy([
+                        'alias' => $categoryTopVendorAlias
+                    ]);
+                if ($categoryTopVendor) {
+                    $categoryTopVendorsResult[] = [
+                        'alias' => $categoryTopVendorAlias,
+                        'name' => $categoryTopVendor->getName(),
+                        'count' => $categoryTopVendorCount,
+                    ];
+                }
+            }
+        }
+
 
         return $this->render('AppBundle:look4wear:category.html.twig', [
             'breadcrumbs' => $this->getBreadcrumbs($category),
             'category' => $category,
+            'categoryTopVendorsResult' => $categoryTopVendorsResult,
             'goods' => $matches,
             'totalCount' => $totalCount,
             'pageTitle' => $category->getTitle(),
@@ -202,6 +222,7 @@ class DefaultController extends Controller
             'pageTitle' => $pageTitle,
             'childrenCategories' => $childrenCategories,
             'pagination' => $pagination,
+            'category' => $category,
         ]);
     }
 
@@ -245,6 +266,19 @@ class DefaultController extends Controller
     {
         $sphinxSearch = $this->get('iakumai.sphinxsearch.search');
         $sphinxSearch->setLimits($page * self::$resultsOnPage, self::$resultsOnPage, 100000);
+        $sphinxSearch->SetMatchMode(SPH_MATCH_EXTENDED);
+        return $sphinxSearch->query($searchString);
+    }
+
+    /**
+     * @param $searchString
+     * @param $limit
+     * @return mixed
+     */
+    public function searchByStringAndLimit($searchString, $limit)
+    {
+        $sphinxSearch = $this->get('iakumai.sphinxsearch.search');
+        $sphinxSearch->setLimits(0, $limit, 100000);
         $sphinxSearch->SetMatchMode(SPH_MATCH_EXTENDED);
         return $sphinxSearch->query($searchString);
     }

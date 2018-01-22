@@ -88,6 +88,13 @@ class Category
      */
     private $parentCategory;
 
+    /**
+     * @var json_encode
+     *
+     * @ORM\Column(name="data", type="json_array", nullable=true)
+     */
+    private $data;
+
     public function __toString()
     {
         return (string) $this->getName();
@@ -358,5 +365,29 @@ class Category
     public function getSeoTitle()
     {
         return $this->seoTitle;
+    }
+
+    /**
+     * Set data
+     *
+     * @param array $data
+     *
+     * @return Category
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * Get data
+     *
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 }
