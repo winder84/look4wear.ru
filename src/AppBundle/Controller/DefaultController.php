@@ -253,10 +253,12 @@ class DefaultController extends Controller
         arsort($otherCategories);
         $otherCategories = array_slice($otherCategories, 0, 20);
         foreach ($otherCategories as $otherCategoryKey => $otherCategoryCount) {
-            $otherCategoriesResult[$otherCategoryKey] = [
-                'title' => $allCategories[$otherCategoryKey],
-                'count' => $otherCategoryCount,
-            ];
+            if ($otherCategoryKey != $category->getAlias()) {
+                $otherCategoriesResult[$otherCategoryKey] = [
+                    'title' => $allCategories[$otherCategoryKey],
+                    'count' => $otherCategoryCount,
+                ];
+            }
             if ($vendor) {
                 $otherCategoriesResult[$otherCategoryKey]['vendorName'] = $vendor->getName();
             }
