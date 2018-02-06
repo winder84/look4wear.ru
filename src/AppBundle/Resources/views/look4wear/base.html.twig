@@ -9,7 +9,7 @@
         <meta charset="UTF-8" />
         <title>
             {% block title %}
-                {% if seoTitle %}
+                {% if seoTitle is defined and seoTitle %}
                     {{ seoTitle }}
                 {% else %}
                     look4wear.ru - ищем одежду для Вас!

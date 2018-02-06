@@ -22,6 +22,16 @@ class DefaultController extends Controller
     protected static $resultsOnPage = 20;
 
     /**
+     * @var string
+     */
+    protected static $seoTitle = '';
+
+    /**
+     * @var string
+     */
+    protected static $pageTitle = '';
+
+    /**
      * @Route("/", name="homepage")
      */
     public function indexAction(Request $request)
@@ -88,28 +98,37 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/category/{alias}", name="category")
-     * @param $alias
+     * @Route("/catalog/{token}", name="catalog", requirements={"token"=".+"})
+     * @param $token
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function categoryAction($alias, Request $request)
+    public function catalogAction($token, Request $request)
     {
+        self::$em = $this->getDoctrine()->getManager();
+        self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
+        $actualCategory = null;
+        $categoryAliases = explode('/', $token);
+        $categories = [];
+        foreach ($categoryAliases as $categoryAlias) {
+            $categories[] = self::$em
+                ->getRepository('AppBundle:Category')
+                ->findOneBy([
+                    'alias' => $categoryAlias
+                ]);
+        }
+        $categories = array_filter($categories);
+        $categoryAliases = array_filter($categoryAliases);
+        if (count($categoryAliases) == count($categories)) {
+            $actualCategory = end($categories);
+        }
         $matches = [];
         $totalCount = 0;
         $childrenCategories = [];
         $pagination = null;
-        self::$em = $this->getDoctrine()->getManager();
-        self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
-        /** @var Category $category */
-        $category = self::$em
-            ->getRepository('AppBundle:Category')
-            ->findOneBy([
-                'alias' => $alias
-            ]);
-        if ($category) {
-            $excludeWords = explode(';', $category->getExcludeWords());
-            $searchString = $category->getSearchString();
+        if ($actualCategory) {
+            $excludeWords = explode(';', $actualCategory->getExcludeWords());
+            $searchString = $actualCategory->getSearchString();
             if (array_filter($excludeWords)) {
                 $searchString .= ' -' . implode(' -', $excludeWords);
             }
@@ -118,18 +137,18 @@ class DefaultController extends Controller
                 $matches = $searchGoods['matches'];
             }
             $totalCount = $searchGoods['total_found'];
-            if (count($category->getChildrenCategories()) > 0) {
-                $childrenCategories = $category->getChildrenCategories();
-            } else {
-                $childrenCategories = $category->getParentCategory()->getChildrenCategories();
+            if (count($actualCategory->getChildrenCategories()) > 0) {
+                $childrenCategories = $actualCategory->getChildrenCategories();
             }
+            $parentsUrl = $this->getParentCategoriesUrl($actualCategory);
+            $actualUrl = $parentsUrl . $actualCategory->getAlias();
             $pagination = [
-                'url' => '/category/' . $alias . '?',
+                'url' => $actualUrl . '?',
                 'currentPage' => $request->query->getInt('page', 1),
                 'totalPagesCount' => floor($totalCount / self::$resultsOnPage),
             ];
         }
-        $categoryTopVendors = $category->getData()['topVendors'];
+        $categoryTopVendors = $actualCategory->getData()['topVendors'];
         $categoryTopVendorsResult = [];
         if ($categoryTopVendors) {
             foreach ($categoryTopVendors as $categoryTopVendorAlias => $categoryTopVendorCount) {
@@ -148,17 +167,18 @@ class DefaultController extends Controller
             }
         }
 
-
         return $this->render('AppBundle:look4wear:category.html.twig', [
-            'breadcrumbs' => $this->getBreadcrumbs($category),
-            'category' => $category,
+            'breadcrumbs' => $this->getBreadcrumbs($actualCategory),
+            'category' => $actualCategory,
             'categoryTopVendorsResult' => $categoryTopVendorsResult,
             'goods' => $matches,
             'totalCount' => $totalCount,
-            'pageTitle' => $category->getTitle(),
-            'seoTitle' => $category->getSeoTitle(),
+            'pageTitle' => $actualCategory->getTitle(),
+            'seoTitle' => $actualCategory->getSeoTitle(),
             'childrenCategories' => $childrenCategories,
             'pagination' => $pagination,
+            'parentsUrl' => $parentsUrl,
+            'actualUrl' => $actualUrl,
         ]);
     }
 
@@ -175,7 +195,6 @@ class DefaultController extends Controller
         $matches = [];
         $childrenCategories = [];
         $totalCount = 0;
-        $pageTitle = '';
         self::$em = $this->getDoctrine()->getManager();
         self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
         /** @var Category $category */
@@ -230,51 +249,46 @@ class DefaultController extends Controller
             }
         }
         if ($category && $vendor) {
-            $pageTitle = ucfirst($category->getTitle()) . ' ' . $vendor->getName();
+            self::$seoTitle = 'Купить со скидкой ' . mb_strtolower($category->getTitle(), 'utf-8') . ' ' . $vendor->getName();
+            self::$pageTitle = ucfirst($category->getTitle()) . ' ' . $vendor->getName();
+            $parentsUrl = $this->getParentCategoriesUrl($category);
         }
 
         $otherCategories = [];
-        $otherCategoriesResult = [];
-        $allCategories = [];
         $qb = self::$em->createQueryBuilder();
         $qb->select('c')
             ->from('AppBundle:Category', 'c')
-            ->where('c.parentCategory != 0');
+            ->where('c.parentCategory != 0')
+            ->andWhere('REGEXP(c.data, :regexp) = true')
+            ->setParameter('regexp', '[[:<:]]' . $vendorAlias . '[[:>:]]');
         $categories = $qb->getQuery()->getResult();
-        /** @var Category $category */
+        /** @var Category $categoryItem */
         foreach ($categories as $categoryItem) {
-            $allCategories[$categoryItem->getAlias()] = $categoryItem->getTitle();
-            $newSearchString = $categoryItem->getSearchString() . ' ' . $vendorAlias;
-            $newSearchGoods = $this->searchByStringAndLimit($newSearchString, 1);
-            if (isset($newSearchGoods['matches'])) {
-                $otherCategories[$categoryItem->getAlias()] = $newSearchGoods['total_found'];
+            if ($categoryItem->getId() != $category->getId()) {
+                $otherCategories[$categoryItem->getAlias()] = [
+                    'title' => $categoryItem->getTitle(),
+                    'count' => $categoryItem->getData()['topVendors'][$vendorAlias],
+                ];
+                if ($vendor) {
+                    $otherCategories[$categoryItem->getAlias()]['vendorName'] = $vendor->getName();
+                }
             }
         }
         arsort($otherCategories);
         $otherCategories = array_slice($otherCategories, 0, 20);
-        foreach ($otherCategories as $otherCategoryKey => $otherCategoryCount) {
-            if ($otherCategoryKey != $category->getAlias()) {
-                $otherCategoriesResult[$otherCategoryKey] = [
-                    'title' => $allCategories[$otherCategoryKey],
-                    'count' => $otherCategoryCount,
-                ];
-            }
-            if ($vendor) {
-                $otherCategoriesResult[$otherCategoryKey]['vendorName'] = $vendor->getName();
-            }
-        }
 
         return $this->render('AppBundle:look4wear:filter.html.twig', [
             'goods' => $matches,
             'totalCount' => $totalCount,
-            'seoTitle' => '',
-            'pageTitle' => $pageTitle,
+            'seoTitle' => self::$seoTitle,
+            'pageTitle' => self::$pageTitle,
             'childrenCategories' => $childrenCategories,
             'pagination' => $pagination,
             'category' => $category,
             'categoryTopVendorsResult' => $categoryTopVendorsResult,
-            'otherCategories' => $otherCategoriesResult,
+            'otherCategories' => $otherCategories,
             'vendorAlias' => $vendorAlias,
+            'parentsUrl' => $parentsUrl,
         ]);
     }
 
@@ -341,14 +355,36 @@ class DefaultController extends Controller
      */
     private function getBreadcrumbs(Category $category)
     {
-        $breadcrumbs = [];
+        $breadcrumbs[] = ['link' => $this->getParentCategoriesUrl($category) . $category->getAlias(), 'title' => $category->getName()];
         $parentCategory = $category->getParentCategory();
         while ($parentCategory) {
-            $breadcrumbs[] = ['link' => '/category/' . $parentCategory->getAlias(), 'title' => $parentCategory->getName()];
+            $breadcrumbs[] = ['link' => $this->getParentCategoriesUrl($parentCategory) . $parentCategory->getAlias(), 'title' => $parentCategory->getName()];
             $parentCategory = $parentCategory->getParentCategory();
         }
         $breadcrumbs[] = ['link' => '/', 'title' => 'Главная'];
 
         return array_reverse($breadcrumbs);
+    }
+
+    /**
+     * @param Category $category
+     * @return string
+     */
+    private function getParentCategoriesUrl(Category $category)
+    {
+        $parentCategories = [];
+        $parentsUrl = '/catalog/';
+        $parentCategories[] = $parentCategory = $category->getParentCategory();
+        while ($parentCategory && $parentCategories[] = $parentCategory = $parentCategory->getParentCategory()) {
+        }
+        if (!end($parentCategories)) {
+            array_pop($parentCategories);
+        }
+        $parentCategories = array_reverse($parentCategories);
+        foreach ($parentCategories as $parentCategory) {
+            $parentsUrl .= $parentCategory->getAlias() . '/';
+        }
+
+        return $parentsUrl;
     }
 }

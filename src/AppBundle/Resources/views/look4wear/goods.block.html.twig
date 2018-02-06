@@ -5,12 +5,16 @@
         </div>
     {% endif %}
     {% if childrenCategories|length > 0 %}
+        <hr />
         {% for childrenCategory in childrenCategories %}
             {% if not loop.first %}
                 &bull;
             {% endif %}
-            <a class="childrenCategoryLink{% if category.id == childrenCategory.id %} activeCategoryLink{% endif %}" href="/category/{{ childrenCategory.alias }}"><h4>{{ childrenCategory.name }}</h4></a>
+            <a class="childrenCategoryLink" href="{{ actualUrl }}/{{ childrenCategory.alias }}">
+                <h4>{{ childrenCategory.name }}</h4>
+            </a>
         {% endfor %}
+        <hr />
     {% endif %}
     <div class="row">
         {% for goodsItem in goods %}

@@ -19,6 +19,7 @@
     },
     "require": {
         "php": ">=7",
+        "beberlei/DoctrineExtensions": "^1.0",
         "components/jquery": "1.11.1",
         "doctrine/doctrine-bundle": "~1.4",
         "doctrine/orm": "^2.4.8",

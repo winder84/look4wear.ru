@@ -299,13 +299,11 @@ ul li {
 	right: 0;
 	margin: 15px auto;
 	padding: 0 10px;
-	height: 333px;
 }
 #portfolio .portfolio-item:hover .caption {
 	background: rgba(00,00,00,.9) !important;
 }
 #portfolio .portfolio-item .portfolio-link {
-	height: 100%;
 	max-width: 290px;
 	display: block;
 	position: relative;

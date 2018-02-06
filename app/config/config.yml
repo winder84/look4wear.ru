@@ -63,6 +63,9 @@ doctrine:
                     SonataUserBundle: ~
                     FOSUserBundle: ~
                     AppBundle: ~
+                dql:
+                    string_functions:
+                        regexp: DoctrineExtensions\Query\Mysql\Regexp
 
 # Swiftmailer Configuration
 swiftmailer:
