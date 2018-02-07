@@ -13,12 +13,6 @@ services:
             - '' # if you store full path in the database
         tags:
             - { name: 'liip_imagine.binary.loader', loader: 'cdn_data_loader' }
-    liip_imagine.binary.loader.grid_fs:
-        class: Liip\ImagineBundle\Binary\Loader\GridFSLoader
-        arguments:
-            - Application\ImageBundle\Document\Image
-        tags:
-            - { name: "liip_imagine.binary.loader", loader: grid_fs }
 
     app.my_replace:
         class: AppBundle\Twig\AppExtension
