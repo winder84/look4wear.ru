@@ -151,9 +151,7 @@ assetic:
                     - %kernel.root_dir%/../vendor/components/jquery/jquery.js
 
 liip_imagine :
-    loaders:
-        profile_photos:
-            filesystem: ~
+    data_loader: cdn_data_loader
     filter_sets :
         my_thumb :
             quality : 75
