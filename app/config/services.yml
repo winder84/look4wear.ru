@@ -16,7 +16,6 @@ services:
     liip_imagine.binary.loader.grid_fs:
         class: Liip\ImagineBundle\Binary\Loader\GridFSLoader
         arguments:
-            - "@doctrine.odm.mongodb.document_manager"
             - Application\ImageBundle\Document\Image
         tags:
             - { name: "liip_imagine.binary.loader", loader: grid_fs }
