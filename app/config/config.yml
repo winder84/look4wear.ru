@@ -151,11 +151,10 @@ assetic:
                     - %kernel.root_dir%/../vendor/components/jquery/jquery.js
 
 liip_imagine :
-    data_loader: cdn_data_loader
+    data_loader: grid_fs
     cache : default
     filter_sets :
         my_thumb :
-            data_loader: grid_fs
             quality : 75
             filters :
                 thumbnail  : { size : [544, ], mode : outbound }
