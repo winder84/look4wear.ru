@@ -152,14 +152,13 @@ assetic:
 
 liip_imagine :
     data_loader: cdn_data_loader
+    resolvers:
+        default:
+            web_path: ~
     filter_sets :
         cache : ~
         my_thumb :
             quality : 75
             filters :
                 thumbnail  : { size : [544, ], mode : outbound }
-    loaders:
-      default:
-        filesystem:
-          resolve_sym_links: false
 #                background : { size : [124, 94], position : center, color : '#000000' }
