@@ -155,6 +155,7 @@ liip_imagine :
     cache : default
     filter_sets :
         my_thumb :
+            data_loader: grid_fs
             quality : 75
             filters :
                 thumbnail  : { size : [544, ], mode : outbound }
