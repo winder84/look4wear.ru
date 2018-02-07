@@ -152,8 +152,8 @@ assetic:
 
 liip_imagine :
     data_loader: cdn_data_loader
+    cache : default
     filter_sets :
-        cache : ~
         my_thumb :
             quality : 75
             filters :
