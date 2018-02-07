@@ -158,4 +158,8 @@ liip_imagine :
             quality : 75
             filters :
                 thumbnail  : { size : [544, ], mode : outbound }
+    loaders:
+      default:
+        filesystem:
+          resolve_sym_links: false
 #                background : { size : [124, 94], position : center, color : '#000000' }
