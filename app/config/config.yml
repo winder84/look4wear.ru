@@ -151,8 +151,18 @@ assetic:
                     - %kernel.root_dir%/../vendor/components/jquery/jquery.js
 
 liip_imagine :
-    data_loader: cdn_data_loader
-    filter_sets :
+    data_loader: loader.remote
+    resolvers:
+        default:
+            web_path:
+                web_root: "%web_dir%"
+                cache_prefix: "%cache_prefix%"
+    loaders:
+        default:
+            filesystem:
+                data_root: "%web_dir%"
+    filter_sets:
+        cache: ~
         my_thumb :
             quality : 75
             filters :
