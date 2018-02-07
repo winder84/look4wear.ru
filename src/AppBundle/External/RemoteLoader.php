@@ -1,6 +1,6 @@
 <?php
 
-namespace Fashion\MainBundle\Imagine\Binary\Loader;
+namespace AppBundle\External;
 
 use Liip\ImagineBundle\Binary\Loader\LoaderInterface;
 use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
