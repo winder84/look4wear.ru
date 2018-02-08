@@ -296,6 +296,7 @@ ul li {
 	 Portfolio
 -------------------------------------------------------------------------------*/
 #portfolio .portfolio-item {
+	min-height: 300px;
 	right: 0;
 	margin: 15px auto;
 	padding: 0 10px;

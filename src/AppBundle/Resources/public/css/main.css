@@ -149,6 +149,7 @@
 @media screen and (max-width: 420px) {
     #portfolio .portfolio-item {
         width: 49%;
+        min-height: 50%;
         display: inline-block;
         margin: 0;
         padding: 0;
@@ -182,6 +183,9 @@
 }
 
 @media screen and (min-width: 768px) {
+    #portfolio .portfolio-item {
+        height: 300px;
+    }
     .col-sm-4 {
         width: 25% !important;
     }
