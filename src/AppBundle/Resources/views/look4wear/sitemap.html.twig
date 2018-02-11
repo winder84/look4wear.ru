@@ -6,7 +6,17 @@
             {% macro recursiveCategory(category) %}
                 {% import _self as self %}
                 <li>
-                    <h4><a href="{{ category|get_category_url }}">{{ category.title }}</a></h4>
+                    {% if not category.parentCategory %}
+                        <h4>
+                    {% else %}
+                        <h5>
+                    {% endif %}
+                        <a href="{{ category|get_category_url }}" title="{{ category.seoTitle }}">{{ category.title }}</a>
+                    {% if not category.parentCategory %}
+                        </h4>
+                    {% else %}
+                        </h5>
+                    {% endif %}
 
                     {% if category.childrenCategories|length %}
                         <ul style="margin: 0 10px;">
