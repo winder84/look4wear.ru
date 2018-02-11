@@ -138,7 +138,22 @@ class DefaultController extends Controller
             }
             $totalCount = $searchGoods['total_found'];
             if (count($actualCategory->getChildrenCategories()) > 0) {
-                $childrenCategories = $actualCategory->getChildrenCategories();
+                foreach ($actualCategory->getChildrenCategories() as $childrenCategory) {
+                    $excludeWords = explode(';', $childrenCategory->getExcludeWords());
+                    $searchString = $childrenCategory->getSearchString();
+                    if (array_filter($excludeWords)) {
+                        $searchString .= ' -' . implode(' -', $excludeWords);
+                    }
+                    $searchGoods = $this->searchByStringAndLimit($searchString, 10);
+                    if (isset($searchGoods['matches'])) {
+                        $categoryImage = json_decode(end($searchGoods['matches'])['attrs']['pictures'])[0];
+                    }
+                    $childrenCategories[] = [
+                        'category' => $childrenCategory,
+                        'image' => $categoryImage,
+                        'url' => self::getParentCategoriesUrl($childrenCategory) . $childrenCategory->getAlias(),
+                    ];
+                }
             }
             $parentsUrl = $this->getParentCategoriesUrl($actualCategory);
             $actualUrl = $parentsUrl . $actualCategory->getAlias();
@@ -182,6 +197,66 @@ class DefaultController extends Controller
         ]);
     }
 
+    /**
+     * @Route("/catalog_page", name="catalogPage")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function catalogPageAction()
+    {
+        $catalogCategories = [];
+        self::$em = $this->getDoctrine()->getManager();
+        self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
+        $categories = self::$em
+            ->getRepository('AppBundle:Category')
+            ->findBy([
+                'isActive' => true,
+                'parentCategory' => null,
+            ]);
+        foreach ($categories as $category) {
+            $excludeWords = explode(';', $category->getExcludeWords());
+            $searchString = $category->getSearchString();
+            if (array_filter($excludeWords)) {
+                $searchString .= ' -' . implode(' -', $excludeWords);
+            }
+            $searchGoods = $this->searchByStringAndLimit($searchString, 10);
+            if (isset($searchGoods['matches'])) {
+                $categoryImage = json_decode(end($searchGoods['matches'])['attrs']['pictures'])[0];
+            }
+            $catalogCategories[] = [
+                'category' => $category,
+                'image' => $categoryImage,
+                'url' => '/catalog/' . $category->getAlias(),
+            ];
+        }
+
+        return $this->render('AppBundle:look4wear:catalog.html.twig', [
+            'seoTitle' => self::$seoTitle,
+            'pageTitle' => self::$pageTitle,
+            'catalogCategories' => $catalogCategories,
+        ]);
+    }
+
+    /**
+     * @Route("/site_map", name="sitemap_page")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function sitemapPageAction()
+    {
+        self::$em = $this->getDoctrine()->getManager();
+        self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
+        $categories = self::$em
+            ->getRepository('AppBundle:Category')
+            ->findBy([
+                'isActive' => true,
+                'parentCategory' => null,
+            ]);
+
+        return $this->render('AppBundle:look4wear:sitemap.html.twig', [
+            'seoTitle' => self::$seoTitle,
+            'pageTitle' => self::$pageTitle,
+            'parentCategories' => $categories,
+        ]);
+    }
 
     /**
      * @Route("/filter/{categoryAlias}/{vendorAlias}", name="filter")
@@ -193,7 +268,6 @@ class DefaultController extends Controller
     public function filterAction($categoryAlias, $vendorAlias, Request $request)
     {
         $matches = [];
-        $childrenCategories = [];
         $totalCount = 0;
         self::$em = $this->getDoctrine()->getManager();
         self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
@@ -223,7 +297,6 @@ class DefaultController extends Controller
                 $matches = $searchGoods['matches'];
             }
             $totalCount = $searchGoods['total_found'];
-            $childrenCategories = $category->getChildrenCategories();
             $pagination = [
                 'url' => '/filter/' . $categoryAlias . '/' . $vendorAlias . '?',
                 'currentPage' => $request->query->getInt('page', 1),
@@ -282,7 +355,6 @@ class DefaultController extends Controller
             'totalCount' => $totalCount,
             'seoTitle' => self::$seoTitle,
             'pageTitle' => self::$pageTitle,
-            'childrenCategories' => $childrenCategories,
             'pagination' => $pagination,
             'category' => $category,
             'categoryTopVendorsResult' => $categoryTopVendorsResult,

@@ -6,14 +6,26 @@
     {% endif %}
     {% if childrenCategories|length > 0 %}
         <hr />
-        {% for childrenCategory in childrenCategories %}
-            {% if not loop.first %}
-                &bull;
-            {% endif %}
-            <a class="childrenCategoryLink" href="{{ actualUrl }}/{{ childrenCategory.alias }}">
-                <h4>{{ childrenCategory.name }}</h4>
-            </a>
-        {% endfor %}
+        <div class="row">
+            {% for childrenCategory in childrenCategories %}
+                <div class="col-sm-4 portfolio-item" style="margin: 20px 0;">
+                    <a href="{{ childrenCategory.url }}" class="portfolio-link" title="{{ childrenCategory.category.seoTitle }}">
+                        <div class="caption">
+                            <div class="caption-content">
+                                <h3 style="padding: 10px;">
+                                    {{ childrenCategory.category.name }}
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="goodsListImage">
+                            {% if childrenCategory.image %}
+                                <img class="img-responsive" src="{{ childrenCategory.image | my_replace | imagine_filter('my_thumb') }}" alt="{{ childrenCategory.category.seoTitle }}" />
+                            {% endif %}
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
         <hr />
     {% endif %}
     <div class="row">

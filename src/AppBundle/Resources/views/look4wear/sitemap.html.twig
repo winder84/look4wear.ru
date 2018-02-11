@@ -1,0 +1,32 @@
+{% extends 'AppBundle:look4wear:layout.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <ul style="margin: 0 auto; width: 50%;">
+            {% macro recursiveCategory(category) %}
+                {% import _self as self %}
+                <li>
+                    <h4><a href="{{ category|get_category_url }}">{{ category.title }}</a></h4>
+
+                    {% if category.childrenCategories|length %}
+                        <ul style="margin: 0 10px;">
+                            {% for child in category.childrenCategories %}
+                                {{ self.recursiveCategory(child) }}
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endmacro %}
+            {% import _self as self %}
+            {% if parentCategories %}
+                <div id="categories">
+                    <ul>
+                        {% for category in parentCategories %}
+                            {{ self.recursiveCategory(category) }}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock %}
