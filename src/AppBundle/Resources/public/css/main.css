@@ -78,6 +78,9 @@
 
 .mainPageCategoryLink {
     height: 100% !important;
+    display: inline-block;
+    width: 49% !important;
+    float: none !important;
 }
 
 .mainPageCategoryLink a.portfolio-link {
