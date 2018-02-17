@@ -2,6 +2,9 @@
 
 {% block content %}
     {{ include('AppBundle:look4wear:goods.block.html.twig', { 'goods': goods }) }}
+    {% if category.description %}
+        {{ category.description|raw }}
+    {% endif %}
     {% if categoryTopVendorsResult %}
         <div class="titleDiv">
             <h3>Популярные бренды этой категории:</h3>

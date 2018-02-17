@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\FormatterBundle\Form\Type\SimpleFormatterType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class CategoryAdmin extends AbstractAdmin
@@ -60,6 +61,10 @@ class CategoryAdmin extends AbstractAdmin
             ->add('name')
             ->add('title', null, ['required' => true])
             ->add('seoTitle')
+            ->add('description', SimpleFormatterType::class, array(
+                'format' => 'richhtml',
+                'ckeditor_context' => 'default', // optional
+            ))
             ->add('searchString')
             ->add('excludeWords')
             ->add('keywords')

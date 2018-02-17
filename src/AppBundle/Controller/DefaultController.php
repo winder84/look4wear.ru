@@ -252,7 +252,7 @@ class DefaultController extends Controller
             ]);
 
         return $this->render('AppBundle:look4wear:sitemap.html.twig', [
-            'seoTitle' => self::$seoTitle,
+            'seoTitle' => 'Карта сайта look4wear.ru',
             'pageTitle' => self::$pageTitle,
             'parentCategories' => $categories,
         ]);
@@ -392,6 +392,36 @@ class DefaultController extends Controller
             'totalCount' => $totalCount,
             'searchString' => $searchString,
             'pagination' => $pagination,
+        ]);
+    }
+
+    /**
+     * @Route("/about", name="about_page")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function aboutAction(Request $request)
+    {
+
+        return $this->render('AppBundle:look4wear:about.html.twig', [
+            'seoTitle' => 'О проекте look4wear.ru',
+            'pageTitle' => '',
+            'childrenCategories' => [],
+        ]);
+    }
+
+    /**
+     * @Route("/shipping", name="shipping_page")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function shippingAction(Request $request)
+    {
+
+        return $this->render('AppBundle:look4wear:shipping.html.twig', [
+            'seoTitle' => 'Доставка и возврат',
+            'pageTitle' => '',
+            'childrenCategories' => [],
         ]);
     }
 

@@ -45,6 +45,13 @@ class Category
     /**
      * @var string
      *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="alias", type="string", length=255, unique=true)
      */
     private $alias;
@@ -389,5 +396,29 @@ class Category
     public function getData()
     {
         return $this->data;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Category
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }
