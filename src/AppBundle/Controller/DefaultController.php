@@ -110,6 +110,7 @@ class DefaultController extends Controller
         $actualCategory = null;
         $categoryAliases = explode('/', $token);
         $categories = [];
+        $categoryTopVendors = [];
         foreach ($categoryAliases as $categoryAlias) {
             $categories[] = self::$em
                 ->getRepository('AppBundle:Category')
@@ -163,7 +164,9 @@ class DefaultController extends Controller
                 'totalPagesCount' => floor($totalCount / self::$resultsOnPage),
             ];
         }
-        $categoryTopVendors = $actualCategory->getData()['topVendors'];
+        if (isset($actualCategory->getData()['topVendors'])) {
+            $categoryTopVendors = $actualCategory->getData()['topVendors'];
+        }
         $categoryTopVendorsResult = [];
         if ($categoryTopVendors) {
             foreach ($categoryTopVendors as $categoryTopVendorAlias => $categoryTopVendorCount) {
