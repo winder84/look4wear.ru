@@ -31,7 +31,7 @@
     <div class="row">
         {% for goodsItem in goods %}
             <div class="col-sm-4 portfolio-item" data-goods-id="{{ goodsItem.attrs.goodsid }}">
-                <a target="_blank" rel="nofollow" href="{{ goodsItem.attrs.url|replace({'http:': ''}) }}" class="portfolio-link">
+                <a target="_blank" rel="nofollow" href="/goods/buy/{{ goodsItem.attrs.alias }}" class="portfolio-link">
                     <div class="caption">
                         <div class="caption-content">
                             <h3>

@@ -3,7 +3,9 @@
 namespace AppBundle\EventListener;
 
 use AppBundle\Entity\Category;
+use AppBundle\Entity\Vendor;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use IAkumaI\SphinxsearchBundle\Search\Sphinxsearch;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Presta\SitemapBundle\Event\SitemapPopulateEvent;
@@ -58,6 +60,7 @@ class SitemapSubscriber implements EventSubscriberInterface
         $categories = $this->doctrine->getRepository(Category::class)->findBy([
             'isActive' => true
         ]);
+        $vendors = $this->doctrine->getRepository(Vendor::class)->findAll();
         foreach ($categories as $category) {
             $categoryUrl = self::getParentCategoriesUrl($category) . $category->getAlias();
             $urls->addUrl(
@@ -70,6 +73,31 @@ class SitemapSubscriber implements EventSubscriberInterface
                 ),
                 'catalog'
             );
+            if ($category->getParentCategory()) {
+                foreach ($vendors as $vendor) {
+                    if (strlen($vendor->getAlias()) > 2) {
+                        $searchString = $category->getSearchString() . ' and @vendorAlias =' . $vendor->getAlias();
+                        try {
+                            $goods = self::searchByStringAndLimit($searchString, 10);
+                        } catch (\Exception $e) {
+                            $goods = null;
+                            echo $e->getMessage() . "\r\n";
+                        }
+                        if ($goods && $goods['total_found'] > 100 ) {
+                            $urls->addUrl(
+                                new UrlConcrete(
+                                    $this->urlGenerator->generate(
+                                        'filter',
+                                        ['categoryAlias' => $category->getAlias(), 'vendorAlias' => $vendor->getAlias()],
+                                        UrlGeneratorInterface::ABSOLUTE_URL
+                                    )
+                                ),
+                                'filters'
+                            );
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -93,5 +121,18 @@ class SitemapSubscriber implements EventSubscriberInterface
         }
 
         return $parentsUrl;
+    }
+
+    /**
+     * @param $searchString
+     * @param $limit
+     * @return mixed
+     */
+    public function searchByStringAndLimit($searchString, $limit)
+    {
+        $sphinxSearch = new Sphinxsearch('localhost', '9312');
+        $sphinxSearch->setLimits(0, $limit, 100000);
+        $sphinxSearch->SetMatchMode(SPH_MATCH_EXTENDED);
+        return $sphinxSearch->query($searchString, 'goods', false);
     }
 }

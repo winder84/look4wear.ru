@@ -293,7 +293,7 @@ class DefaultController extends Controller
             $excludeWords = explode(';', $category->getExcludeWords());
             $searchString = $category->getSearchString();
             if ($vendor) {
-                $searchString .= ' ' . $vendorAlias;
+                $searchString .= ' and @vendorAlias =' . $vendorAlias;
             }
             if (array_filter($excludeWords)) {
                 $searchString .= ' -' . implode(' -', $excludeWords);
@@ -431,6 +431,21 @@ class DefaultController extends Controller
             'pageTitle' => '',
             'childrenCategories' => [],
         ]);
+    }
+
+    /**
+     * @Route("/goods/buy/{alias}", name="goods_buy_route")
+     */
+    public function productBuyAction($alias)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $goods = $em
+            ->getRepository('AppBundle:Goods')
+            ->findOneBy(array('alias' => $alias));
+        if (!$goods) {
+            throw $this->createNotFoundException('The $goods does not exist');
+        }
+        return $this->redirect($goods->getURl());
     }
 
     /**

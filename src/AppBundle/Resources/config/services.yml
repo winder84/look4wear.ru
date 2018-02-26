@@ -29,5 +29,6 @@ services:
         arguments:
             - "@router"
             - "@doctrine"
+            - "@iakumai.sphinxsearch.search"
         tags:
             - { name: "kernel.event_subscriber", priority: 100 }

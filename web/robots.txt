@@ -1,5 +1,27 @@
 # www.robotstxt.org/
 # www.google.com/support/webmasters/bin/answer.py?hl=en&answer=156449
 
+Host: https://look4wear.ru
+
+User-agent: Yandex
+Allow: /js*
+Allow: /css*
+Disallow: /search*
+Disallow: /product_buy*
+Disallow: /media/cache*
+
+User-agent: Googlebot
+Allow: /js*
+Allow: /css*
+Disallow: /search*
+Disallow: /product_buy*
+Disallow: /media/cache*
+
 User-agent: *
-Disallow: /
+Allow: /js*
+Allow: /css*
+Disallow: /search*
+Disallow: /product_buy*
+Disallow: /media/cache*
+
+Sitemap: https://look4wear.ru/sitemap.xml
