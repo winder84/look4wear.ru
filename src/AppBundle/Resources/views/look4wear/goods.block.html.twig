@@ -4,7 +4,7 @@
             <h1>{{ pageTitle }}</h1>
         </div>
     {% endif %}
-    {% if childrenCategories|length > 0 %}
+    {% if childrenCategories is defined and childrenCategories|length > 0 %}
         <hr />
         <div class="row">
             {% for childrenCategory in childrenCategories %}

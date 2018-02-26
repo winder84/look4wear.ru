@@ -2,6 +2,8 @@
 # https://symfony.com/doc/current/service_container.html
 parameters:
     #parameter_name: value
+    router.request_context.host: look4wear.ru
+    router.request_context.scheme: https
 
 services:
     #service_name:

@@ -26,6 +26,7 @@
         "iakumai/sphinxsearch-bundle": "dev-master",
         "incenteev/composer-parameter-handler": "~2.0",
         "liip/imagine-bundle": "^1.9",
+        "presta/sitemap-bundle": "^1.5",
         "sensio/distribution-bundle": "~4.0",
         "sensio/framework-extra-bundle": "^3.0.2",
         "sonata-project/admin-bundle": "^3.20",

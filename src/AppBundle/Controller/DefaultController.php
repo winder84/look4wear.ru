@@ -32,7 +32,8 @@ class DefaultController extends Controller
     protected static $pageTitle = '';
 
     /**
-     * @Route("/", name="homepage")
+     * @Route("/", name="homepage",
+     *      options={"sitemap" = true})
      */
     public function indexAction(Request $request)
     {
@@ -201,7 +202,8 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/catalog_page", name="catalogPage")
+     * @Route("/catalog_page", name="catalogPage",
+     *      options={"sitemap" = true})
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function catalogPageAction()
@@ -240,7 +242,8 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/site_map", name="sitemap_page")
+     * @Route("/site_map", name="sitemap_page",
+     *      options={"sitemap" = true})
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function sitemapPageAction()
@@ -399,7 +402,8 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/about", name="about_page")
+     * @Route("/about", name="about_page",
+     *      options={"sitemap" = true})
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -414,7 +418,8 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/shipping", name="shipping_page")
+     * @Route("/shipping", name="shipping_page",
+     *      options={"sitemap" = true})
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
