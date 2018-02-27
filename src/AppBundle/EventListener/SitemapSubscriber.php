@@ -74,27 +74,19 @@ class SitemapSubscriber implements EventSubscriberInterface
                 'catalog'
             );
             if ($category->getParentCategory()) {
-                foreach ($vendors as $vendor) {
-                    if (strlen($vendor->getAlias()) > 2) {
-                        $searchString = $category->getSearchString() . ' and @vendorAlias =' . $vendor->getAlias();
-                        try {
-                            $goods = self::searchByStringAndLimit($searchString, 10);
-                        } catch (\Exception $e) {
-                            $goods = null;
-                            echo $e->getMessage() . "\r\n";
-                        }
-                        if ($goods && $goods['total_found'] > 100 ) {
+                if (isset($category->getData()['topVendors'])) {
+                    $categoryVendors = $category->getData()['topVendors'];
+                    foreach ($categoryVendors as $categoryVendor => $categoryVendorCount) {
                             $urls->addUrl(
                                 new UrlConcrete(
                                     $this->urlGenerator->generate(
                                         'filter',
-                                        ['categoryAlias' => $category->getAlias(), 'vendorAlias' => $vendor->getAlias()],
+                                        ['categoryAlias' => $category->getAlias(), 'vendorAlias' => $categoryVendor],
                                         UrlGeneratorInterface::ABSOLUTE_URL
                                     )
                                 ),
                                 'filters'
                             );
-                        }
                     }
                 }
             }
