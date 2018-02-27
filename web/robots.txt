@@ -8,20 +8,17 @@ Allow: /js*
 Allow: /css*
 Disallow: /search*
 Disallow: /product_buy*
-Disallow: /media/cache*
 
 User-agent: Googlebot
 Allow: /js*
 Allow: /css*
 Disallow: /search*
 Disallow: /product_buy*
-Disallow: /media/cache*
 
 User-agent: *
 Allow: /js*
 Allow: /css*
 Disallow: /search*
 Disallow: /product_buy*
-Disallow: /media/cache*
 
 Sitemap: https://look4wear.ru/sitemap.xml
