@@ -78,7 +78,7 @@ class topCategoryVendorsCommand extends ContainerAwareCommand
     {
         $this
             ->setName('main:topCategoryVendors')
-            ->setDescription('Get top 20 category vendors')
+            ->setDescription('Get top 100 category vendors')
             ->addArgument(
                 'categoryId',
                 InputArgument::OPTIONAL,
@@ -92,7 +92,7 @@ class topCategoryVendorsCommand extends ContainerAwareCommand
         self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
         self::$output = $output;
         self::$tmpFilePath = '/tmp/tmpFile.xml';
-        $this->outputWriteLn('Получаем топ50 брендов для категорий.');
+        $this->outputWriteLn('Получаем топ100 брендов для категорий.');
         $categoryId = intval($input->getArgument('categoryId'));
         if ($categoryId) {
             /** @var Category $category */
@@ -110,7 +110,7 @@ class topCategoryVendorsCommand extends ContainerAwareCommand
         foreach ($categories as $category) {
             $this->saveTopVendorsForCategory($category);
         }
-        $this->outputWriteLn('Топ 50 брендов для категорий получен и записан.');
+        $this->outputWriteLn('Топ 100 брендов для категорий получен и записан.');
     }
 
     /**
@@ -146,7 +146,7 @@ class topCategoryVendorsCommand extends ContainerAwareCommand
                 $i++;
             }
             arsort($categoryVendors);
-            $categoryVendors = array_slice($categoryVendors, 0, 50);
+            $categoryVendors = array_slice($categoryVendors, 0, 100);
             $categoryData = $category->getData();
             if (!$categoryData) {
                 $categoryData = [];
