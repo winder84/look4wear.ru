@@ -61,7 +61,7 @@
         {{ include('AppBundle:look4wear:pagination.html.twig', { 'pagination': pagination }) }}
     {% endif %}
     <script>
-        $('.productLink').on('hover', function () {
+        $('.productLink').hover(function () {
             $(this).prop('href', '/goods/buy/' + $(this).data('productAlias'));
         }, function () {
             $(this).prop('href', '#');
