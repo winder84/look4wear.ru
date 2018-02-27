@@ -62,7 +62,7 @@
     {% endif %}
     <script>
         $('.productLink').on('hover', function () {
-            $(this).prop('href', '/goods/buy/' . $(this).data('productAlias'));
+            $(this).prop('href', '/goods/buy/' + $(this).data('productAlias'));
         }, function () {
             $(this).prop('href', '#');
         });
