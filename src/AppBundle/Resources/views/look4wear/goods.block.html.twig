@@ -31,7 +31,7 @@
     <div class="row">
         {% for goodsItem in goods %}
             <div class="col-sm-4 portfolio-item" data-goods-id="{{ goodsItem.attrs.goodsid }}">
-                <a target="_blank" rel="nofollow" href="/goods/buy/{{ goodsItem.attrs.alias }}" class="portfolio-link">
+                <a target="_blank" rel="nofollow" href="#" class="portfolio-link productLink" data-product-alias="{{ goodsItem.attrs.alias }}">
                     <div class="caption">
                         <div class="caption-content">
                             <h3>
@@ -60,4 +60,11 @@
     {% if pagination is defined %}
         {{ include('AppBundle:look4wear:pagination.html.twig', { 'pagination': pagination }) }}
     {% endif %}
+    <script>
+        $('.productLink').on('hover', function () {
+            $(this).prop('href', '/goods/buy/' . $(this).data('productAlias'));
+        }, function () {
+            $(this).prop('href', '#');
+        });
+    </script>
 {% endif %}
