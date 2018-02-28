@@ -3,7 +3,6 @@
 namespace AppBundle\EventListener;
 
 use AppBundle\Entity\Category;
-use AppBundle\Entity\Vendor;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use IAkumaI\SphinxsearchBundle\Search\Sphinxsearch;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -60,7 +59,6 @@ class SitemapSubscriber implements EventSubscriberInterface
         $categories = $this->doctrine->getRepository(Category::class)->findBy([
             'isActive' => true
         ]);
-        $vendors = $this->doctrine->getRepository(Vendor::class)->findAll();
         foreach ($categories as $category) {
             $categoryUrl = self::getParentCategoriesUrl($category) . $category->getAlias();
             $urls->addUrl(
