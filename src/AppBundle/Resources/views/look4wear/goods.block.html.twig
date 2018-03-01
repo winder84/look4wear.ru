@@ -1,4 +1,4 @@
-{% if goods is defined %}
+{% if goods is defined and goods|length > 0 %}
     {% if pageTitle %}
         <div class="titleDiv">
             <h1>{{ pageTitle }}</h1>
