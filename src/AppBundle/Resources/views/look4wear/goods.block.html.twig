@@ -67,4 +67,6 @@
             $(this).prop('href', '#');
         });
     </script>
+{% else %}
+        {{ include('AppBundle:look4wear:goods.not.found.html.tpl') }}
 {% endif %}

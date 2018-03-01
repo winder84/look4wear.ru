@@ -76,6 +76,7 @@ class CategoryAdmin extends AbstractAdmin
                 'placeholder' => 'Нет',
                 'required' => false,
             ))
+            ->add('isActive')
         ;
     }
 

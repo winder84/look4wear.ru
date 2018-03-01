@@ -141,20 +141,22 @@ class DefaultController extends Controller
             $totalCount = $searchGoods['total_found'];
             if (count($actualCategory->getChildrenCategories()) > 0) {
                 foreach ($actualCategory->getChildrenCategories() as $childrenCategory) {
-                    $excludeWords = explode(';', $childrenCategory->getExcludeWords());
-                    $searchString = $childrenCategory->getSearchString();
-                    if (array_filter($excludeWords)) {
-                        $searchString .= ' -' . implode(' -', $excludeWords);
+                    if ($childrenCategory->getIsActive()) {
+                        $excludeWords = explode(';', $childrenCategory->getExcludeWords());
+                        $searchString = $childrenCategory->getSearchString();
+                        if (array_filter($excludeWords)) {
+                            $searchString .= ' -' . implode(' -', $excludeWords);
+                        }
+                        $searchGoods = $this->searchByStringAndLimit($searchString, 10);
+                        if (isset($searchGoods['matches'])) {
+                            $categoryImage = json_decode(end($searchGoods['matches'])['attrs']['pictures'])[0];
+                        }
+                        $childrenCategories[] = [
+                            'category' => $childrenCategory,
+                            'image' => $categoryImage,
+                            'url' => self::getParentCategoriesUrl($childrenCategory) . $childrenCategory->getAlias(),
+                        ];
                     }
-                    $searchGoods = $this->searchByStringAndLimit($searchString, 10);
-                    if (isset($searchGoods['matches'])) {
-                        $categoryImage = json_decode(end($searchGoods['matches'])['attrs']['pictures'])[0];
-                    }
-                    $childrenCategories[] = [
-                        'category' => $childrenCategory,
-                        'image' => $categoryImage,
-                        'url' => self::getParentCategoriesUrl($childrenCategory) . $childrenCategory->getAlias(),
-                    ];
                 }
             }
             $parentsUrl = $this->getParentCategoriesUrl($actualCategory);
@@ -339,6 +341,7 @@ class DefaultController extends Controller
             ->from('AppBundle:Category', 'c')
             ->where('c.parentCategory != 0')
             ->andWhere('REGEXP(c.data, :regexp) = true')
+            ->andWhere('isActive = 1')
             ->setParameter('regexp', '[[:<:]]' . $vendorAlias . '[[:>:]]');
         $categories = $qb->getQuery()->getResult();
         /** @var Category $categoryItem */
