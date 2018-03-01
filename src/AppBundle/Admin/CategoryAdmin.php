@@ -40,7 +40,6 @@ class CategoryAdmin extends AbstractAdmin
             ->add('parentCategory')
             ->add('title')
             ->add('alias')
-            ->add('searchString')
             ->add('isActive')
             ->add('_action', null, array(
                 'actions' => array(
