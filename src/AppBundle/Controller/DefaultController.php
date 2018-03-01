@@ -343,7 +343,7 @@ class DefaultController extends Controller
             ->from('AppBundle:Category', 'c')
             ->where('c.parentCategory != 0')
             ->andWhere('REGEXP(c.data, :regexp) = true')
-            ->andWhere('isActive = 1')
+            ->andWhere('c.isActive = 1')
             ->setParameter('regexp', '[[:<:]]' . $vendorAlias . '[[:>:]]');
         $categories = $qb->getQuery()->getResult();
         /** @var Category $categoryItem */
