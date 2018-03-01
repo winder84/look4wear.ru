@@ -259,6 +259,7 @@ class parseCommand extends ContainerAwareCommand
         $offer->setVersion($version);
         self::$em->persist($offer);
         self::$em->flush();
+        unlink(self::$tmpFilePath);
 
         $this->outputWriteLn('Конец парсинга оффера ' . $offer->getName());
 
