@@ -151,11 +151,13 @@ class DefaultController extends Controller
                         if (isset($searchGoods['matches'])) {
                             $categoryImage = json_decode(end($searchGoods['matches'])['attrs']['pictures'])[0];
                         }
-                        $childrenCategories[] = [
-                            'category' => $childrenCategory,
-                            'image' => $categoryImage,
-                            'url' => self::getParentCategoriesUrl($childrenCategory) . $childrenCategory->getAlias(),
-                        ];
+                        if ($searchGoods['total_found'] > 0) {
+                            $childrenCategories[] = [
+                                'category' => $childrenCategory,
+                                'image' => $categoryImage,
+                                'url' => self::getParentCategoriesUrl($childrenCategory) . $childrenCategory->getAlias(),
+                            ];
+                        }
                     }
                 }
             }
