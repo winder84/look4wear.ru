@@ -7,7 +7,7 @@
     <ul class="paginationUl">
         {% if pagination.currentPage != 1 %}
             <li>
-                <a href="{{ path(pagination.url, { 'page': 1 }) }}">Первая</a>
+                <a href="{{ pagination.url }}page={{ 1 }}">Первая</a>
             </li>
         {% endif %}
         {% for i in 1..pagination.totalPagesCount %}
@@ -19,13 +19,13 @@
             {% elseif 0 > (pagination.currentPage + nearbyPagesLimit) - loop.index %} {# hide all after #}
             {% else %}
                 <li {% if pagination.currentPage == loop.index  %} class="active"{% endif %}>
-                    <a href="{{ path(pagination.url, { 'page': loop.index }) }}">{{ loop.index }}</a>
+                    <a href="{{ pagination.url }}page={{ loop.index }}">{{ loop.index }}</a>
                 </li>
             {% endif %}
         {% endfor %}
         {% if pagination.currentPage != pagination.totalPagesCount %}
             <li>
-                <a href="{{ path(pagination.url, { 'page': pagination.totalPagesCount }) }}">Последняя</a>
+                <a href="{{ pagination.url }}page={{ pagination.totalPagesCount }}">Последняя</a>
             </li>
         {% endif %}
     </ul>
