@@ -10,7 +10,7 @@
                 <a href="{{ pagination.url }}page={{ 1 }}">Первая</a>
             </li>
         {% endif %}
-        {% for i in 1..nearbyPagesLimit %}
+        {% for i in 1..pagination.totalPagesCount %}
             {% if 0 < (pagination.currentPage - nearbyPagesLimit) - loop.index %} {# hide all before #}
             {% elseif 0 > (pagination.currentPage + nearbyPagesLimit) - loop.index %} {# hide all after #}
             {% else %}
