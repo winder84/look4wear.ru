@@ -14,9 +14,15 @@
             {% if 0 < (pagination.currentPage - nearbyPagesLimit) - loop.index %} {# hide all before #}
             {% elseif 0 > (pagination.currentPage + nearbyPagesLimit) - loop.index %} {# hide all after #}
             {% else %}
-                <li {% if pagination.currentPage == loop.index  %} class="currentPage"{% endif %}>
-                    <a href="{{ pagination.url }}page={{ loop.index }}">{{ loop.index }}</a>
-                </li>
+                {% if pagination.currentPage == loop.index  %}
+                    <li class="currentPage">
+                        {{ loop.index }}
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{{ pagination.url }}page={{ loop.index }}">{{ loop.index }}</a>
+                    </li>
+                {% endif %}
             {% endif %}
         {% endfor %}
         {% if pagination.currentPage != pagination.totalPagesCount %}
