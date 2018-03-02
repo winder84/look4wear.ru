@@ -165,7 +165,7 @@ class DefaultController extends Controller
             $actualUrl = $parentsUrl . $actualCategory->getAlias();
             $pagination = [
                 'url' => $actualUrl . '?',
-                'currentPage' => $request->query->getInt('page', 0),
+                'currentPage' => $request->query->getInt('page', 1),
                 'totalPagesCount' => floor($totalCount / self::$resultsOnPage),
             ];
         }
@@ -309,7 +309,7 @@ class DefaultController extends Controller
             $totalCount = $searchGoods['total_found'];
             $pagination = [
                 'url' => '/filter/' . $categoryAlias . '/' . $vendorAlias . '?',
-                'currentPage' => $request->query->getInt('page', 0),
+                'currentPage' => $request->query->getInt('page', 1),
                 'totalPagesCount' => floor($totalCount / self::$resultsOnPage),
             ];
             $categoryTopVendors = $category->getData()['topVendors'];
@@ -391,7 +391,7 @@ class DefaultController extends Controller
         $totalCount = $searchGoods['total_found'];
         $pagination = [
             'url' => '/search' . '?searchString=' . $searchString . '&',
-            'currentPage' => $request->query->getInt('page', 0),
+            'currentPage' => $request->query->getInt('page', 1),
             'totalPagesCount' => floor($totalCount / self::$resultsOnPage),
         ];
 

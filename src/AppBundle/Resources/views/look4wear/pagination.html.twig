@@ -1,17 +1,17 @@
 <ul class="paginationUl">
-    {% if pagination.currentPage - 1 > 0 and pagination.currentPage - 1 <= pagination.totalPagesCount%}
+    {% if pagination.currentPage - 2 >= 0 and pagination.currentPage - 2 <= pagination.totalPagesCount%}
         <li>
             <a href="{{ pagination.url }}page={{ pagination.currentPage - 1 }}"> < </a>
         </li>
     {% endif %}
-    {% if pagination.currentPage - 2 > 0 and pagination.currentPage - 2 <= pagination.totalPagesCount%}
+    {% if pagination.currentPage - 3 >= 0 and pagination.currentPage - 3 <= pagination.totalPagesCount%}
         <li>
-            <a href="{{ pagination.url }}page={{ pagination.currentPage - 2 }}">{{ pagination.currentPage - 2 }}</a>
+            <a href="{{ pagination.url }}page={{ pagination.currentPage - 3 }}">{{ pagination.currentPage - 2 }}</a>
         </li>
     {% endif %}
-    {% if pagination.currentPage - 1 > 0 and pagination.currentPage - 1 <= pagination.totalPagesCount%}
+    {% if pagination.currentPage - 2 >= 0 and pagination.currentPage - 2 <= pagination.totalPagesCount%}
         <li>
-            <a href="{{ pagination.url }}page={{ pagination.currentPage - 1 }}">{{ pagination.currentPage - 1 }}</a>
+            <a href="{{ pagination.url }}page={{ pagination.currentPage - 2 }}">{{ pagination.currentPage - 1 }}</a>
         </li>
     {% endif %}
     {% if pagination.currentPage > 0 and pagination.currentPage <= pagination.totalPagesCount%}
