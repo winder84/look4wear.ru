@@ -1,33 +1,33 @@
 {% spaceless %}
     {% if pagination.totalPagesCount > 1 %}
 
-        {# Number of page around current page+1 #}
-        {% set nearbyPagesLimit = 4 %}
+    {# Number of page around current page+1 #}
+    {% set nearbyPagesLimit = 4 %}
 
-        <ul class="paginationUl">
-            {% if pagination.currentPage != 1 %}
-                <li>
-                    <a href="{{ path(url, { 'page': 1, 'q': query }) }}">Первая</a>
+    <ul class="paginationUl">
+        {% if pagination.currentPage != 1 %}
+            <li>
+                <a href="{{ path(pagination.url, { 'page': 1, 'q': query }) }}">Первая</a>
+            </li>
+        {% endif %}
+        {% for i in 1..pagination.totalPagesCount %}
+            {% if 0 == (pagination.currentPage - nearbyPagesLimit) - loop.index %} {# dot before #}
+                <li class="disabled"><a href="#">...</a></li>
+            {% elseif 0 == (pagination.currentPage + nearbyPagesLimit) - loop.index %} {# dot after #}
+                <li class="disabled"><a href="#">...</a></li>
+            {% elseif 0 < (pagination.currentPage - nearbyPagesLimit) - loop.index %} {# hide all before #}
+            {% elseif 0 > (pagination.currentPage + nearbyPagesLimit) - loop.index %} {# hide all after #}
+            {% else %}
+                <li {% if pagination.currentPage == loop.index  %} class="active"{% endif %}>
+                    <a href="{{ path(pagination.url, { 'page': loop.index, 'q': query }) }}">{{ loop.index }}</a>
                 </li>
             {% endif %}
-            {% for i in 1..pagination.totalPagesCount %}
-                {% if 0 == (pagination.currentPage - nearbyPagesLimit) - loop.index %} {# dot before #}
-                    <li class="disabled"><a href="#">...</a></li>
-                {% elseif 0 == (pagination.currentPage + nearbyPagesLimit) - loop.index %} {# dot after #}
-                    <li class="disabled"><a href="#">...</a></li>
-                {% elseif 0 < (pagination.currentPage - nearbyPagesLimit) - loop.index %} {# hide all before #}
-                {% elseif 0 > (pagination.currentPage + nearbyPagesLimit) - loop.index %} {# hide all after #}
-                {% else %}
-                    <li {% if pagination.currentPage == loop.index  %} class="active"{% endif %}>
-                        <a href="{{ path(url, { 'page': loop.index, 'q': query }) }}">{{ loop.index }}</a>
-                    </li>
-                {% endif %}
-            {% endfor %}
-            {% if pagination.currentPage != pagination.totalPagesCount %}
-                <li>
-                    <a href="{{ path(url, { 'page': pagination.totalPagesCount, 'q': query }) }}">Последняя</a>
-                </li>
-            {% endif %}
-        </ul>
+        {% endfor %}
+        {% if pagination.currentPage != pagination.totalPagesCount %}
+            <li>
+                <a href="{{ path(pagination.url, { 'page': pagination.totalPagesCount, 'q': query }) }}">Последняя</a>
+            </li>
+        {% endif %}
+    </ul>
     {% endif %}
 {% endspaceless %}
