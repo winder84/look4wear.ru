@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Category;
+use AppBundle\Entity\SeoText;
 use AppBundle\Entity\Vendor;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -25,6 +26,11 @@ class DefaultController extends Controller
      * @var string
      */
     protected static $seoTitle = '';
+
+    /**
+     * @var string
+     */
+    protected static $seoDescription = '';
 
     /**
      * @var string
@@ -198,6 +204,7 @@ class DefaultController extends Controller
             'totalCount' => $totalCount,
             'pageTitle' => $actualCategory->getTitle(),
             'seoTitle' => $actualCategory->getSeoTitle(),
+            'seoDescription' => $actualCategory->getDescription() ? $actualCategory->getDescription() : $actualCategory->getSeoTitle(),
             'childrenCategories' => $childrenCategories,
             'pagination' => $pagination,
             'parentsUrl' => $parentsUrl,
@@ -240,6 +247,7 @@ class DefaultController extends Controller
 
         return $this->render('AppBundle:look4wear:catalog.html.twig', [
             'seoTitle' => self::$seoTitle,
+            'seoDescription' => 'Каталог look4wear.ru - отличная и удобная платформа для выбора одежды по Вашему вкусу!',
             'pageTitle' => self::$pageTitle,
             'catalogCategories' => $catalogCategories,
         ]);
@@ -264,6 +272,7 @@ class DefaultController extends Controller
         return $this->render('AppBundle:look4wear:sitemap.html.twig', [
             'seoTitle' => 'Карта сайта look4wear.ru',
             'pageTitle' => self::$pageTitle,
+            'seoDescription' => 'Карта сайта look4wear.ru',
             'parentCategories' => $categories,
         ]);
     }
@@ -298,6 +307,14 @@ class DefaultController extends Controller
             $searchString = $category->getSearchString();
             if ($vendor) {
                 $searchString .= ' and @vendorAlias =' . $vendorAlias;
+                $seoText = self::$em
+                    ->getRepository('AppBundle:SeoText')
+                    ->findOneBy([
+                        'alias' => $categoryAlias . '/' . $vendorAlias
+                    ]);
+                if ($seoText) {
+                    self::$seoDescription = $seoText->getText();
+                }
             }
             if (array_filter($excludeWords)) {
                 $searchString .= ' -' . implode(' -', $excludeWords);
@@ -334,6 +351,9 @@ class DefaultController extends Controller
         if ($category && $vendor) {
             self::$seoTitle = 'Купить со скидкой ' . mb_strtolower($category->getTitle(), 'utf-8') . ' ' . $vendor->getName();
             self::$pageTitle = ucfirst($category->getTitle()) . ' ' . $vendor->getName();
+            if (!self::$seoDescription) {
+                self::$seoDescription = self::$seoTitle;
+            }
             $parentsUrl = $this->getParentCategoriesUrl($category);
         }
 
@@ -372,6 +392,7 @@ class DefaultController extends Controller
             'otherCategories' => $otherCategories,
             'vendorAlias' => $vendorAlias,
             'parentsUrl' => $parentsUrl,
+            'seoDescription' => self::$seoDescription,
         ]);
     }
 
@@ -418,6 +439,8 @@ class DefaultController extends Controller
         return $this->render('AppBundle:look4wear:about.html.twig', [
             'seoTitle' => 'О проекте look4wear.ru',
             'pageTitle' => '',
+            'seoDescription' => 'look4wear.ru – ваш незаменимый помощник в шоппинге! На нашем портале собрана мужская и женская одежда самых известных марок,
+             а также обувь и аксессуары. Модные бренды размещают здесь свои каталоги, чтобы вы могли сделать покупки всего за пару кликов.',
             'childrenCategories' => [],
         ]);
     }
@@ -434,6 +457,7 @@ class DefaultController extends Controller
         return $this->render('AppBundle:look4wear:shipping.html.twig', [
             'seoTitle' => 'Доставка и возврат',
             'pageTitle' => '',
+            'seoDescription' => 'Условия доставки товаров в каталоге look4wear.ru. Возможность возврата товара в магазин.',
             'childrenCategories' => [],
         ]);
     }

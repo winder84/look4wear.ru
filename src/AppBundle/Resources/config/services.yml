@@ -24,6 +24,13 @@ services:
             - { name: sonata.admin, manager_type: orm, group: Контент, label: Категории }
         public: true
 
+    app.admin.seo_text:
+        class: AppBundle\Admin\SeoTextAdmin
+        arguments: [~, AppBundle\Entity\SeoText, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Контент, label: Тексты }
+        public: true
+
     app.sitemap.blog_post_subscriber:
         class: AppBundle\EventListener\SitemapSubscriber
         arguments:

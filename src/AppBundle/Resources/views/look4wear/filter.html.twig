@@ -1,7 +1,12 @@
 {% extends 'AppBundle:look4wear:layout.html.twig' %}
 
 {% block content %}
-    {{ include('AppBundle:look4wear:goods.block.html.twig', { 'goods': goods }) }}
+    <div class="goodsBlock">
+        {{ include('AppBundle:look4wear:goods.block.html.twig', { 'goods': goods }) }}
+    </div>
+    {% if seoDescription %}
+        {{ seoDescription|raw }}
+    {% endif %}
     {% if categoryTopVendorsResult %}
         <div class="titleDiv">
             <h3>Другие бренды этой категории:</h3>

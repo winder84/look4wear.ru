@@ -149,6 +149,10 @@
     margin: 0 20px;
 }
 
+.goodsBlock {
+    margin: 0 0 30px 0;
+}
+
 @media screen and (max-width: 420px) {
     #portfolio .portfolio-item {
         width: 49%;
