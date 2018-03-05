@@ -460,8 +460,8 @@ class DefaultController extends Controller
      */
     private function searchByString($searchString, $page)
     {
-        if ($page == 1) {
-            $page = 0;
+        if ($page > 0) {
+            $page -= 1;
         }
         $sphinxSearch = $this->get('iakumai.sphinxsearch.search');
         $sphinxSearch->setLimits($page * self::$resultsOnPage, self::$resultsOnPage, 100000);
