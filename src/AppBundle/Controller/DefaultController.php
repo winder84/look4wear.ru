@@ -306,7 +306,8 @@ class DefaultController extends Controller
             $excludeWords = explode(';', $category->getExcludeWords());
             $searchString = $category->getSearchString();
             if ($vendor) {
-                $searchString .= ' and @vendorAlias =' . $vendorAlias;
+//                $searchString .= ' and @vendorAlias =' . $vendorAlias;
+                $searchString .= ' ' . $vendorAlias;
                 $seoText = self::$em
                     ->getRepository('AppBundle:SeoText')
                     ->findOneBy([
