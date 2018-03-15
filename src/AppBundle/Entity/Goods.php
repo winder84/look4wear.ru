@@ -124,7 +124,7 @@ class Goods
     /**
      * @var string
      *
-     * @ORM\Column(name="url", type="string", length=255, nullable=true)
+     * @ORM\Column(name="url", type="text", nullable=true)
      */
     private $url;
 
