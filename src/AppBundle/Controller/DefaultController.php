@@ -187,10 +187,15 @@ class DefaultController extends Controller
                         'alias' => $categoryTopVendorAlias
                     ]);
                 if ($categoryTopVendor) {
+                    $imgUrl = '';
+                    if (file_exists($this->get('kernel')->getRootDir() . '/../web/media/brands/' . $categoryTopVendorAlias . '.png')) {
+                        $imgUrl = $categoryTopVendorAlias . '.png';
+                    }
                     $categoryTopVendorsResult[] = [
                         'alias' => $categoryTopVendorAlias,
                         'name' => $categoryTopVendor->getName(),
                         'count' => $categoryTopVendorCount,
+                        'imgUrl' => $imgUrl,
                     ];
                 }
             }
@@ -340,10 +345,15 @@ class DefaultController extends Controller
                             'alias' => $categoryTopVendorAlias
                         ]);
                     if ($categoryTopVendor && $categoryTopVendorAlias != $vendorAlias) {
+                        $imgUrl = '';
+                        if (file_exists($this->get('kernel')->getRootDir() . '/../web/media/brands/' . $categoryTopVendorAlias . '.png')) {
+                            $imgUrl = $categoryTopVendorAlias . '.png';
+                        }
                         $categoryTopVendorsResult[] = [
                             'alias' => $categoryTopVendorAlias,
                             'name' => $categoryTopVendor->getName(),
                             'count' => $categoryTopVendorCount,
+                            'imgUrl' => $imgUrl,
                         ];
                     }
                 }

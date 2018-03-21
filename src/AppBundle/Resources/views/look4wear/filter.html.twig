@@ -8,21 +8,7 @@
         {{ seoDescription|raw }}
     {% endif %}
     {% if categoryTopVendorsResult %}
-        <div class="titleDiv">
-            <h3>Другие бренды этой категории:</h3>
-        </div>
-        {% if categoryTopVendorsResult|length > 0 %}
-            {% for categoryTopVendor in categoryTopVendorsResult %}
-                {% if loop.index <= 15 %}
-                    <a href="/filter/{{ category.alias }}/{{ categoryTopVendor.alias }}"
-                       title="{{ category.title }} {{ categoryTopVendor.name }}. Товаров: {{ categoryTopVendor.count }} шт."
-                       class="categoryTopVendor"
-                    >
-                        {{ categoryTopVendor.name }}
-                    </a>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
+        {{ include('AppBundle:look4wear:top.vendors.block.html.twig', { 'categoryTopVendorsResult': categoryTopVendorsResult, 'title': 'Другие бренды этой категории' }) }}
     {% endif %}
     {% if otherCategories %}
         <div class="titleDiv">

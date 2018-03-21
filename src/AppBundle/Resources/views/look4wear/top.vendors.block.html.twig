@@ -1,0 +1,46 @@
+<div class="titleDiv">
+    <h3>{{ title }}:</h3>
+</div>
+{% if categoryTopVendorsResult|length > 0 %}
+    <div class="wrapper">
+        {% for categoryTopVendor in categoryTopVendorsResult %}
+            {% if loop.index <= 16 %}
+                <div class="item">
+                    <a href="/filter/{{ category.alias }}/{{ categoryTopVendor.alias }}"
+                       title="{{ category.title }} {{ categoryTopVendor.name }}. Товаров: {{ categoryTopVendor.count }} шт."
+                       class="categoryTopVendor">
+                        {% if categoryTopVendor.imgUrl %}
+                            <img src="{{ asset('media/brands/') }}{{ categoryTopVendor.imgUrl }}" alt="">
+                        {% else %}
+                            {{ categoryTopVendor.name }}
+                        {% endif %}
+                    </a>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+<style>
+    .wrapper {
+        display: flex;
+        align-items: center;
+        flex-flow: row wrap;
+        margin-left: -20px;
+        text-align: center;
+    }
+
+    .wrapper .item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 125px;
+        height: 60px;
+        margin-left: 15px;
+        border: 1px solid #ddd;
+        margin-bottom: 15px;
+    }
+
+    .wrapper .item img {
+        max-width: 100%;
+    }
+</style>

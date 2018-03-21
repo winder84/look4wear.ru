@@ -9,26 +9,6 @@
         {{ category.description|raw }}
     {% endif %}
     {% if categoryTopVendorsResult %}
-        <div class="titleDiv">
-            <h3>Популярные бренды этой категории:</h3>
-        </div>
-        {% if categoryTopVendorsResult|length > 0 %}
-            {% for categoryTopVendor in categoryTopVendorsResult %}
-                {% if loop.index <= 15 %}
-                    {#{% if not loop.first %}#}
-                        {#&bull;#}
-                    {#{% endif %}#}
-                    <a href="/filter/{{ category.alias }}/{{ categoryTopVendor.alias }}"
-                       title="{{ category.title }} {{ categoryTopVendor.name }}. Товаров: {{ categoryTopVendor.count }} шт."
-                       class="categoryTopVendor"
-                    >
-                        {{ categoryTopVendor.name }}
-                    </a>
-                    {#{% if loop.index % 5 == 0 %}#}
-                        {#<br />#}
-                    {#{% endif %}#}
-                {% endif %}
-            {% endfor %}
-        {% endif %}
+        {{ include('AppBundle:look4wear:top.vendors.block.html.twig', { 'categoryTopVendorsResult': categoryTopVendorsResult, 'title': 'Популярные бренды этой категории' }) }}
     {% endif %}
 {% endblock %}

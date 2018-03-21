@@ -55,7 +55,10 @@ class getBrandImagesCommand extends ContainerAwareCommand
         self::$output = $output;
         $this->outputWriteLn('Получаем изображения для брендов.');
         $vendorAlias = $input->getArgument('vendorAlias');
-        self::$uploadPath = self::getContainer()->get('kernel')->getRootDir() . '/../web/media';
+        self::$uploadPath = self::getContainer()->get('kernel')->getRootDir() . '/../web/media/brands/';
+        if (!is_dir(self::$uploadPath)) {
+            mkdir(self::$uploadPath);
+        }
         if ($vendorAlias) {
             /** @var Category $category */
             $vendor = self::$em
@@ -81,11 +84,13 @@ class getBrandImagesCommand extends ContainerAwareCommand
     private static function getVendorImage($vendor)
     {
         $kvAlias = str_replace(' ', '-', mb_strtolower($vendor->getName(), 'utf-8'));
-        $kvUrl = 'https://static4..ru/newsletter//brands/' . $kvAlias;
-        try {
-            file_put_contents(self::$uploadPath . $vendor->getAlias() . '.png', file_get_contents($kvUrl . '.png'));
-        } catch (\Exception $e) {
-            echo $e->getMessage() . "\r\n";
+        if (!file_exists(self::$uploadPath . $vendor->getAlias() . '.png')) {
+            $kvUrl = 'https://' . $kvAlias;
+            try {
+                file_put_contents(self::$uploadPath . $vendor->getAlias() . '.png', file_get_contents($kvUrl . '.png'));
+            } catch (\Exception $e) {
+                echo $e->getMessage() . "\r\n";
+            }
         }
     }
 
