@@ -360,7 +360,8 @@ class DefaultController extends Controller
             }
         }
         if ($category && $vendor) {
-            self::$seoTitle = 'Купить со скидкой ' . mb_strtolower($category->getTitle(), 'utf-8') . ' ' . $vendor->getName();
+            self::$seoTitle = $category->getTitle() . ' ' . $vendor->getName() .
+                '. Купить в интернет-магазине по выгодной цене и с доставкой по России.';
             self::$pageTitle = ucfirst($category->getTitle()) . ' ' . $vendor->getName();
             if (!self::$seoDescription) {
                 self::$seoDescription = self::$seoTitle;

@@ -296,6 +296,7 @@ ul li {
 	 Portfolio
 -------------------------------------------------------------------------------*/
 #portfolio .portfolio-item {
+	background: url("../../images/no-image.png") no-repeat;
 	min-height: 300px;
 	right: 0;
 	margin: 15px auto;

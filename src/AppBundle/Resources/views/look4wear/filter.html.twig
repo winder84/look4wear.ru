@@ -18,10 +18,8 @@
             {% for alias, otherCategory in otherCategories %}
                 {% if loop.index <= 15 %}
                     <a href="/filter/{{ alias }}/{{ vendorAlias }}"
-                       title="{{ otherCategory.title }} {{ otherCategory.vendorName }}. Товаров: {{ otherCategory.count }} шт."
-                       class="categoryTopVendor"
-                    >
-                        {{ otherCategory.title }}
+                       title="{{ otherCategory.title }} {{ otherCategory.vendorName }}. Товаров: {{ otherCategory.count }} шт.">
+                        {{ otherCategory.title }} ({{ otherCategory.count }} шт.)
                     </a>
                 {% endif %}
             {% endfor %}

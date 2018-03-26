@@ -50,7 +50,7 @@
                     </div>
                     <div class="goodsListImage">
                         {% if goodsItem.attrs.pictures %}
-                            <img class="img-responsive" src="{{ goodsItem.attrs.pictures| json_decode.0 | my_replace | imagine_filter('my_thumb') }}" alt="..." />
+                            <img class="img-responsive" src="{{ goodsItem.attrs.pictures| json_decode.0 | my_replace | imagine_filter('my_thumb') }}" alt="" />
                         {% endif %}
                     </div>
                 </a>
