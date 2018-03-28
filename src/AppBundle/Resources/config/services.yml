@@ -39,3 +39,11 @@ services:
             - "@iakumai.sphinxsearch.search"
         tags:
             - { name: "kernel.event_subscriber", priority: 100 }
+
+    l4w.info.block:
+        class: AppBundle\Block\Service\L4wInfo
+        arguments:
+            - ~
+            - '@templating'
+        tags:
+            - { name: sonata.block }
