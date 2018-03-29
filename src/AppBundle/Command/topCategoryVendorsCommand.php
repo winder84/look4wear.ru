@@ -150,7 +150,7 @@ class topCategoryVendorsCommand extends ContainerAwareCommand
                 return $k >= 4;
             });
             foreach ($categoryVendors as $categoryVendorName => $categoryVendorCount) {
-                $vendorSearchMatches = $this->searchByString($searchString . ' and @vendorAlias =' . $categoryVendorName . ' -' . implode(' -', $excludeWords), 1);
+                $vendorSearchMatches = $this->searchByString($searchString . ' @vendorAlias =' . $categoryVendorName . ' -' . implode(' -', $excludeWords), 1);
                 if ($vendorSearchMatches['total_found'] == 0) {
                     $categoryEmptyVendors[] = $categoryVendorName;
                 }
