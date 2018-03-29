@@ -91,7 +91,7 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
 
         foreach ($categories as $category) {
             if (count($lessGoodsArray) < 10) {
-                $lessGoodsArray[$category->getId()] = $this->getTopCategoryVendorsCounts($category);
+                $lessGoodsArray[] = $this->getTopCategoryVendorsCounts($category);
             }
         }
 
@@ -99,7 +99,7 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
             'block' => $blockContext->getBlock(),
             'settings' => $blockContext->getSettings(),
             'info' => [
-                'title' => 'Заголовок',
+                'title' => 'Несоответствия в категория+бренд',
                 'lessGoodsArray' => $lessGoodsArray,
             ],
         ], $response);
