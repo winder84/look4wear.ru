@@ -147,7 +147,7 @@ class topCategoryVendorsCommand extends ContainerAwareCommand
             }
             $searchString = $category->getSearchString();
             foreach ($categoryVendors as $categoryVendorName => $categoryVendorCount) {
-                $vendorSearchMatches = $this->searchByString($searchString . ' ' . $categoryVendorName . ' -' . implode(' -', $excludeWords), 1);
+                $vendorSearchMatches = $this->searchByString($searchString . ' and @vendorAlias =' . $categoryVendorName . ' -' . implode(' -', $excludeWords), 1);
                 if ($vendorSearchMatches['total_found'] == 0) {
                     $categoryEmptyVendors[] = $categoryVendorName;
                 }
@@ -163,7 +163,7 @@ class topCategoryVendorsCommand extends ContainerAwareCommand
             $category->setData($categoryData);
             self::$em->persist($category);
             self::$em->flush();
-            $this->outputWriteLn('Категория "' . $category->getName() . '" обработана.');
+            $this->outputWriteLn('Категория "' . $category->getTitle() . '" обработана.');
         }
     }
     /**
