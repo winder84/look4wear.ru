@@ -121,7 +121,7 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
                 $topVendors = $categoryData['topVendors'];
                 foreach ($topVendors as $topVendorName => $topVendorCount) {
                     if (count($lessGoodsVendors) < 10) {
-                        $searchStringWithVendor = $searchString . ' ' . $topVendorName;
+                        $searchStringWithVendor = $searchString . ' and @vendoralias =' . $topVendorName;
                         $searchGoods = $this->searchByStringAndLimit($searchStringWithVendor, 1);
                         $totalCount = $searchGoods['total_found'];
                         if ($totalCount < 4 && $totalCount != $topVendorCount) {

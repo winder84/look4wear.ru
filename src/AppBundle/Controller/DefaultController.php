@@ -172,7 +172,7 @@ class DefaultController extends Controller
             $pagination = [
                 'url' => $actualUrl . '?',
                 'currentPage' => $request->query->getInt('page', 1),
-                'totalPagesCount' => floor($totalCount / self::$resultsOnPage),
+                'totalPagesCount' => ceil($totalCount / self::$resultsOnPage),
             ];
         }
         if (isset($actualCategory->getData()['topVendors'])) {
@@ -333,7 +333,7 @@ class DefaultController extends Controller
             $pagination = [
                 'url' => '/filter/' . $categoryAlias . '/' . $vendorAlias . '?',
                 'currentPage' => $request->query->getInt('page', 1),
-                'totalPagesCount' => floor($totalCount / self::$resultsOnPage),
+                'totalPagesCount' => ceil($totalCount / self::$resultsOnPage),
             ];
             $categoryTopVendors = $category->getData()['topVendors'];
             $categoryTopVendorsResult = [];
@@ -425,7 +425,7 @@ class DefaultController extends Controller
         $pagination = [
             'url' => '/search' . '?searchString=' . $searchString . '&',
             'currentPage' => $request->query->getInt('page', 1),
-            'totalPagesCount' => floor($totalCount / self::$resultsOnPage),
+            'totalPagesCount' => ceil($totalCount / self::$resultsOnPage),
         ];
 
         return $this->render('AppBundle:look4wear:search.html.twig', [
