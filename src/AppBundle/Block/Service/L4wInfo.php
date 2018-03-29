@@ -76,7 +76,6 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
      */
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
-        $lessGoodsArray = [];
         $badCategories = [];
         $repo = self::$em->getRepository('AppBundle:Category');
         $query = $repo
@@ -119,24 +118,23 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
                 $emptyVendors = $categoryData['emptyVendors'];
                 foreach ($emptyVendors as $emptyVendorAlias => $emptyVendorCount) {
                     if (isset($topVendors) && isset($topVendors[$emptyVendorAlias])) {
-                        if (count($lessGoodsVendors) < 10) {
-                            if (($emptyVendorCount / 3 >= $topVendors[$emptyVendorAlias]) || ($topVendors[$emptyVendorAlias] / 3 >= $emptyVendorCount)) {
-                                $lessGoodsVendors[] = [
-                                    'category' => $category,
-                                    'topVendorName' => $emptyVendorAlias,
-                                    'topVendorCount' => $topVendors[$emptyVendorAlias],
-                                    'realCount' => $emptyVendorCount,
-                                ];
-                            }
-                        } else {
-                            return $lessGoodsVendors;
+                        if (($emptyVendorCount / 3 >= $topVendors[$emptyVendorAlias]) || ($topVendors[$emptyVendorAlias] / 3 >= $emptyVendorCount)) {
+                            $lessGoodsVendors[] = [
+                                'category' => $category,
+                                'topVendorName' => $emptyVendorAlias,
+                                'topVendorCount' => $topVendors[$emptyVendorAlias],
+                                'realCount' => $emptyVendorCount,
+                            ];
                         }
                     }
                 }
             }
         }
 
-        return false;
+        return [
+            'category' => $category,
+            'lessGoodsVendorsCount' => count($lessGoodsVendors),
+        ];
     }
 }
 
