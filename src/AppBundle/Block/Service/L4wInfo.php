@@ -86,7 +86,9 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
             ->findAll();
 
         foreach ($categories as $category) {
-            $lessGoodsArray[$category->getId()] = $this->getTopCategoryVendorsCounts($category);
+            if (count($lessGoodsArray) < 10) {
+                $lessGoodsArray[$category->getId()] = $this->getTopCategoryVendorsCounts($category);
+            }
         }
 
         return $this->renderResponse('AppBundle:Block:l4w.info.block.html.twig', [
