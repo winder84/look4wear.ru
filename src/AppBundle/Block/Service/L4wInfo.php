@@ -81,9 +81,13 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
         $lessGoodsArray = [];
-        $categories = self::$em
-            ->getRepository('AppBundle:Category')
-            ->findAll();
+        $repo = self::$em->getRepository('AppBundle:Category');
+        $query = $repo
+            ->createQueryBuilder('c')
+            ->where('c.isActive = 1')
+            ->andWhere('c.parentCategory IS NOT NULL')
+            ->getQuery();
+        $categories = $query->getResult();
 
         foreach ($categories as $category) {
             if (count($lessGoodsArray) < 10) {
