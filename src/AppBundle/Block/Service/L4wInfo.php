@@ -86,7 +86,11 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
         $categories = $query->getResult();
 
         foreach ($categories as $category) {
-            $lessGoodsArray = $this->getTopCategoryVendorsCounts($category);
+            if (count($lessGoodsArray) < 10) {
+                $lessGoodsArray = $this->getTopCategoryVendorsCounts($category);
+            } else {
+                break;
+            }
         }
 
         return $this->renderResponse('AppBundle:Block:l4w.info.block.html.twig', [
@@ -128,6 +132,8 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
                                 'realCount' => $totalCount,
                             ];
                         }
+                    } else {
+                        break;
                     }
                 }
             }
