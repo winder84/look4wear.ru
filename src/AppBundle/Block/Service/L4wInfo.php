@@ -2,7 +2,6 @@
 namespace AppBundle\Block\Service;
 
 use Doctrine\ORM\EntityManager;
-use IAkumaI\SphinxsearchBundle\Search\Sphinxsearch;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Sonata\BlockBundle\Block\Service\BlockServiceInterface;
@@ -18,12 +17,9 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
      */
     protected static $em;
 
-    /**
-     * @var Sphinxsearch
-     */
     protected static $sphinxSearch;
 
-    public function __construct(EntityManager $entityManager, Sphinxsearch $sphinxSearch, $engineInterface )
+    public function __construct(EntityManager $entityManager, $sphinxSearch, $engineInterface )
     {
         parent::__construct(null, $engineInterface);
         self::$em = $entityManager;

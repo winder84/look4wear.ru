@@ -139,7 +139,7 @@ class topCategoryVendorsCommand extends ContainerAwareCommand
                         if (isset($categoryVendors[$vendorAlias])) {
                             $categoryVendors[$vendorAlias] += 1;
                         } else {
-                            $categoryVendors[$vendorAlias] = 0;
+                            $categoryVendors[$vendorAlias] = 1;
                         }
                     }
                 }
