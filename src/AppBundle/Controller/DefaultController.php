@@ -136,10 +136,9 @@ class DefaultController extends Controller
         $pagination = null;
         if ($actualCategory) {
             $excludeWords = explode(';', $actualCategory->getExcludeWords());
+            $excludeWords = array_filter($excludeWords);
             $searchString = $actualCategory->getSearchString();
-            if (array_filter($excludeWords)) {
-                $searchString .= ' -' . implode(' -', $excludeWords);
-            }
+            $searchString .= ' -' . implode(' -', $excludeWords);
             $searchGoods = $this->searchByString($searchString, $request->query->getInt('page', 0));
             if (isset($searchGoods['matches'])) {
                 $matches = $searchGoods['matches'];
@@ -149,10 +148,9 @@ class DefaultController extends Controller
                 foreach ($actualCategory->getChildrenCategories() as $childrenCategory) {
                     if ($childrenCategory->getIsActive()) {
                         $excludeWords = explode(';', $childrenCategory->getExcludeWords());
+                        $excludeWords = array_filter($excludeWords);
                         $searchString = $childrenCategory->getSearchString();
-                        if (array_filter($excludeWords)) {
-                            $searchString .= ' -' . implode(' -', $excludeWords);
-                        }
+                        $searchString .= ' -' . implode(' -', $excludeWords);
                         $searchGoods = $this->searchByStringAndLimit($searchString, 10);
                         if (isset($searchGoods['matches'])) {
                             $categoryImage = json_decode(end($searchGoods['matches'])['attrs']['pictures'])[0];
@@ -235,10 +233,9 @@ class DefaultController extends Controller
             ]);
         foreach ($categories as $category) {
             $excludeWords = explode(';', $category->getExcludeWords());
+            $excludeWords = array_filter($excludeWords);
             $searchString = $category->getSearchString();
-            if (array_filter($excludeWords)) {
-                $searchString .= ' -' . implode(' -', $excludeWords);
-            }
+            $searchString .= ' -' . implode(' -', $excludeWords);
             $searchGoods = $this->searchByStringAndLimit($searchString, 10);
             if (isset($searchGoods['matches'])) {
                 $categoryImage = json_decode(end($searchGoods['matches'])['attrs']['pictures'])[0];
@@ -309,6 +306,7 @@ class DefaultController extends Controller
             ]);
         if ($category) {
             $excludeWords = explode(';', $category->getExcludeWords());
+            $excludeWords = array_filter($excludeWords);
             $searchString = $category->getSearchString();
             if ($vendor) {
 //                $searchString .= ' and @vendorAlias =' . $vendorAlias;
@@ -322,9 +320,7 @@ class DefaultController extends Controller
                     self::$seoDescription = $seoText->getText();
                 }
             }
-            if (array_filter($excludeWords)) {
-                $searchString .= ' -' . implode(' -', $excludeWords);
-            }
+            $searchString .= ' -' . implode(' -', $excludeWords);
             $searchGoods = $this->searchByString($searchString, $request->query->getInt('page', 0));
             if (isset($searchGoods['matches'])) {
                 $matches = $searchGoods['matches'];

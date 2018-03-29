@@ -120,10 +120,9 @@ class topCategoryVendorsCommand extends ContainerAwareCommand
     {
         if ($category) {
             $excludeWords = explode(';', $category->getExcludeWords());
+            $excludeWords = array_filter($excludeWords);
             $searchString = $category->getSearchString();
-            if (array_filter($excludeWords)) {
-                $searchString .= ' -' . implode(' -', $excludeWords);
-            }
+            $searchString .= ' -' . implode(' -', $excludeWords);
             $searchGoods = $this->searchByString($searchString, 1);
             $totalCount = $searchGoods['total_found'];
             $totalCountIndex = 0;
@@ -143,8 +142,13 @@ class topCategoryVendorsCommand extends ContainerAwareCommand
                             $categoryVendors[$vendorAlias] = 1;
                         }
                     }
+                    $excludeWords = explode(';', $category->getExcludeWords());
+                    $excludeWords = array_filter($excludeWords);
+                    $searchString = $category->getSearchString();
                     foreach ($categoryVendors as $categoryVendorName => $categoryVendorCount) {
-                        $vendorSearchMatches = $this->searchByString($searchString . ' ' . $categoryVendorName, 1);
+                        $searchString .= ' ' . $categoryVendorName;
+                        $searchString .= ' -' . implode(' -', $excludeWords);
+                        $vendorSearchMatches = $this->searchByString($searchString, 1);
                         if ($vendorSearchMatches['total_found'] == 0) {
                             $categoryEmptyVendors[] = $categoryVendorName;
                         }
