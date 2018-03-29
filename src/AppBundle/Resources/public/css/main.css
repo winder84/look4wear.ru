@@ -1,225 +1,124 @@
-.content {
-    max-width: 1248px;
-    margin: 0 auto;
+body {
+    margin: 0;
+    padding: 0;
+    background: #f5f9eb;
+    color: #87603F;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.searchForm {
-    max-width: 800px;
+body a {
+    text-decoration: none;
+    color: #87603F;
 }
 
-.searchForm .searchString {
-    min-width: 400px;
-}
-
-.goodsThumbnailBlock {
-    height: 520px;
-}
-
-.searchStringBtn {
-    background-color: #333 !important;
-    background-image: linear-gradient(to bottom, #797979 0%, #151515 100%) !important;
-    z-index: 3 !important;
-}
-
-.searchStringBtn, .searchStringInput {
-    margin: 0 15px;
-}
-
-.goodsListImage {
-    overflow:hidden;
-    height: 333px;
-    width:100%;
-}
-
-.goodsListImage img {
-    width:100%;
-    overflow:hidden;
-    /*-moz-transition: all 0.3s ease-out;*/
-    /*-o-transition: all 0.3s ease-out;*/
-    /*-webkit-transition: all 0.3s ease-out;*/
-}
-
-/*.goodsListImage img:hover{*/
-    /*-webkit-transform: scale(1.1);*/
-    /*-moz-transform: scale(1.1);*/
-    /*-o-transform: scale(1.1);*/
-    /*transform: scale(1.05);*/
-    /*transition-duration: 0.3s;*/
-/*}*/
-
-.oldPrice {
-    font-weight: bold;
-    color: #c5620c;
-    text-decoration: line-through;
-}
-
-.goodsPrice {
-    font-weight: bold;
+body a:hover {
     text-decoration: underline;
 }
 
-.menuUl {
-    margin-top: 13px;
+header {
+    background: #9ca69c;
 }
 
-.menuUl a {
-    line-height: 2;
+header section {
+    width: 80%;
+    margin: 0 auto;
 }
 
-.searchStringInput {
-    border: 1px solid #333 !important;
-}
-
-.hero-content h1 {
-    margin-top: 0;
-    font-size: 2em;
-}
-
-.mainPageCategoryLink {
-    height: 100% !important;
+header aside, header nav, header form {
     display: inline-block;
-    width: 49% !important;
-    float: none !important;
+    vertical-align: middle;
+    width: 32%;
 }
 
-.mainPageCategoryLink a.portfolio-link {
-    max-width: none !important;
-    height: auto !important;
+header nav {
+    text-align: right;
 }
 
-.mainPageCategoryLink .caption {
-    max-width: none !important;
+header form input {
+    height: 19px;
+    width: 70%;
+    padding: 5px 8px;
+    border-radius:4px;
+    -moz-transition: padding .25s;
+    -webkit-transition: padding .25s;
+    -o-transition: padding .25s;
+    transition: padding .25s;
 }
 
-.titleDiv {
-    width: 100%;
+header form input:focus {
+}
+header form button {
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    padding: 5px 20px;
     text-align: center;
+    line-height: 18px;
 }
 
-.titleDiv h1 {
-    font-size: 2em;
-}
-
-.childrenCategoryLink h4 {
-    display: inline-block;
-    font-size: 1.2em;
-    color: rgba(0, 0, 0, 1);
-    letter-spacing: -1px;
-    margin: 10px;
-}
-
-.activeCategoryLink h4 {
-    color: #c5620c;
-}
-
-.goodsListImage {
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-.paginationUl {
-    width: 100%;
-    text-align: center;
-    margin: 20px 0;
-}
-
-.paginationUl li {
-    display: inline-block;
-    font-size: 1.2em;
-    margin: 0 0.2em;
-    color: white;
-}
-
-.paginationUl li a {
-    color: white;
+header form button:hover {
     cursor: pointer;
-    padding: 0.3em 0.6em;
-    background: rgba(58,54,54,.9);
 }
 
-.paginationUl .currentPage {
-    background: #c5620c;
-    padding: 5px 10px;
+.content {
+    width: 80%;
+    margin: 0 auto;
+    padding: 10px 0;
 }
 
-.categoryTopVendor {
-    font-size: 0.9em;
-    margin: 0 5px;
+.breadcrumbs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
-.goodsBlock {
-    margin: 0 0 30px 0;
+.breadcrumbs li {
+    display: inline-block;
 }
+
+/* картинки брендов--> */
+.vendorsWrapper {
+    display: flex;
+    align-items: center;
+    flex-flow: row wrap;
+    margin-left: -20px;
+    margin-right: -5px;
+    text-align: center;
+}
+
+.vendorsWrapper .item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 130px;
+    height: 60px;
+    margin-left: 15px;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+}
+
+.vendorsWrapper .item img {
+    max-width: 100%;
+}
+/* <--картинки брендов */
+
 
 @media screen and (max-width: 420px) {
-    #portfolio .portfolio-item {
-        width: 49%;
-        min-height: 50%;
-        display: inline-block;
-        margin: 0;
-        padding: 0;
-        background-size: 90%;
-        background-position: 50% 40%;
+    .vendorsWrapper {
+        margin-left: -15px;
     }
-
-    #portfolio .portfolio-item .portfolio-link .caption .caption-content h3,
-    #portfolio .portfolio-item .portfolio-link .caption .caption-content h4 {
-        font-size: .45em;
-        margin: 5px 0;
-    }
-
-    .hero-content h1 {
-        font-size: 70%;
+    .vendorsWrapper .item {
+        width: 120px;
     }
 }
 
 @media screen and (max-width: 1024px) {
-    .searchFormLi {
-        float: none !important;
-        margin: 0 auto 20px auto !important;
-        width: 90% !important;
+    header section {
+        width: 95%;
     }
-
-    .hero-content h1 {
-        font-size: 160%;
-    }
-
-    .categoryTopVendor {
-        margin: 0 5px;
-    }
-}
-
-@media screen and (min-width: 768px) {
-    #portfolio .portfolio-item {
-        height: 300px;
-        background-size: 90%;
-        background-position: 50% 40%;
-    }
-    .col-sm-4 {
-        width: 25% !important;
-    }
-}
-
-@media screen and (min-width: 1201px) {
-    #header .logo {
-        float: left;
-        margin: 0 0 0 145px;
-    }
-}
-
-@media screen and (max-width: 768px) {
-
-    #portfolio .portfolio-item .portfolio-link .caption .caption-content h3 {
-        font-size: .4em;
-    }
-    #portfolio .portfolio-item .portfolio-link .caption .caption-content h4 {
-        font-size: .4em;
-    }
-    #portfolio .portfolio-item .portfolio-link .caption .caption-content {
-        margin-top: -25px;
-    }
-
-    .hero-content h1 {
-        font-size: 120%;
+    .content {
+        width: 90%;
     }
 }

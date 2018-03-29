@@ -1,11 +1,8 @@
 {% extends 'AppBundle:look4wear:layout.html.twig' %}
 
 {% block content %}
-    <div class="goodsBlock">
-        {{ include('AppBundle:look4wear:goods.block.html.twig', { 'goods': goods }) }}
-    </div>
+    {{ include('AppBundle:look4wear:goods.block.html.twig', { 'goods': goods }) }}
     {% if category.description %}
-        <div style="clear: both;"></div>
         {{ category.description|raw }}
     {% endif %}
     {% if categoryTopVendorsResult %}

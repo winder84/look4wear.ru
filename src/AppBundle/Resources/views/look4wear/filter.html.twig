@@ -1,9 +1,7 @@
 {% extends 'AppBundle:look4wear:layout.html.twig' %}
 
 {% block content %}
-    <div class="goodsBlock">
-        {{ include('AppBundle:look4wear:goods.block.html.twig', { 'goods': goods }) }}
-    </div>
+    {{ include('AppBundle:look4wear:goods.block.html.twig', { 'goods': goods }) }}
     {% if seoDescription %}
         {{ seoDescription|raw }}
     {% endif %}
@@ -11,9 +9,7 @@
         {{ include('AppBundle:look4wear:top.vendors.block.html.twig', { 'categoryTopVendorsResult': categoryTopVendorsResult, 'title': 'Другие бренды этой категории' }) }}
     {% endif %}
     {% if otherCategories %}
-        <div class="titleDiv">
-            <h3>Другие категории этого бренда:</h3>
-        </div>
+        <h3>Другие категории этого бренда:</h3>
         {% if otherCategories|length > 0 %}
             {% for alias, otherCategory in otherCategories %}
                 {% if loop.index <= 15 %}

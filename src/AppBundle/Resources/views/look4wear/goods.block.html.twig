@@ -1,72 +1,42 @@
 {% if goods is defined and goods|length > 0 %}
     {% if pageTitle %}
-        <div class="titleDiv">
-            <h1>{{ pageTitle }}</h1>
-        </div>
+        <h1>{{ pageTitle }}</h1>
     {% endif %}
     {% if childrenCategories is defined and childrenCategories|length > 0 %}
-        <hr />
-        <div class="row">
-            {% for childrenCategory in childrenCategories %}
-                <div class="col-sm-4 portfolio-item" style="margin: 20px 0;">
-                    <a href="{{ childrenCategory.url }}" class="portfolio-link" title="{{ childrenCategory.category.seoTitle }}">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <h3 style="padding: 10px;">
-                                    {{ childrenCategory.category.name }}
-                                </h3>
-                            </div>
-                        </div>
-                        <div class="goodsListImage">
-                            {% if childrenCategory.image %}
-                                <img class="img-responsive" src="{{ childrenCategory.image | my_replace | imagine_filter('my_thumb') }}" alt="{{ childrenCategory.category.seoTitle }}" />
-                            {% endif %}
-                        </div>
-                    </a>
-                </div>
-            {% endfor %}
-        </div>
-        <hr />
-    {% endif %}
-    <div class="row">
-        {% for goodsItem in goods %}
-            <div class="col-sm-4 portfolio-item" data-goods-id="{{ goodsItem.attrs.goodsid }}">
-                <a target="_blank" rel="nofollow" href="#" class="portfolio-link productLink" data-product-alias="{{ goodsItem.attrs.alias }}">
-                    <div class="caption">
-                        <div class="caption-content">
-                            <h3>
-                                {{ goodsItem.attrs.vendorname }}
-                                <br />
-                                {{ goodsItem.attrs.name|length > 30 ? goodsItem.attrs.name|slice(0, 30) ~ '...' : goodsItem.attrs.name  }}
-                            </h3>
-                            <h4>
-                                Цена:
-                                {% if goodsItem.attrs.oldprice %}
-                                    <span class="oldPrice">{{ goodsItem.attrs.oldprice }} руб</span>
-                                {% endif %}
-                                <span class="goodsPrice">{{ goodsItem.attrs.price }} руб</span>
-                            </h4>
-                        </div>
-                    </div>
-                    <div class="goodsListImage">
-                        {% if goodsItem.attrs.pictures %}
-                            <img class="img-responsive" src="{{ goodsItem.attrs.pictures| json_decode.0 | my_replace | imagine_filter('my_thumb') }}" alt="" />
-                        {% endif %}
-                    </div>
-                </a>
-            </div>
+        {% for childrenCategory in childrenCategories %}
+            <a href="{{ childrenCategory.url }}" class="progressive replace"
+               title="{{ childrenCategory.category.seoTitle }}">
+                <h3>{{ childrenCategory.category.name }}</h3>
+                {% if childrenCategory.image %}
+                    <img class="b-lazy" src="/bundles/app/images/no-image.png"
+                         data-src="{{ childrenCategory.image | my_replace | imagine_filter('my_thumb') }}"
+                         title="{{ childrenCategory.category.seoTitle }}" alt=""/>
+                {% endif %}
+            </a>
         {% endfor %}
-    </div>
+    {% endif %}
+    {% for goodsItem in goods %}
+        <div data-goods-id="{{ goodsItem.attrs.goodsid }}">
+            <a target="_blank" rel="nofollow" href="#" data-product-alias="{{ goodsItem.attrs.alias }}">
+                {{ goodsItem.attrs.vendorname }}
+                <br/>
+                {{ goodsItem.attrs.name|length > 30 ? goodsItem.attrs.name|slice(0, 30) ~ '...' : goodsItem.attrs.name }}
+                Цена:
+                {% if goodsItem.attrs.oldprice %}
+                    {{ goodsItem.attrs.oldprice }} руб
+                {% endif %}
+                {{ goodsItem.attrs.price }} руб
+                {% if goodsItem.attrs.pictures %}
+                    <img class="b-lazy" src="/bundles/app/images/no-image.png"
+                         data-src="{{ goodsItem.attrs.pictures| json_decode.0 | my_replace | imagine_filter('my_thumb') }}"
+                         alt="" onerror="this.style.display='none'"/>
+                {% endif %}
+            </a>
+        </div>
+    {% endfor %}
     {% if pagination is defined %}
         {{ include('AppBundle:look4wear:pagination.html.twig', { 'pagination': pagination }) }}
     {% endif %}
-    <script>
-        $('.productLink').hover(function () {
-            $(this).prop('href', '/goods/buy/' + $(this).data('productAlias'));
-        }, function () {
-            $(this).prop('href', '#');
-        });
-    </script>
 {% else %}
-        {{ include('AppBundle:look4wear:goods.not.found.html.twig') }}
+    {{ include('AppBundle:look4wear:goods.not.found.html.twig') }}
 {% endif %}

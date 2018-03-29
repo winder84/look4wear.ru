@@ -1,25 +1,15 @@
 {% extends 'AppBundle:look4wear:layout.html.twig' %}
 
 {% block content %}
-    <div class="row">
-        <h1>Каталог одежды look4wear.ru</h1>
-        {% for catalogCategory in catalogCategories %}
-            <div class="col-sm-4 portfolio-item" style="margin: 30px 0;">
-                <a href="{{ catalogCategory.url }}" class="portfolio-link">
-                    <div class="caption">
-                        <div class="caption-content">
-                            <h3 style="padding: 10px;">
-                                {{ catalogCategory.category.title }}
-                            </h3>
-                        </div>
-                    </div>
-                    <div class="goodsListImage">
-                        {% if catalogCategory.image %}
-                            <img class="img-responsive" src="{{ catalogCategory.image | my_replace | imagine_filter('my_thumb') }}" alt="..." />
-                        {% endif %}
-                    </div>
-                </a>
-            </div>
-        {% endfor %}
-    </div>
+    <h1>Каталог одежды look4wear.ru</h1>
+    {% for catalogCategory in catalogCategories %}
+        <h3 style="padding: 10px;">
+            {{ catalogCategory.category.title }}
+        </h3>
+        {% if catalogCategory.image %}
+            <a href="{{ catalogCategory.image | my_replace | imagine_filter('my_thumb') }}" class="progressive replace">
+                <img class="preview" src="{{ catalogCategory.image | my_replace | imagine_filter('my_thumb') }}" alt="..." />
+            </a>
+        {% endif %}
+    {% endfor %}
 {% endblock %}
