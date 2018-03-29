@@ -77,6 +77,7 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
     public function execute(BlockContextInterface $blockContext, Response $response = null)
     {
         $lessGoodsArray = [];
+        $badCategories = [];
         $repo = self::$em->getRepository('AppBundle:Category');
         $query = $repo
             ->createQueryBuilder('c')
@@ -86,10 +87,9 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
         $categories = $query->getResult();
 
         foreach ($categories as $category) {
-            if (count($lessGoodsArray) < 10) {
-                $lessGoodsArray += $this->getTopCategoryVendorsCounts($category);
-            } else {
-                break;
+            $lessGoodsArray = $this->getTopCategoryVendorsCounts($category);
+            if ($lessGoodsArray) {
+                $badCategories[$category->getTitle()] = $lessGoodsArray[0];
             }
         }
 
@@ -98,14 +98,14 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
             'settings' => $blockContext->getSettings(),
             'info' => [
                 'title' => 'Несоответствия в категория+бренд',
-                'lessGoodsArray' => $lessGoodsArray,
+                'badCategories' => $badCategories,
             ],
         ], $response);
     }
 
     /**
      * @param $category
-     * @return array
+     * @return array|bool
      */
     public function getTopCategoryVendorsCounts($category)
     {
@@ -119,20 +119,24 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
                 $emptyVendors = $categoryData['emptyVendors'];
                 foreach ($emptyVendors as $emptyVendorAlias => $emptyVendorCount) {
                     if (isset($topVendors) && isset($topVendors[$emptyVendorAlias])) {
-                        if (($emptyVendorCount / 3 >= $topVendors[$emptyVendorAlias]) || ($topVendors[$emptyVendorAlias] / 3 >= $emptyVendorCount)) {
-                            $lessGoodsVendors[] = [
-                                'category' => $category,
-                                'topVendorName' => $emptyVendorAlias,
-                                'topVendorCount' => $topVendors[$emptyVendorAlias],
-                                'realCount' => $emptyVendorCount,
-                            ];
+                        if (count($lessGoodsVendors) < 10) {
+                            if (($emptyVendorCount / 3 >= $topVendors[$emptyVendorAlias]) || ($topVendors[$emptyVendorAlias] / 3 >= $emptyVendorCount)) {
+                                $lessGoodsVendors[] = [
+                                    'category' => $category,
+                                    'topVendorName' => $emptyVendorAlias,
+                                    'topVendorCount' => $topVendors[$emptyVendorAlias],
+                                    'realCount' => $emptyVendorCount,
+                                ];
+                            }
+                        } else {
+                            return $lessGoodsVendors;
                         }
                     }
                 }
             }
         }
 
-        return $lessGoodsVendors;
+        return false;
     }
 }
 

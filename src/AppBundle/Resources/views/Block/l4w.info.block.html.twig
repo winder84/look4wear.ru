@@ -8,23 +8,20 @@
         <div class="box-body">
             <table class="table table-hover">
                 <tbody>
-                    {% if info.lessGoodsArray|length > 0 %}
-                        {% for lessGoods in info.lessGoodsArray %}
+                    {% if info.badCategories|length > 0 %}
+                        {% for categoryName, badCategory in info.badCategories %}
                             <tr>
                                 <td class="sonata-ba-list-label" style="width: 25%;">
-                                    {{ lessGoods.category.title }}
-                                </td>
-                                <td class="sonata-ba-list-label" style="width: 25%;">
-                                    {{ lessGoods.topVendorName }}
+                                    {{ categoryName }}
                                 </td>
                                 <td class="sonata-ba-list-label">
-                                    <a href="https://look4wear.ru/filter/{{ lessGoods.category.alias }}/{{ lessGoods.topVendorName }}" target="_blank">ссылка</a>
+                                    <a href="https://look4wear.ru/filter/{{ badCategory.category.alias }}/{{ badCategory.topVendorName }}" target="_blank">пример</a>
                                 </td>
                                 <td class="sonata-ba-list-label">
-                                    {{ lessGoods.topVendorCount }}
+                                    {{ badCategory.topVendorCount }}
                                 </td>
                                 <td class="sonata-ba-list-label">
-                                    {{ lessGoods.realCount }}
+                                    {{ badCategory.realCount }}
                                 </td>
                             </tr>
                         {% endfor %}
