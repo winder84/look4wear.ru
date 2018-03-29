@@ -117,13 +117,13 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
                     $topVendors = $categoryData['topVendors'];
                 }
                 $emptyVendors = $categoryData['emptyVendors'];
-                foreach ($emptyVendors as $emptyVendor) {
-                    if (isset($topVendors) && isset($topVendors[$emptyVendor])) {
+                foreach ($emptyVendors as $emptyVendorAlias => $emptyVendorCount) {
+                    if (isset($topVendors) && isset($topVendors[$emptyVendorAlias])) {
                         $lessGoodsVendors[] = [
                             'category' => $category,
-                            'topVendorName' => $emptyVendor,
-                            'topVendorCount' => $topVendors[$emptyVendor],
-                            'realCount' => 0,
+                            'topVendorName' => $emptyVendorAlias,
+                            'topVendorCount' => $topVendors[$emptyVendorAlias],
+                            'realCount' => $emptyVendorCount,
                         ];
                     }
                 }
