@@ -146,6 +146,9 @@ class topCategoryVendorsCommand extends ContainerAwareCommand
                 $i++;
             }
             $searchString = $category->getSearchString();
+            $categoryVendors = array_filter($categoryVendors, function($k) {
+                return $k >= 4;
+            });
             foreach ($categoryVendors as $categoryVendorName => $categoryVendorCount) {
                 $vendorSearchMatches = $this->searchByString($searchString . ' and @vendorAlias =' . $categoryVendorName . ' -' . implode(' -', $excludeWords), 1);
                 if ($vendorSearchMatches['total_found'] == 0) {

@@ -39,6 +39,9 @@
         {% endif %}
         <meta name="viewport" content="width=device-width, initial-scale=1">
         {% block counters %}{% endblock %}
+        {% if goods is defined and goods|length == 0 %}
+            <meta name="robots" content="noindex">
+        {% endif %}
     </head>
     <body>
         {% block header %}{% endblock %}
