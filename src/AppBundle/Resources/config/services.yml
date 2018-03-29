@@ -44,5 +44,6 @@ services:
         class: AppBundle\Block\Service\L4wInfo
         arguments:
             - "@doctrine.orm.entity_manager"
+            - "@iakumai.sphinxsearch.search"
         tags:
             - { name: sonata.block }
