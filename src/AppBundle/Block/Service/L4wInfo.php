@@ -23,9 +23,9 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
      */
     protected static $sphinxSearch;
 
-    public function __construct(EntityManager $entityManager, Sphinxsearch $sphinxSearch)
+    public function __construct(EntityManager $entityManager, Sphinxsearch $sphinxSearch, $engineInterface )
     {
-        parent::__construct(null, '@templating');
+        parent::__construct(null, $engineInterface);
         self::$em = $entityManager;
         self::$sphinxSearch = $sphinxSearch;
         self::$em->getConnection()->getConfiguration()->setSQLLogger(null);

@@ -45,5 +45,6 @@ services:
         arguments:
             - "@doctrine.orm.entity_manager"
             - "@iakumai.sphinxsearch.search"
+            - "@templating"
         tags:
             - { name: sonata.block }
