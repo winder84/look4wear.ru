@@ -109,8 +109,8 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
      */
     public function getTopCategoryVendorsCounts($category)
     {
+        $lessGoodsVendors = [];
         if ($category) {
-            $lessGoodsVendors = [];
             $excludeWords = explode(';', $category->getExcludeWords());
             $searchString = $category->getSearchString();
             if (array_filter($excludeWords)) {
@@ -137,9 +137,9 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
                     }
                 }
             }
-            return $lessGoodsVendors;
         }
 
+        return $lessGoodsVendors;
     }
 
     /**
