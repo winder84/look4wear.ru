@@ -107,7 +107,7 @@ class getBrandImagesCommand extends ContainerAwareCommand
         $style = new OutputFormatterStyle('yellow', null, ['bold', 'blink']);
         self::$output->getFormatter()->setStyle('yellow', $style);
         $newTimeDate = new \DateTime();
-        $newTimeDate = $newTimeDate->format(\DateTime::ATOM);
-        self::$output->writeln(self::$delimer . $newTimeDate . ' | <blue>' . $text . '</blue> | Memory usage: <red>' . round(memory_get_usage() / (1024 * 1024)) . ' MB</red>' . self::$delimer);
+        $newTimeDate = $newTimeDate->format('Y-m-d H:i:s');
+        self::$output->writeln(self::$delimer . ' ' . $newTimeDate . ' | <blue>' . $text . '</blue> | Memory usage: <red>' . round(memory_get_usage() / (1024 * 1024)) . ' MB</red>' . self::$delimer);
     }
 }
