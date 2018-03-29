@@ -147,9 +147,7 @@ class topCategoryVendorsCommand extends ContainerAwareCommand
             }
             $searchString = $category->getSearchString();
             foreach ($categoryVendors as $categoryVendorName => $categoryVendorCount) {
-                $searchString .= ' ' . $categoryVendorName;
-                $searchString .= ' -' . implode(' -', $excludeWords);
-                $vendorSearchMatches = $this->searchByString($searchString, 1);
+                $vendorSearchMatches = $this->searchByString($searchString . ' ' . $categoryVendorName . ' -' . implode(' -', $excludeWords), 1);
                 if ($vendorSearchMatches['total_found'] == 0) {
                     $categoryEmptyVendors[] = $categoryVendorName;
                 }
