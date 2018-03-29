@@ -1,0 +1,32 @@
+{% extends sonata_block.templates.block_base %}
+
+{% block block %}
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">{{ info.title }}</h3>
+        </div>
+        <div class="box-body">
+            <table class="table table-hover">
+                <tbody>
+                    {% for lessGoods in info.lessGoodsArray %}
+                        <tr>
+                            <td class="sonata-ba-list-label">
+                                {{ lessGoods.category.name }}
+                            </td>
+                            <td class="sonata-ba-list-label">
+                                {{ lessGoods.topVendorName }}
+                            </td>
+                            <td class="sonata-ba-list-label">
+                                {{ lessGoods.topVendorCount }}
+                            </td>
+                            <td class="sonata-ba-list-label">
+                                {{ lessGoods.realCount }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {{ info.lessGoodsArray }}
+        </div>
+    </div>
+{% endblock %}
