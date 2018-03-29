@@ -142,9 +142,11 @@ class topCategoryVendorsCommand extends ContainerAwareCommand
                         } else {
                             $categoryVendors[$vendorAlias] = 1;
                         }
-                        $vendorSearchMatches = $this->searchByString($searchString . ' ' . $vendorAlias, 1);
+                    }
+                    foreach ($categoryVendors as $categoryVendorName => $categoryVendorCount) {
+                        $vendorSearchMatches = $this->searchByString($searchString . ' ' . $categoryVendorName, 1);
                         if ($vendorSearchMatches['total_found'] == 0) {
-                            $categoryEmptyVendors[] = $vendorAlias;
+                            $categoryEmptyVendors[] = $categoryVendorName;
                         }
                     }
                 }
