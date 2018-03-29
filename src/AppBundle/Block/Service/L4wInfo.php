@@ -97,7 +97,7 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
             'block' => $blockContext->getBlock(),
             'settings' => $blockContext->getSettings(),
             'info' => [
-                'title' => 'Категории с существенным различием товаров.',
+                'title' => 'Категории с существенным различием товаров',
                 'badCategories' => $badCategories,
             ],
         ], $response);
