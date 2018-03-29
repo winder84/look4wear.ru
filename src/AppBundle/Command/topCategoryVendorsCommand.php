@@ -142,19 +142,17 @@ class topCategoryVendorsCommand extends ContainerAwareCommand
                             $categoryVendors[$vendorAlias] = 1;
                         }
                     }
-                    $excludeWords = explode(';', $category->getExcludeWords());
-                    $excludeWords = array_filter($excludeWords);
-                    $searchString = $category->getSearchString();
-                    foreach ($categoryVendors as $categoryVendorName => $categoryVendorCount) {
-                        $searchString .= ' ' . $categoryVendorName;
-                        $searchString .= ' -' . implode(' -', $excludeWords);
-                        $vendorSearchMatches = $this->searchByString($searchString, 1);
-                        if ($vendorSearchMatches['total_found'] == 0) {
-                            $categoryEmptyVendors[] = $categoryVendorName;
-                        }
-                    }
                 }
                 $i++;
+            }
+            $searchString = $category->getSearchString();
+            foreach ($categoryVendors as $categoryVendorName => $categoryVendorCount) {
+                $searchString .= ' ' . $categoryVendorName;
+                $searchString .= ' -' . implode(' -', $excludeWords);
+                $vendorSearchMatches = $this->searchByString($searchString, 1);
+                if ($vendorSearchMatches['total_found'] == 0) {
+                    $categoryEmptyVendors[] = $categoryVendorName;
+                }
             }
             arsort($categoryVendors);
             $categoryVendors = array_slice($categoryVendors, 0, 100);
