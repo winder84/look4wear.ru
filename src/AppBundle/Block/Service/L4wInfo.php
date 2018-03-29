@@ -111,47 +111,26 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
     {
         $lessGoodsVendors = [];
         if ($category) {
-            $excludeWords = explode(';', $category->getExcludeWords());
-            $searchString = $category->getSearchString();
-            if (array_filter($excludeWords)) {
-                $searchString .= ' -' . implode(' -', $excludeWords);
-            }
             $categoryData = $category->getData();
-            if (isset($categoryData['topVendors'])) {
-                $topVendors = $categoryData['topVendors'];
-                foreach ($topVendors as $topVendorName => $topVendorCount) {
-                    if (count($lessGoodsVendors) < 10) {
-                        $searchStringWithVendor = $searchString . ' and @vendoralias =' . $topVendorName;
-                        $searchGoods = $this->searchByStringAndLimit($searchStringWithVendor, 1);
-                        $totalCount = $searchGoods['total_found'];
-                        if ($totalCount != $topVendorCount) {
-                            $lessGoodsVendors[] = [
-                                'category' => $category,
-                                'topVendorName' => $topVendorName,
-                                'topVendorCount' => $topVendorCount,
-                                'realCount' => $totalCount,
-                            ];
-                        }
-                    } else {
-                        break;
+            if (isset($categoryData['emptyVendors'])) {
+                if (isset($categoryData['topVendors'])) {
+                    $topVendors = $categoryData['topVendors'];
+                }
+                $emptyVendors = $categoryData['emptyVendors'];
+                foreach ($emptyVendors as $emptyVendor) {
+                    if (isset($topVendors) && $topVendors[$emptyVendor]) {
+                        $emptyVendor[] = [
+                            'category' => $category,
+                            'topVendorName' => $emptyVendor,
+                            'topVendorCount' => $topVendors[$emptyVendor],
+                            'realCount' => 0,
+                        ];
                     }
                 }
             }
         }
 
         return $lessGoodsVendors;
-    }
-
-    /**
-     * @param $searchString
-     * @param $limit
-     * @return mixed
-     */
-    public function searchByStringAndLimit($searchString, $limit)
-    {
-        self::$sphinxSearch->setLimits(0, $limit, 100000);
-        self::$sphinxSearch->SetMatchMode(SPH_MATCH_EXTENDED);
-        return self::$sphinxSearch->query($searchString);
     }
 }
 

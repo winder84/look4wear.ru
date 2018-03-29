@@ -129,6 +129,7 @@ class topCategoryVendorsCommand extends ContainerAwareCommand
             $totalCountIndex = 0;
             $i = 1;
             $categoryVendors = [];
+            $categoryEmptyVendors = [];
             while ($totalCount > $totalCountIndex) {
                 $totalCountIndex = $i * 10000;
                 $searchGoodsForVendors = $this->searchByString($searchString, 10000);
@@ -141,6 +142,10 @@ class topCategoryVendorsCommand extends ContainerAwareCommand
                         } else {
                             $categoryVendors[$vendorAlias] = 1;
                         }
+                        $vendorSearchMatches = $this->searchByString($searchString . ' ' . $vendorAlias, 1);
+                        if ($vendorSearchMatches['total_found'] == 0) {
+                            $categoryEmptyVendors[] = $vendorAlias;
+                        }
                     }
                 }
                 $i++;
@@ -152,6 +157,7 @@ class topCategoryVendorsCommand extends ContainerAwareCommand
                 $categoryData = [];
             }
             $categoryData['topVendors'] = $categoryVendors;
+            $categoryData['emptyVendors'] = $categoryEmptyVendors;
             $category->setData($categoryData);
             self::$em->persist($category);
             self::$em->flush();
