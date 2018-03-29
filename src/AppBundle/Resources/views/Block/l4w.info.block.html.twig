@@ -8,25 +8,33 @@
         <div class="box-body">
             <table class="table table-hover">
                 <tbody>
-                    {% for lessGoods in info.lessGoodsArray %}
+                    {% if info.lessGoodsArray|length > 0 %}
+                        {% for lessGoods in info.lessGoodsArray %}
+                            <tr>
+                                <td class="sonata-ba-list-label" style="width: 25%;">
+                                    {{ lessGoods.category.title }}
+                                </td>
+                                <td class="sonata-ba-list-label" style="width: 25%;">
+                                    {{ lessGoods.topVendorName }}
+                                </td>
+                                <td class="sonata-ba-list-label">
+                                    <a href="https://look4wear.ru/filter/{{ lessGoods.category.alias }}/{{ lessGoods.topVendorName }}" target="_blank">ссылка</a>
+                                </td>
+                                <td class="sonata-ba-list-label">
+                                    {{ lessGoods.topVendorCount }}
+                                </td>
+                                <td class="sonata-ba-list-label">
+                                    {{ lessGoods.realCount }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
                         <tr>
-                            <td class="sonata-ba-list-label" style="width: 25%;">
-                                {{ lessGoods.category.title }}
-                            </td>
-                            <td class="sonata-ba-list-label" style="width: 25%;">
-                                {{ lessGoods.topVendorName }}
-                            </td>
-                            <td class="sonata-ba-list-label">
-                                <a href="https://look4wear.ru/filter/{{ lessGoods.category.alias }}/{{ lessGoods.topVendorName }}" target="_blank">ссылка</a>
-                            </td>
-                            <td class="sonata-ba-list-label">
-                                {{ lessGoods.topVendorCount }}
-                            </td>
-                            <td class="sonata-ba-list-label">
-                                {{ lessGoods.realCount }}
+                            <td class="sonata-ba-list-label" >
+                                Какая красота! Несоответствий нет!
                             </td>
                         </tr>
-                    {% endfor %}
+                    {% endif %}
                 </tbody>
             </table>
         </div>
