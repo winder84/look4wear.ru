@@ -124,7 +124,7 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
                         $searchStringWithVendor = $searchString . ' and @vendoralias =' . $topVendorName;
                         $searchGoods = $this->searchByStringAndLimit($searchStringWithVendor, 1);
                         $totalCount = $searchGoods['total_found'];
-                        if ($totalCount < 4 && $totalCount != $topVendorCount) {
+                        if ($totalCount != $topVendorCount) {
                             $lessGoodsVendors[] = [
                                 'category' => $category,
                                 'topVendorName' => $topVendorName,
