@@ -90,9 +90,7 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
         $categories = $query->getResult();
 
         foreach ($categories as $category) {
-            if (count($lessGoodsArray) < 10) {
-                $lessGoodsArray[] = $this->getTopCategoryVendorsCounts($category);
-            }
+            $lessGoodsArray = $this->getTopCategoryVendorsCounts($category);
         }
 
         return $this->renderResponse('AppBundle:Block:l4w.info.block.html.twig', [
@@ -122,16 +120,18 @@ class L4wInfo extends AbstractBlockService implements BlockServiceInterface
             if (isset($categoryData['topVendors'])) {
                 $topVendors = $categoryData['topVendors'];
                 foreach ($topVendors as $topVendorName => $topVendorCount) {
-                    $searchString .= ' ' . $topVendorName;
-                    $searchGoods = $this->searchByStringAndLimit($searchString, 1);
-                    $totalCount = $searchGoods['total_found'];
-                    if ($totalCount < 10) {
-                        $lessGoodsVendors = [
-                            'category' => $category,
-                            'topVendorName' => $topVendorName,
-                            'topVendorCount' => $topVendorCount,
-                            'realCount' => $totalCount,
-                        ];
+                    if (count($lessGoodsVendors) < 10) {
+                        $searchString .= ' ' . $topVendorName;
+                        $searchGoods = $this->searchByStringAndLimit($searchString, 1);
+                        $totalCount = $searchGoods['total_found'];
+                        if ($totalCount < 10) {
+                            $lessGoodsVendors[] = [
+                                'category' => $category,
+                                'topVendorName' => $topVendorName,
+                                'topVendorCount' => $topVendorCount,
+                                'realCount' => $totalCount,
+                            ];
+                        }
                     }
                 }
             }
