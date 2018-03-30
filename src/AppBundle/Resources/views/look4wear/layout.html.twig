@@ -23,10 +23,17 @@
                 <a href="/site_map">Карта сайта</a>
             </nav>
         </section>
+        <section class="mainMenu">
+            <nav role="navigation">
+                <a href="/catalog_page">Каталог</a>
+                <a href="/about">О пректе</a>
+                <a href="/site_map">Карта сайта</a>
+            </nav>
+        </section>
     </header>
 {% endblock %}
 {% block body %}
-    <div class="content">
+    <main class="content">
         {% if breadcrumbs is defined %}
             <nav aria-label="breadcrumb" role="navigation">
                 <ul class="breadcrumbs">
@@ -43,7 +50,7 @@
         {% endif %}
         {% block content %}
         {% endblock %}
-    </div>
+    </main>
 {% endblock %}
 {% block footer %}
     <footer class="footer">

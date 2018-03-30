@@ -3,17 +3,21 @@
         <h1>{{ pageTitle }}</h1>
     {% endif %}
     {% if childrenCategories is defined and childrenCategories|length > 0 %}
-        {% for childrenCategory in childrenCategories %}
-            <a href="{{ childrenCategory.url }}" class="progressive replace"
-               title="{{ childrenCategory.category.seoTitle }}">
-                <h3>{{ childrenCategory.category.name }}</h3>
-                {% if childrenCategory.image %}
-                    <img class="b-lazy" src="/bundles/app/images/no-image.png"
-                         data-src="{{ childrenCategory.image | my_replace | imagine_filter('my_thumb') }}"
-                         title="{{ childrenCategory.category.seoTitle }}" alt=""/>
-                {% endif %}
-            </a>
-        {% endfor %}
+        <section class="childrenCategories">
+            {% for childrenCategory in childrenCategories %}
+                <h2>{{ childrenCategory.category.name }}</h2>
+                <div class="item">
+                    <a href="{{ childrenCategory.url }}" class="progressive replace"
+                       title="{{ childrenCategory.category.seoTitle }}">
+                        {% if childrenCategory.image %}
+                            <img class="b-lazy" src="/bundles/app/images/no-image.png"
+                                 data-src="{{ childrenCategory.image | my_replace | imagine_filter('my_thumb') }}"
+                                 title="{{ childrenCategory.category.seoTitle }}" alt=""/>
+                        {% endif %}
+                    </a>
+                </div>
+            {% endfor %}
+        </section>
     {% endif %}
     {% for goodsItem in goods %}
         <div data-goods-id="{{ goodsItem.attrs.goodsid }}">

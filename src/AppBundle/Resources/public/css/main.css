@@ -27,11 +27,15 @@ header section {
 header aside, header nav, header form {
     display: inline-block;
     vertical-align: middle;
-    width: 32%;
+    width: 33%;
 }
 
 header nav {
     text-align: right;
+}
+
+header nav a {
+    margin: 0 .5rem;
 }
 
 header form input {
@@ -62,6 +66,22 @@ header form button:hover {
     cursor: pointer;
 }
 
+.mainMenu {
+    width: 100%;
+}
+
+.mainMenu nav {
+    width: 100%;
+    text-align: center;
+    line-height: 3rem;
+    background: #595D5D;
+}
+
+.mainMenu nav a {
+    color: #e2e3e0;
+    margin: 0 .7rem;
+}
+
 .content {
     width: 80%;
     margin: 0 auto;
@@ -79,7 +99,7 @@ header form button:hover {
 }
 
 /* картинки брендов--> */
-.vendorsWrapper {
+.vendorsWrapper, .childrenCategories {
     display: flex;
     align-items: center;
     flex-flow: row wrap;
@@ -99,7 +119,16 @@ header form button:hover {
     margin-bottom: 15px;
 }
 
-.vendorsWrapper .item img {
+.childrenCategories .item {
+    display: flex;
+    max-height: 200px;
+    width: 10%;
+    margin-left: 15px;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+}
+
+.vendorsWrapper .item img, .childrenCategories .item img {
     max-width: 100%;
 }
 /* <--картинки брендов */
