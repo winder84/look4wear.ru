@@ -12,8 +12,9 @@ body a {
 }
 
 body h1 {
-    font-size: 1.7rem;
+    font-size: 1.5rem;
     text-align: center;
+    font-weight: normal;
 }
 
 body a:hover {
@@ -107,19 +108,34 @@ header form button:hover {
     width: 100%;
 }
 
-/* картинки брендов--> */
 .vendorsWrapper {
     display: flex;
     align-items: center;
     flex-flow: row wrap;
-    margin-left: -20px;
+    margin-left: -15px;
     margin-right: -5px;
     text-align: center;
 }
+
+.otherCategoriesWrapper {
+    display: flex;
+    align-items: center;
+    flex-flow: row wrap;
+    margin-left: -15px;
+    margin-right: -5px;
+    text-align: center;
+}
+
 .childrenCategories {
     flex-flow: row wrap;
-    margin-left: -20px;
+    margin-left: -15px;
     margin-right: -5px;
+    text-align: center;
+}
+
+.goodsSection {
+    flex-flow: row wrap;
+    margin: 0 -5px 20px -1px;
     text-align: center;
 }
 
@@ -127,10 +143,23 @@ header form button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 130px;
+    width: 133px;
     height: 60px;
     margin-left: 15px;
     border: 1px solid #ddd;
+}
+
+.otherCategoriesWrapper .item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 227px;
+    height: 60px;
+    margin: 0 0 0 15px;
+    border: 1px solid #ddd;
+    padding: 0 0.2rem;
+    font-size: 1rem;
+    font-weight: normal;
 }
 
 .childrenCategories .item {
@@ -139,18 +168,82 @@ header form button:hover {
     margin-left: 15px;
     border: 1px solid #ddd;
     margin-bottom: 15px;
+    vertical-align: top;
+    height: 270px;
+}
+
+.goodsSection .item {
+    display: inline-block;
+    width: 24.6%;
+    margin: 0 0 12px 0;
+    border: 1px solid #999;
+    vertical-align: top;
+    max-height: 350px;;
+    overflow: hidden;
 }
 
 .childrenCategories .item h2 {
-    font-size: 1rem;
+    font-size: 0.85rem;
     text-align: center;
 }
 
-.vendorsWrapper .item img, .childrenCategories .item img {
+.vendorsWrapper .item img, .childrenCategories .item img, .goodsSection img {
     max-width: 100%;
 }
-/* <--картинки брендов */
 
+.goodsSection img {
+}
+
+.goodsImg {
+    height: 290px;
+    overflow: hidden;
+}
+
+.goodsDescr {
+    width: 100%;
+}
+
+.goodsPrice {
+    color: #336C5A;
+    font-weight: bold;
+}
+
+.paginationUl {
+    list-style: none;
+    margin: 0 auto;
+    width: 40%;
+    padding: 0;
+
+}
+
+.paginationUl li {
+    display: inline-block;
+    margin: 0 10px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #336C5A;
+}
+
+.paginationUl li a {
+    font-weight: normal;
+    color: #336C5A;
+}
+
+.titleDiv h3 {
+    text-align: center;
+    width: 100%;
+    font-size: 1.2rem;
+    font-weight: normal;
+    margin: 1rem 0 0.2rem 0;
+}
+
+.descriptionDiv {
+    padding: 0 10%;
+}
+
+footer {
+    background: #9ca69c;
+}
 
 @media screen and (max-width: 420px) {
     .vendorsWrapper {

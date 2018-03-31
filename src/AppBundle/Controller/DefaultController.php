@@ -363,6 +363,9 @@ class DefaultController extends Controller
                 self::$seoDescription = self::$seoTitle;
             }
             $parentsUrl = $this->getParentCategoriesUrl($category);
+            $breadcrumbs = $this->getBreadcrumbs($category, $vendor);
+        } else {
+            $breadcrumbs = $this->getBreadcrumbs($category);
         }
 
         $otherCategories = [];
@@ -390,6 +393,7 @@ class DefaultController extends Controller
         $otherCategories = array_slice($otherCategories, 0, 20);
 
         return $this->render('AppBundle:look4wear:filter.html.twig', [
+            'breadcrumbs' => $breadcrumbs,
             'goods' => $matches,
             'totalCount' => $totalCount,
             'seoTitle' => self::$seoTitle,
@@ -516,11 +520,16 @@ class DefaultController extends Controller
 
     /**
      * @param Category $category
+     * @param Vendor $vendor
      * @return array
      */
-    private function getBreadcrumbs(Category $category)
+    private function getBreadcrumbs(Category $category, Vendor $vendor = null)
     {
-        $breadcrumbs[] = ['link' => $this->getParentCategoriesUrl($category) . $category->getAlias(), 'title' => $category->getName()];
+        if ($vendor) {
+            $breadcrumbs[] = ['link' => '/filter/' . $category->getAlias() . '/' . $vendor->getAlias(), 'title' => $category->getTitle() . ' "' . $vendor->getName() . '"'];
+        } else {
+            $breadcrumbs[] = ['link' => $this->getParentCategoriesUrl($category) . $category->getAlias(), 'title' => $category->getName()];
+        }
         $parentCategory = $category->getParentCategory();
         while ($parentCategory) {
             $breadcrumbs[] = ['link' => $this->getParentCategoriesUrl($parentCategory) . $parentCategory->getAlias(), 'title' => $parentCategory->getName()];

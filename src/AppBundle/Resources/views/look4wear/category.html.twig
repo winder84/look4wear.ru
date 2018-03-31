@@ -3,7 +3,9 @@
 {% block content %}
     {{ include('AppBundle:look4wear:goods.block.html.twig', { 'goods': goods }) }}
     {% if category.description %}
-        {{ category.description|raw }}
+        <div class="descriptionDiv">
+            {{ category.description|raw }}
+        </div>
     {% endif %}
     {% if categoryTopVendorsResult %}
         {{ include('AppBundle:look4wear:top.vendors.block.html.twig', { 'categoryTopVendorsResult': categoryTopVendorsResult, 'title': 'Популярные бренды этой категории' }) }}

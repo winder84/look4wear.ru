@@ -18,26 +18,32 @@
                 </div>
             {% endfor %}
         </section>
+        <hr />
     {% endif %}
 
     {% if goods is defined and goods|length > 0 %}
         <section class="goodsSection">
             {% for goodsItem in goods %}
-                <div data-goods-id="{{ goodsItem.attrs.goodsid }}">
+                <div class="item" data-goods-id="{{ goodsItem.attrs.goodsid }}">
                     <a target="_blank" rel="nofollow" href="#" data-product-alias="{{ goodsItem.attrs.alias }}">
-                        {{ goodsItem.attrs.vendorname }}
-                        <br/>
-                        {{ goodsItem.attrs.name|length > 30 ? goodsItem.attrs.name|slice(0, 30) ~ '...' : goodsItem.attrs.name }}
-                        Цена:
-                        {% if goodsItem.attrs.oldprice %}
-                            {{ goodsItem.attrs.oldprice }} руб
-                        {% endif %}
-                        {{ goodsItem.attrs.price }} руб
                         {% if goodsItem.attrs.pictures %}
-                            <img class="b-lazy" src="/bundles/app/images/no-image.png"
-                                 data-src="{{ goodsItem.attrs.pictures| json_decode.0 | my_replace | imagine_filter('my_thumb') }}"
-                                 alt="" onerror="this.style.display='none'"/>
+                            <div class="goodsImg">
+                                <img class="b-lazy" src="/bundles/app/images/no-image.png"
+                                     data-src="{{ goodsItem.attrs.pictures| json_decode.0 | my_replace | imagine_filter('my_thumb') }}"
+                                     alt="" onerror="this.style.display='none'"/>
+                            </div>
                         {% endif %}
+                        <div class="goodsDescr">
+                            {{ goodsItem.attrs.vendorname }}
+                            <br/>
+                            {{ goodsItem.attrs.name|length > 30 ? goodsItem.attrs.name|slice(0, 30) ~ '...' : goodsItem.attrs.name }}
+                            <br/>
+                            Цена:
+                            {#{% if goodsItem.attrs.oldprice %}#}
+                                {#{{ goodsItem.attrs.oldprice }} руб#}
+                            {#{% endif %}#}
+                            <span class="goodsPrice">{{ goodsItem.attrs.price }} руб</span>
+                        </div>
                     </a>
                 </div>
             {% endfor %}
