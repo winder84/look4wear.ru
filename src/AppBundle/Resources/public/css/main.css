@@ -11,6 +11,11 @@ body a {
     color: #87603F;
 }
 
+body h1 {
+    font-size: 1.7rem;
+    text-align: center;
+}
+
 body a:hover {
     text-decoration: underline;
 }
@@ -98,10 +103,20 @@ header form button:hover {
     display: inline-block;
 }
 
+.goodsSection {
+    width: 100%;
+}
+
 /* картинки брендов--> */
-.vendorsWrapper, .childrenCategories {
+.vendorsWrapper {
     display: flex;
     align-items: center;
+    flex-flow: row wrap;
+    margin-left: -20px;
+    margin-right: -5px;
+    text-align: center;
+}
+.childrenCategories {
     flex-flow: row wrap;
     margin-left: -20px;
     margin-right: -5px;
@@ -116,16 +131,19 @@ header form button:hover {
     height: 60px;
     margin-left: 15px;
     border: 1px solid #ddd;
-    margin-bottom: 15px;
 }
 
 .childrenCategories .item {
-    display: flex;
-    max-height: 200px;
+    display: inline-block;
     width: 10%;
     margin-left: 15px;
     border: 1px solid #ddd;
     margin-bottom: 15px;
+}
+
+.childrenCategories .item h2 {
+    font-size: 1rem;
+    text-align: center;
 }
 
 .vendorsWrapper .item img, .childrenCategories .item img {

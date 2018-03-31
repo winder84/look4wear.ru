@@ -5,7 +5,6 @@
     {% if childrenCategories is defined and childrenCategories|length > 0 %}
         <section class="childrenCategories">
             {% for childrenCategory in childrenCategories %}
-                <h2>{{ childrenCategory.category.name }}</h2>
                 <div class="item">
                     <a href="{{ childrenCategory.url }}" class="progressive replace"
                        title="{{ childrenCategory.category.seoTitle }}">
@@ -14,32 +13,38 @@
                                  data-src="{{ childrenCategory.image | my_replace | imagine_filter('my_thumb') }}"
                                  title="{{ childrenCategory.category.seoTitle }}" alt=""/>
                         {% endif %}
+                        <h2>{{ childrenCategory.category.name }}</h2>
                     </a>
                 </div>
             {% endfor %}
         </section>
     {% endif %}
-    {% for goodsItem in goods %}
-        <div data-goods-id="{{ goodsItem.attrs.goodsid }}">
-            <a target="_blank" rel="nofollow" href="#" data-product-alias="{{ goodsItem.attrs.alias }}">
-                {{ goodsItem.attrs.vendorname }}
-                <br/>
-                {{ goodsItem.attrs.name|length > 30 ? goodsItem.attrs.name|slice(0, 30) ~ '...' : goodsItem.attrs.name }}
-                Цена:
-                {% if goodsItem.attrs.oldprice %}
-                    {{ goodsItem.attrs.oldprice }} руб
-                {% endif %}
-                {{ goodsItem.attrs.price }} руб
-                {% if goodsItem.attrs.pictures %}
-                    <img class="b-lazy" src="/bundles/app/images/no-image.png"
-                         data-src="{{ goodsItem.attrs.pictures| json_decode.0 | my_replace | imagine_filter('my_thumb') }}"
-                         alt="" onerror="this.style.display='none'"/>
-                {% endif %}
-            </a>
-        </div>
-    {% endfor %}
-    {% if pagination is defined %}
-        {{ include('AppBundle:look4wear:pagination.html.twig', { 'pagination': pagination }) }}
+
+    {% if goods is defined and goods|length > 0 %}
+        <section class="goodsSection">
+            {% for goodsItem in goods %}
+                <div data-goods-id="{{ goodsItem.attrs.goodsid }}">
+                    <a target="_blank" rel="nofollow" href="#" data-product-alias="{{ goodsItem.attrs.alias }}">
+                        {{ goodsItem.attrs.vendorname }}
+                        <br/>
+                        {{ goodsItem.attrs.name|length > 30 ? goodsItem.attrs.name|slice(0, 30) ~ '...' : goodsItem.attrs.name }}
+                        Цена:
+                        {% if goodsItem.attrs.oldprice %}
+                            {{ goodsItem.attrs.oldprice }} руб
+                        {% endif %}
+                        {{ goodsItem.attrs.price }} руб
+                        {% if goodsItem.attrs.pictures %}
+                            <img class="b-lazy" src="/bundles/app/images/no-image.png"
+                                 data-src="{{ goodsItem.attrs.pictures| json_decode.0 | my_replace | imagine_filter('my_thumb') }}"
+                                 alt="" onerror="this.style.display='none'"/>
+                        {% endif %}
+                    </a>
+                </div>
+            {% endfor %}
+            {% if pagination is defined %}
+                {{ include('AppBundle:look4wear:pagination.html.twig', { 'pagination': pagination }) }}
+            {% endif %}
+        </section>
     {% endif %}
 {% else %}
     {{ include('AppBundle:look4wear:goods.not.found.html.twig') }}
