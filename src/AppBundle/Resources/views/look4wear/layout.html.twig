@@ -23,13 +23,15 @@
                 <a href="/site_map">Карта сайта</a>
             </nav>
         </section>
-        <section class="mainMenu">
-            <nav role="navigation">
-                <a href="/catalog_page">Каталог</a>
-                <a href="/about">О пректе</a>
-                <a href="/site_map">Карта сайта</a>
-            </nav>
-        </section>
+        {% if mainMenuCategories %}
+            <section class="mainMenu">
+                <nav role="navigation">
+                    {% for mainMenuCategory in mainMenuCategories %}
+                        <a href="{{ mainMenuCategory.link }}">{{ mainMenuCategory.title }}</a>
+                    {% endfor %}
+                </nav>
+            </section>
+        {% endif %}
     </header>
 {% endblock %}
 {% block body %}
@@ -53,19 +55,24 @@
     </main>
 {% endblock %}
 {% block footer %}
+    <div class="greenLine"></div>
     <footer>
-        <h4>Выбирайте одежду в нашем каталоге:</h4>
-        <ul style="margin: 5px 0 10px 0; padding: 0;">
-            <li><a href="/catalog/dlya_mujchin">Мужская одежда</a></li>
-            <li><a href="/catalog/dlya_jenshin">Женская одежда</a></li>
-            <li><a href="/catalog/dlya_malchikov">Одежда для мальчиков</a></li>
-            <li><a href="/catalog/dlya_devochek">Одежда для девочек</a></li>
-        </ul>
-        <h4>Полезные ссылки:</h4>
-        <ul style="margin: 5px 0 10px 0; padding: 0;">
-            <li><a href="/site_map">Карта сайта</a></li>
-            <li><a href="/about">О проекте</a></li>
-            <li><a href="/shipping">Доставка и возврат</a></li>
-        </ul>
+        <div class="footerItem">
+            <h4>Выбирайте одежду в нашем каталоге:</h4>
+            <ul>
+                <li><a href="/catalog/dlya_mujchin">Мужская одежда</a></li>
+                <li><a href="/catalog/dlya_jenshin">Женская одежда</a></li>
+                <li><a href="/catalog/dlya_malchikov">Одежда для мальчиков</a></li>
+                <li><a href="/catalog/dlya_devochek">Одежда для девочек</a></li>
+            </ul>
+        </div>
+        <div class="footerItem">
+            <h4>Полезные ссылки:</h4>
+            <ul>
+                <li><a href="/site_map">Карта сайта</a></li>
+                <li><a href="/about">О проекте</a></li>
+                <li><a href="/shipping">Доставка и возврат</a></li>
+            </ul>
+        </div>
     </footer>
 {% endblock %}

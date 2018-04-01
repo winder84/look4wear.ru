@@ -48,7 +48,7 @@ header form input {
     height: 19px;
     width: 70%;
     padding: 5px 8px;
-    border-radius:4px;
+    border-radius: 4px;
     -moz-transition: padding .25s;
     -webkit-transition: padding .25s;
     -o-transition: padding .25s;
@@ -57,6 +57,7 @@ header form input {
 
 header form input:focus {
 }
+
 header form button {
     border-radius: 3px;
     -webkit-border-radius: 3px;
@@ -241,14 +242,75 @@ header form button:hover {
     padding: 0 10%;
 }
 
+.greenLine {
+    width: 100%;
+    height: 20px;
+    background: #595D5D;
+    margin: 10px 0 0 0;
+}
+
 footer {
     background: #9ca69c;
+    padding: 1rem 10%;
+}
+
+footer h4 {
+    margin: 0 0 10px 0;
+}
+
+footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.footerItem {
+    width: 33%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.indexSection p {
+    width: 80%;
+    margin: 10px auto;
+}
+
+.categoryBox {
+    width: 49%;
+    display: inline-block;
+    vertical-align: top;
+    overflow: hidden;
+    margin: 0 0 20px 0;
+    border: 1px solid #999;
+    text-align: center;
+}
+
+.categoryBox h2 {
+    margin: 5px 0 0 0;
+    padding: 0;
+    font-size: 1.4rem;
+    font-weight: normal;
+}
+
+.categoryBox img {
+    width: 100%;
+}
+
+.categoryBoxDesrcr {
+    width: 100%;
+    background: #f5f9eb;
+}
+
+.categoryBoxImg {
+    height: 400px;
+    overflow: hidden;
 }
 
 @media screen and (max-width: 420px) {
     .vendorsWrapper {
         margin-left: -15px;
     }
+
     .vendorsWrapper .item {
         width: 120px;
     }
@@ -258,6 +320,7 @@ footer {
     header section {
         width: 95%;
     }
+
     .content {
         width: 90%;
     }

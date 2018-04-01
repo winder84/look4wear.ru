@@ -38,13 +38,20 @@ class DefaultController extends Controller
     protected static $pageTitle = '';
 
     /**
+     * @var array
+     */
+    protected static $mainMenuCategories = [];
+
+    /**
      * @Route("/", name="homepage",
      *      options={"sitemap" = true})
      */
     public function indexAction(Request $request)
     {
+        $this->getMainMenuCategories();
         return $this->render('AppBundle:look4wear:index.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir') . '/..') . DIRECTORY_SEPARATOR,
+            'mainMenuCategories' => self::$mainMenuCategories,
         ));
     }
 
@@ -98,9 +105,11 @@ class DefaultController extends Controller
             $totalCount = count($goods);
         }
 
+        $this->getMainMenuCategories();
         return $this->render('AppBundle:look4wear:vendor.html.twig', [
             'goods' => $goods,
             'totalCount' => $totalCount,
+            'mainMenuCategories' => self::$mainMenuCategories,
         ]);
     }
 
@@ -199,6 +208,7 @@ class DefaultController extends Controller
             }
         }
 
+        $this->getMainMenuCategories();
         return $this->render('AppBundle:look4wear:category.html.twig', [
             'breadcrumbs' => $this->getBreadcrumbs($actualCategory),
             'category' => $actualCategory,
@@ -212,6 +222,7 @@ class DefaultController extends Controller
             'pagination' => $pagination,
             'parentsUrl' => $parentsUrl,
             'actualUrl' => $actualUrl,
+            'mainMenuCategories' => self::$mainMenuCategories,
         ]);
     }
 
@@ -247,11 +258,13 @@ class DefaultController extends Controller
             ];
         }
 
+        $this->getMainMenuCategories();
         return $this->render('AppBundle:look4wear:catalog.html.twig', [
             'seoTitle' => self::$seoTitle,
             'seoDescription' => 'Каталог look4wear.ru - отличная и удобная платформа для выбора одежды по Вашему вкусу!',
             'pageTitle' => self::$pageTitle,
             'catalogCategories' => $catalogCategories,
+            'mainMenuCategories' => self::$mainMenuCategories,
         ]);
     }
 
@@ -271,11 +284,13 @@ class DefaultController extends Controller
                 'parentCategory' => null,
             ]);
 
+        $this->getMainMenuCategories();
         return $this->render('AppBundle:look4wear:sitemap.html.twig', [
             'seoTitle' => 'Карта сайта look4wear.ru',
             'pageTitle' => self::$pageTitle,
             'seoDescription' => 'Карта сайта look4wear.ru',
             'parentCategories' => $categories,
+            'mainMenuCategories' => self::$mainMenuCategories,
         ]);
     }
 
@@ -392,6 +407,7 @@ class DefaultController extends Controller
         arsort($otherCategories);
         $otherCategories = array_slice($otherCategories, 0, 20);
 
+        $this->getMainMenuCategories();
         return $this->render('AppBundle:look4wear:filter.html.twig', [
             'breadcrumbs' => $breadcrumbs,
             'goods' => $matches,
@@ -405,6 +421,7 @@ class DefaultController extends Controller
             'vendorAlias' => $vendorAlias,
             'parentsUrl' => $parentsUrl,
             'seoDescription' => self::$seoDescription,
+            'mainMenuCategories' => self::$mainMenuCategories,
         ]);
     }
 
@@ -428,6 +445,7 @@ class DefaultController extends Controller
             'totalPagesCount' => ceil($totalCount / self::$resultsOnPage),
         ];
 
+        $this->getMainMenuCategories();
         return $this->render('AppBundle:look4wear:search.html.twig', [
             'goods' => $matches,
             'seoTitle' => '',
@@ -436,6 +454,7 @@ class DefaultController extends Controller
             'totalCount' => $totalCount,
             'searchString' => $searchString,
             'pagination' => $pagination,
+            'mainMenuCategories' => self::$mainMenuCategories,
         ]);
     }
 
@@ -448,12 +467,14 @@ class DefaultController extends Controller
     public function aboutAction(Request $request)
     {
 
+        $this->getMainMenuCategories();
         return $this->render('AppBundle:look4wear:about.html.twig', [
             'seoTitle' => 'О проекте look4wear.ru',
             'pageTitle' => '',
             'seoDescription' => 'look4wear.ru – ваш незаменимый помощник в шоппинге! На нашем портале собрана мужская и женская одежда самых известных марок,
              а также обувь и аксессуары. Модные бренды размещают здесь свои каталоги, чтобы вы могли сделать покупки всего за пару кликов.',
             'childrenCategories' => [],
+            'mainMenuCategories' => self::$mainMenuCategories,
         ]);
     }
 
@@ -466,11 +487,13 @@ class DefaultController extends Controller
     public function shippingAction(Request $request)
     {
 
+        $this->getMainMenuCategories();
         return $this->render('AppBundle:look4wear:shipping.html.twig', [
             'seoTitle' => 'Доставка и возврат',
             'pageTitle' => '',
             'seoDescription' => 'Условия доставки товаров в каталоге look4wear.ru. Возможность возврата товара в магазин.',
             'childrenCategories' => [],
+            'mainMenuCategories' => self::$mainMenuCategories,
         ]);
     }
 
@@ -560,5 +583,22 @@ class DefaultController extends Controller
         }
 
         return $parentsUrl;
+    }
+
+    private function getMainMenuCategories()
+    {
+        self::$em = $this->getDoctrine()->getManager();
+        $mainMenuCategories = self::$em
+            ->getRepository('AppBundle:Category')
+            ->findBy([
+                'isActive' => true,
+                'inMainMenu' => true,
+            ]);
+        foreach ($mainMenuCategories as $mainMenuCategory) {
+            self::$mainMenuCategories[] = [
+                'title' => $mainMenuCategory->getTitle(),
+                'link' => $this->getParentCategoriesUrl($mainMenuCategory) . $mainMenuCategory->getAlias(),
+            ];
+        }
     }
 }

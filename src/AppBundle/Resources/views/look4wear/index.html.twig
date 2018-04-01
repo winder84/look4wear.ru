@@ -28,38 +28,58 @@
             {% endfor %}
         </ul>
     {% endif %}
-    <section>
-        <h1>LOOK4WEAR.RU – ВАШ НЕЗАМЕНИМЫЙ ПОМОЩНИК В ШОППИНГЕ!</h1>
+    <section class="indexSection">
+        <h1>look4wear.ru – ваш незаменимый помошник в шоппинге!</h1>
         <p>На нашем портале собрана мужская и женская одежда самых известных марок, а также обувь и аксессуары. Модные
             бренды размещают здесь свои каталоги, чтобы вы могли сделать покупки всего за пару кликов.</p>
-        <h3>Женская одежда</h3>
-        <h4>Последние коллекции по выгодным ценам!</h4>
-        <a href="/catalog/dlya_jenshin" class="portfolio-link">
-            <img class="b-lazy" src="/bundles/app/images/no-image.png" data-src="/bundles/app/images/main_jen.png"
-                 alt="">
-        </a>
-        <h3>Мужская одежда</h3>
-        <p>Качественная одежда с доставкой!</p>
-        <a href="/catalog/dlya_mujchin" class="portfolio-link">
-            <img class="b-lazy" src="/bundles/app/images/no-image.png" data-src="/bundles/app/images/main_muj.png"
-                 alt="">
-        </a>
-        <h3>Одежда для мальчиков</h3>
-        <p>Одежда для школы и повседневной жизни!</p>
-        <a href="/catalog/dlya_malchikov" class="portfolio-link">
-            <img class="b-lazy" src="/bundles/app/images/no-image.png" data-src="/bundles/app/images/main_boys.jpg"
-                 alt="">
-        </a>
-        <h3>Одежда для девочек</h3>
-        <p>Платья, юбки, одежда для школы и дома!</p>
-        <a href="/catalog/dlya_devochek" class="portfolio-link">
-            <img class="b-lazy" src="/bundles/app/images/no-image.png" data-src="/bundles/app/images/main_girls.jpg"
-                 alt="">
-        </a>
-    </section>
-    <section>
-        <h4>look4wear.ru – ваш незаменимый помощник в шоппинге!</h4>
-        <p>На нашем портале собрана мужская и женская одежда самых известных марок, а также обувь и аксессуары.
-            Модные бренды размещают здесь свои каталоги, чтобы вы могли сделать покупки всего за пару кликов.</p>
+        <div class="categoryBox">
+            <a href="/catalog/dlya_jenshin" class="portfolio-link">
+                <div class="categoryBoxImg">
+                    <img class="b-lazy" src="/bundles/app/images/no-image.png" data-src="/bundles/app/images/main_jen.png"
+                         alt="">
+                </div>
+                <div class="categoryBoxDesrcr">
+                    <h2>Женская одежда</h2>
+                    <p>Последние коллекции по выгодным ценам!</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="categoryBox">
+            <a href="/catalog/dlya_mujchin" class="portfolio-link">
+                <div class="categoryBoxImg">
+                    <img class="b-lazy" src="/bundles/app/images/no-image.png" data-src="/bundles/app/images/main_muj.png"
+                         alt="">
+                </div>
+                <div class="categoryBoxDesrcr">
+                    <h2>Мужская одежда</h2>
+                    <p>Качественная одежда с доставкой!</p>
+                </div>
+            </a>
+        </div>
+        <div class="categoryBox">
+            <a href="/catalog/dlya_malchikov" class="portfolio-link">
+                <div class="categoryBoxImg">
+                    <img class="b-lazy" src="/bundles/app/images/no-image.png" data-src="/bundles/app/images/main_boys.jpg"
+                         alt="">
+                </div>
+                <div class="categoryBoxDesrcr">
+                    <h2>Одежда для мальчиков</h2>
+                    <p>Одежда для школы и повседневной жизни!</p>
+                </div>
+            </a>
+        </div>
+        <div class="categoryBox">
+            <a href="/catalog/dlya_devochek" class="portfolio-link">
+                <div class="categoryBoxImg">
+                    <img class="b-lazy" src="/bundles/app/images/no-image.png" data-src="/bundles/app/images/main_girls.jpg"
+                         alt="">
+                </div>
+                <div class="categoryBoxDesrcr">
+                    <h2>Одежда для девочек</h2>
+                    <p>Платья, юбки, одежда для школы и дома!</p>
+                </div>
+            </a>
+        </div>
     </section>
 {% endblock %}

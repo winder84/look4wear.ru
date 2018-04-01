@@ -76,6 +76,7 @@ class CategoryAdmin extends AbstractAdmin
                 'required' => false,
             ))
             ->add('isActive')
+            ->add('inMainMenu')
         ;
     }
 
