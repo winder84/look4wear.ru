@@ -382,9 +382,9 @@ class DefaultController extends Controller
                         'title' => $categoryItem->getTitle(),
                         'count' => $categoryItem->getData()['topVendors'][$vendorAlias],
                     ];
-                }
-                if ($vendor) {
-                    $otherCategories[$categoryItem->getAlias()]['vendorName'] = $vendor->getName();
+                    if ($vendor) {
+                        $otherCategories[$categoryItem->getAlias()]['vendorName'] = $vendor->getName();
+                    }
                 }
             }
         }
