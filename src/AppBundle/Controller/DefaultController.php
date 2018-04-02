@@ -377,10 +377,12 @@ class DefaultController extends Controller
         /** @var Category $categoryItem */
         foreach ($categories as $categoryItem) {
             if ($categoryItem->getId() != $category->getId()) {
-                $otherCategories[$categoryItem->getAlias()] = [
-                    'title' => $categoryItem->getTitle(),
-                    'count' => $categoryItem->getData()['topVendors'][$vendorAlias],
-                ];
+                if (isset($categoryItem->getData()['topVendors'][$vendorAlias])) {
+                    $otherCategories[$categoryItem->getAlias()] = [
+                        'title' => $categoryItem->getTitle(),
+                        'count' => $categoryItem->getData()['topVendors'][$vendorAlias],
+                    ];
+                }
                 if ($vendor) {
                     $otherCategories[$categoryItem->getAlias()]['vendorName'] = $vendor->getName();
                 }
