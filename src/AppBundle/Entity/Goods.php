@@ -68,7 +68,7 @@ class Goods
     /**
      * @var string
      *
-     * @ORM\Column(name="category", type="string", length=255, nullable=true)
+     * @ORM\Column(name="category", type="text", nullable=true)
      */
     private $category;
 
