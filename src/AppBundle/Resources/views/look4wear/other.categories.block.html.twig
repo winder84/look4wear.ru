@@ -1,0 +1,18 @@
+{% if otherCategories|length > 0 %}
+    <hr />
+    <div class="titleDiv">
+        <h3>{{ title }}:</h3>
+    </div>
+    <div class="otherCategoriesWrapper">
+        {% for alias, otherCategory in otherCategories %}
+            {% if loop.index <= 10 %}
+                <a href="/filter/{{ alias }}/{{ vendorAlias }}"
+                   title="{{ otherCategory.title }} {{ otherCategory.vendorName }}. Товаров: {{ otherCategory.count }} шт.">
+                    <h2 class="item">
+                        {{ otherCategory.title }} ({{ otherCategory.count }}&nbsp;шт.)
+                    </h2>
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}

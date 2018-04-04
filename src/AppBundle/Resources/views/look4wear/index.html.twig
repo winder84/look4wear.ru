@@ -3,129 +3,83 @@
 {% block content %}
     {% if goods is defined %}
         <ul>
-        {% for goodsItem in goods %}
-            <li>
-                <ul>
-                    <li>{{ goodsItem.name }}</li>
-                    <li>{{ goodsItem.model }}</li>
-                    <li>{{ goodsItem.description }}</li>
-                    <li>
-                        {% for picture in goodsItem.pictures %}
-                            <img width="100" src="{{ picture|replace({'http:': ""}) }}">
-                        {% endfor %}
-                    </li>
-                    {% if goodsItem.params %}
+            {% for goodsItem in goods %}
+                <li>
+                    <ul>
+                        <li>{{ goodsItem.name }}</li>
+                        <li>{{ goodsItem.model }}</li>
+                        <li>{{ goodsItem.description }}</li>
                         <li>
-                            <ul>
-                                {% for paramName, paramValue in goodsItem.params %}
-                                    <li>{{ paramName }} : {{ paramValue }}</li>
-                                {% endfor %}
-                            </ul>
+                            {% for picture in goodsItem.pictures %}
+                                <img width="100" src="{{ picture|replace({'http:': ""}) }}">
+                            {% endfor %}
                         </li>
-                    {% endif %}
-                </ul>
-            </li>
-        {% endfor %}
+                        {% if goodsItem.params %}
+                            <li>
+                                <ul>
+                                    {% for paramName, paramValue in goodsItem.params %}
+                                        <li>{{ paramName }} : {{ paramValue }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </li>
+            {% endfor %}
         </ul>
     {% endif %}
-    <section class="section ">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-7 col-sm-6 ">
-                    <div class="hero-content">
-                        <h1>LOOK4WEAR.RU – ВАШ НЕЗАМЕНИМЫЙ ПОМОЩНИК В ШОППИНГЕ!</h1>
-                    </div>
+    <section class="indexSection">
+        <h1>look4wear.ru – ваш незаменимый помошник в шоппинге!</h1>
+        <p>На нашем портале собрана мужская и женская одежда самых известных марок, а также обувь и аксессуары. Модные
+            бренды размещают здесь свои каталоги, чтобы вы могли сделать покупки всего за пару кликов.</p>
+        <div class="categoryBox">
+            <a href="/catalog/dlya_jenshin" class="portfolio-link">
+                <div class="categoryBoxImg">
+                    <img class="b-lazy" src="/bundles/app/images/no-image.png" data-src="/bundles/app/images/main_jen.png"
+                         alt="">
                 </div>
-                <div class="col-md-5 col-sm-6 ">
-                    <div class="hero-content">
-                        <p>На нашем портале собрана мужская и женская одежда самых известных марок, а также обувь и аксессуары. Модные бренды размещают здесь свои каталоги, чтобы вы могли сделать покупки всего за пару кликов.</p>
-                    </div>
+                <div class="categoryBoxDesrcr">
+                    <h2>Женская одежда</h2>
+                    <p>Последние коллекции по выгодным ценам!</p>
                 </div>
-            </div>
+            </a>
         </div>
-        <div class="row">
-            <div class="col-sm-6 portfolio-item mainPageCategoryLink">
-                <a href="/catalog/dlya_jenshin" class="portfolio-link">
-                    <div class="caption">
-                        <div class="caption-content">
-                            <h3>Женская одежда</h3>
-                            <h4>Последние коллекции по выгодным ценам!</h4>
-                        </div>
-                    </div>
-                    <img src="/bundles/app/images/main_jen.png" class="img-responsive" alt="">
-                </a>
-            </div>
-            <div class="col-sm-6 portfolio-item mainPageCategoryLink">
-                <a href="/catalog/dlya_mujchin" class="portfolio-link">
-                    <div class="caption">
-                        <div class="caption-content">
-                            <h3>Мужская одежда</h3>
-                            <h4>Качественная одежда с доставкой!</h4>
-                        </div>
-                    </div>
-                    <img src="/bundles/app/images/main_muj.png" class="img-responsive" alt="">
-                </a>
-            </div>
-            <div class="col-sm-6 portfolio-item mainPageCategoryLink">
-                <a href="/catalog/dlya_malchikov" class="portfolio-link">
-                    <div class="caption">
-                        <div class="caption-content">
-                            <h3>Одежда для мальчиков</h3>
-                            <h4>Одежда для школы и повседневной жизни!</h4>
-                        </div>
-                    </div>
-                    <img src="/bundles/app/images/main_boys.jpg" class="img-responsive" alt="">
-                </a>
-            </div>
-            <div class="col-sm-6 portfolio-item mainPageCategoryLink">
-                <a href="/catalog/dlya_devochek" class="portfolio-link">
-                    <div class="caption">
-                        <div class="caption-content">
-                            <h3>Одежда для девочек</h3>
-                            <h4>Платья, юбки, одежда для школы и дома!</h4>
-                        </div>
-                    </div>
-                    <img src="/bundles/app/images/main_girls.jpg" class="img-responsive" alt="" style="width: 100%;">
-                </a>
-            </div>
-        </div>
-        <div class="row">
-        </div>
-    </section>
-    <section id="service" class="service section">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3 col-sm-6">
-                    {#<h4>look4wear.ru – ваш незаменимый помощник в шоппинге!</h4>#}
-                    {#<p>На нашем портале собрана мужская и женская одежда самых известных марок, а также обувь и аксессуары.#}
-                        {#Модные бренды размещают здесь свои каталоги, чтобы вы могли сделать покупки всего за пару кликов.</p>#}
+
+        <div class="categoryBox">
+            <a href="/catalog/dlya_mujchin" class="portfolio-link">
+                <div class="categoryBoxImg">
+                    <img class="b-lazy" src="/bundles/app/images/no-image.png" data-src="/bundles/app/images/main_muj.png"
+                         alt="">
                 </div>
-                {#<div class="col-md-7 col-sm-6">#}
-                    {#<div class="col-md-4 col-sm-6 service text-center">#}
-                        {#<a href="/catalog_page" style="text-decoration: none;">#}
-                            {#<span class="icon icon-browser"></span>#}
-                            {#<div class="service-content">#}
-                                {#<h5>Поиск по категории</h5>#}
-                            {#</div>#}
-                        {#</a>#}
-                    {#</div>#}
-                    {#<div class="col-md-4 col-sm-6 service text-center">#}
-                        {#<a href="#" style="text-decoration: none;">#}
-                            {#<span class="icon icon-trophy"></span>#}
-                            {#<div class="service-content">#}
-                                {#<h5>Бренды</h5>#}
-                            {#</div>#}
-                        {#</a>#}
-                    {#</div>#}
-                    {#<a href="#" style="text-decoration: none;">#}
-                        {#<div class="col-md-4 col-sm-6 service text-center"> <span class="icon icon-megaphone"></span>#}
-                            {#<div class="service-content">#}
-                                {#<h5>Digital Marketing</h5>#}
-                            {#</div>#}
-                        {#</div>#}
-                    {#</a>#}
-                {#</div>#}
-            </div>
+                <div class="categoryBoxDesrcr">
+                    <h2>Мужская одежда</h2>
+                    <p>Качественная одежда с доставкой!</p>
+                </div>
+            </a>
+        </div>
+        <div class="categoryBox">
+            <a href="/catalog/dlya_malchikov" class="portfolio-link">
+                <div class="categoryBoxImg">
+                    <img class="b-lazy" src="/bundles/app/images/no-image.png" data-src="/bundles/app/images/main_boys.jpg"
+                         alt="">
+                </div>
+                <div class="categoryBoxDesrcr">
+                    <h2>Одежда для мальчиков</h2>
+                    <p>Одежда для школы и повседневной жизни!</p>
+                </div>
+            </a>
+        </div>
+        <div class="categoryBox">
+            <a href="/catalog/dlya_devochek" class="portfolio-link">
+                <div class="categoryBoxImg">
+                    <img class="b-lazy" src="/bundles/app/images/no-image.png" data-src="/bundles/app/images/main_girls.jpg"
+                         alt="">
+                </div>
+                <div class="categoryBoxDesrcr">
+                    <h2>Одежда для девочек</h2>
+                    <p>Платья, юбки, одежда для школы и дома!</p>
+                </div>
+            </a>
         </div>
     </section>
 {% endblock %}

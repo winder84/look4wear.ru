@@ -9,74 +9,86 @@
 {% endblock %}
 
 {% block header %}
-    <section class="banner" role="banner">
-        <header id="header">
-            <div class="header-content clearfix">
-                <a class="logo col-sm-1" href="/">
-                    <img src="/bundles/app/images/logo_L4W.png" width="50px" title="look4wear.ru - сервис поиска одежды." alt="look4wear - сервис поиска одежды.">
+    <div class="mobileBlock">
+        <div class="menu__icon">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <a href="/">
+            <img style="margin: 5px 0;" src="/bundles/app/images/logo_L4W.svg" width="50px" title="look4wear.ru - сервис поиска одежды." alt="look4wear - сервис поиска одежды.">
+        </a>
+        <div class="menu__links">
+            <a class="menu__links-item" href="/catalog_page">Каталог</a>
+            <a class="menu__links-item" href="/about">О пректе</a>
+            <a class="menu__links-item" href="/site_map">Карта сайта</a>
+        </div>
+    </div>
+    <header>
+        <section>
+            <aside>
+                <a href="/">
+                    <img style="margin: 5px 0;" src="/bundles/app/images/logo_L4W.svg" width="50px" title="look4wear.ru - сервис поиска одежды." alt="look4wear - сервис поиска одежды.">
                 </a>
-                <nav class="navigation" role="navigation">
-                    <ul class="primary-nav menuUl">
-                        <li class="col-sm-5 searchFormLi">
-                            {{ include('AppBundle:look4wear:search.form.html.twig') }}
-                        </li>
-                        <li><a href="/">Главная</a></li>
-                        <li><a href="/catalog_page">Каталог</a></li>
-                        <li><a href="/about">О пректе</a></li>
-                        <li><a href="/site_map">Карта сайта</a></li>
-                    </ul>
+            </aside>
+            {{ include('AppBundle:look4wear:search.form.html.twig') }}
+            <nav role="navigation">
+                <a href="/catalog_page">Каталог</a>
+                <a href="/about">О пректе</a>
+                <a href="/site_map">Карта сайта</a>
+            </nav>
+        </section>
+        {% if mainMenuCategories %}
+            <section class="mainMenu">
+                <nav role="navigation">
+                    {% for mainMenuCategory in mainMenuCategories %}
+                        <a href="{{ mainMenuCategory.link }}">{{ mainMenuCategory.title }}</a>
+                    {% endfor %}
                 </nav>
-                <a href="#" class="nav-toggle">Menu<span></span></a>
-            </div>
-        </header>
-    </section>
+            </section>
+        {% endif %}
+    </header>
 {% endblock %}
 {% block body %}
-    <section id="portfolio">
-        <div class="container clearfix">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="section">
-                    </div>
-                </div>
-            </div>
-            {% if breadcrumbs is defined %}
-                <nav aria-label="breadcrumb" role="navigation">
-                    <ol class="breadcrumb">
-                        {% for breadcrumb in breadcrumbs %}
-                            <li class="breadcrumb-item"><a href="{{ breadcrumb.link }}">{{ breadcrumb.title }}</a></li>
-                        {% endfor %}
-                    </ol>
-                </nav>
-            {% endif %}
-            {% block content %}
-            {% endblock %}
-        </div>
-    </section>
+    <main class="content">
+        {% if breadcrumbs is defined %}
+            <nav aria-label="breadcrumb" role="navigation">
+                <ul class="breadcrumbs">
+                    {% for breadcrumb in breadcrumbs %}
+                        <li class="breadcrumb-item">
+                            <a href="{{ breadcrumb.link }}">{{ breadcrumb.title }}</a>
+                        </li>
+                        {% if not loop.last %}
+                            \
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </nav>
+        {% endif %}
+        {% block content %}
+        {% endblock %}
+    </main>
 {% endblock %}
 {% block footer %}
-    <footer class="footer">
-        <div class="container" style="color: #fff;">
-            <div class="col-md-4 left">
-                <h4>Выбирайте одежду в нашем каталоге:</h4>
-                <ul style="margin: 5px 0 10px 0; padding: 0;">
-                    <li><a href="/catalog/dlya_mujchin">Мужская одежда</a></li>
-                    <li><a href="/catalog/dlya_jenshin">Женская одежда</a></li>
-                    <li><a href="/catalog/dlya_malchikov">Одежда для мальчиков</a></li>
-                    <li><a href="/catalog/dlya_devochek">Одежда для девочек</a></li>
-                </ul>
-            </div>
-            <div class="col-md-4 right">
-                <h4>Полезные ссылки:</h4>
-                <ul style="margin: 5px 0 10px 0; padding: 0;">
-                    <li><a href="/site_map">Карта сайта</a></li>
-                    <li><a href="/about">О проекте</a></li>
-                    <li><a href="/shipping">Доставка и возврат</a></li>
-                </ul>
-            </div>
-            <div class="col-md-4 right">
-                <p>© 2018 Все права защищены!<br>
-            </div>
+    <div class="greenLine"></div>
+    <footer>
+        <div class="footerItem">
+            <h4>Выбирайте одежду в нашем каталоге:</h4>
+            <ul>
+                <li><a href="/catalog/dlya_mujchin">Мужская одежда</a></li>
+                <li><a href="/catalog/dlya_jenshin">Женская одежда</a></li>
+                <li><a href="/catalog/dlya_malchikov">Одежда для мальчиков</a></li>
+                <li><a href="/catalog/dlya_devochek">Одежда для девочек</a></li>
+            </ul>
+        </div>
+        <div class="footerItem">
+            <h4>Полезные ссылки:</h4>
+            <ul>
+                <li><a href="/site_map">Карта сайта</a></li>
+                <li><a href="/about">О проекте</a></li>
+                <li><a href="/shipping">Доставка и возврат</a></li>
+            </ul>
         </div>
     </footer>
 {% endblock %}

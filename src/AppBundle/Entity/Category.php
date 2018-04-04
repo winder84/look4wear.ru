@@ -102,6 +102,13 @@ class Category
      */
     private $data;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="inMainMenu", type="boolean", nullable=true, options={"default" = false})
+     */
+    private $inMainMenu;
+
     public function __toString()
     {
         return (string) $this->getName();
@@ -420,5 +427,29 @@ class Category
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set inMainMenu
+     *
+     * @param boolean $inMainMenu
+     *
+     * @return Category
+     */
+    public function setInMainMenu($inMainMenu)
+    {
+        $this->inMainMenu = $inMainMenu;
+
+        return $this;
+    }
+
+    /**
+     * Get inMainMenu
+     *
+     * @return boolean
+     */
+    public function getInMainMenu()
+    {
+        return $this->inMainMenu;
     }
 }

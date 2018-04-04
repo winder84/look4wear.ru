@@ -1,9 +1,5 @@
 <!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="{{ app.request.locale }}"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang="{{ app.request.locale }}"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang="{{ app.request.locale }}"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js" lang="{{ app.request.locale }}">
+<html lang="{{ app.request.locale }}">
 <!--<![endif]-->
     <head>
         <meta charset="UTF-8" />
@@ -18,20 +14,9 @@
         </title>
         <meta name="description" content="{% if seoDescription is defined %}{{ seoDescription|raw|striptags }}{% else %}Каталог одежды и обуви look4wear.ru - ищем одежду для Вас!{% endif %}"/>
         {% block stylesheets %}
-            {% stylesheets 'bundles/app/adriya/css/*' 'bundles/app/css/*' filter='cssrewrite' %}
+            {% stylesheets 'bundles/app/css/*' filter='cssrewrite' %}
                 <link rel="stylesheet" href="{{ asset_url }}" />
             {% endstylesheets %}
-            {% stylesheets '@bootstrap_css' %}
-                <link rel="stylesheet" type="text/css" media="screen" href="{{ asset_url }}"/>
-            {% endstylesheets %}
-        {% endblock %}
-        {% block javascripts %}
-            {% javascripts '@jquery' '@bootstrap_js' %}
-                <script type="text/javascript" src="{{ asset_url }}"></script>
-            {% endjavascripts %}
-            {% javascripts 'bundles/app/adriya/js/*' %}
-                <script type="text/javascript" src="{{ asset_url }}"></script>
-            {% endjavascripts %}
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         {% if app.request.get('page') >= '0' %}
@@ -47,5 +32,13 @@
         {% block header %}{% endblock %}
         {% block body %}{% endblock %}
         {% block footer %}{% endblock %}
+        {% block javascripts %}
+            {% javascripts '@jquery' %}
+                <script type="text/javascript" src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+            {% javascripts 'bundles/app/js/*' %}
+                <script type="text/javascript" src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+        {% endblock %}
     </body>
 </html>

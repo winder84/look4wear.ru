@@ -41,6 +41,7 @@ class CategoryAdmin extends AbstractAdmin
             ->add('title')
             ->add('alias')
             ->add('isActive')
+            ->add('inMainMenu')
             ->add('_action', null, array(
                 'actions' => array(
                     'show' => array(),
@@ -76,6 +77,7 @@ class CategoryAdmin extends AbstractAdmin
                 'required' => false,
             ))
             ->add('isActive')
+            ->add('inMainMenu')
         ;
     }
 

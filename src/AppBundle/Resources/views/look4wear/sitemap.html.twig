@@ -1,9 +1,9 @@
 {% extends 'AppBundle:look4wear:layout.html.twig' %}
 
 {% block content %}
-    <div class="row">
-        <h1 style="font-size: 30px; text-align: center;">Карта сайта look4wear.ru</h1>
-        <ul style="margin: 0 auto; width: 70%;">
+    <section class="sitemap_page">
+        <h1>Карта сайта look4wear.ru</h1>
+        <ul>
             {% macro recursiveCategory(category) %}
                 {% import _self as self %}
                 <li>
@@ -20,7 +20,7 @@
                     {% endif %}
 
                     {% if category.childrenCategories|length %}
-                        <ul style="margin: 0 10px;">
+                        <ul>
                             {% for child in category.childrenCategories %}
                                 {{ self.recursiveCategory(child) }}
                             {% endfor %}
@@ -30,14 +30,12 @@
             {% endmacro %}
             {% import _self as self %}
             {% if parentCategories %}
-                <div id="categories">
-                    <ul>
-                        {% for category in parentCategories %}
-                            {{ self.recursiveCategory(category) }}
-                        {% endfor %}
-                    </ul>
-                </div>
+                <ul>
+                    {% for category in parentCategories %}
+                        {{ self.recursiveCategory(category) }}
+                    {% endfor %}
+                </ul>
             {% endif %}
         </ul>
-    </div>
+    </section>
 {% endblock %}
