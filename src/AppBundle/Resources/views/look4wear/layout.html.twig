@@ -23,6 +23,12 @@
             <a class="menu__links-item" href="/catalog_page">Каталог</a>
             <a class="menu__links-item" href="/about">О пректе</a>
             <a class="menu__links-item" href="/site_map">Карта сайта</a>
+            <hr />
+            {% if mainMenuCategories %}
+                {% for mainMenuCategory in mainMenuCategories %}
+                    <a class="menu__links-item" href="{{ mainMenuCategory.link }}">{{ mainMenuCategory.title }}</a>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
     <header>
