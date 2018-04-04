@@ -24,6 +24,8 @@
         {% if goods is defined and goods|length == 0 %}
             <meta name="robots" content="noindex">
         {% endif %}
+        <meta name="Document-state" content="Dynamic">
+        <meta http-equiv="Cache-Control" content="max-age=3600, must-revalidate">
     </head>
     <body>
         {% block header %}{% endblock %}
