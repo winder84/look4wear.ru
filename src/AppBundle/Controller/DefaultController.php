@@ -160,7 +160,7 @@ class DefaultController extends Controller
                         $excludeWords = array_filter($excludeWords);
                         $searchString = $childrenCategory->getSearchString();
                         $searchString .= ' -' . implode(' -', $excludeWords);
-                        $searchGoods = $this->searchByStringAndLimit($searchString, 2);
+                        $searchGoods = $this->searchByStringAndLimit($searchString, 5);
                         if (isset($searchGoods['matches'])) {
                             $categoryImage = json_decode(end($searchGoods['matches'])['attrs']['pictures'])[0];
                         }
