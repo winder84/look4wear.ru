@@ -40,7 +40,7 @@
                         <div class="goodsDescr">
                             {{ goodsItem.attrs.vendorname }}
                             <br/>
-                            {{ goodsItem.attrs.name|length > 30 ? goodsItem.attrs.name|slice(0, 30) ~ '...' : goodsItem.attrs.name }}
+                            {{ goodsItem.attrs.name|length > 28 ? goodsItem.attrs.name|slice(0, 28) ~ '...' : goodsItem.attrs.name }}
                             <br/>
                             Цена:
                             {#{% if goodsItem.attrs.oldprice %}#}

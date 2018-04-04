@@ -3,13 +3,17 @@
 {% block content %}
     <h1>Каталог одежды look4wear.ru</h1>
     {% for catalogCategory in catalogCategories %}
-        <h3 style="padding: 10px;">
-            {{ catalogCategory.category.title }}
-        </h3>
-        {% if catalogCategory.image %}
-            <a href="{{ catalogCategory.image | my_replace | imagine_filter('my_thumb') }}" class="progressive replace">
-                <img class="preview" src="{{ catalogCategory.image | my_replace | imagine_filter('my_thumb') }}" alt="..." />
-            </a>
-        {% endif %}
+            <div class="categoryBox catalogCategoryBox">
+                <a href="{{ catalogCategory.url }}" class="portfolio-link">
+                    <div class="categoryBoxImg">
+                        <img class="b-lazy" src="{{ catalogCategory.image | my_replace | imagine_filter('my_thumb') }}"
+                             data-src="{{ catalogCategory.image | my_replace | imagine_filter('my_thumb') }}"
+                             alt="">
+                    </div>
+                    <div class="categoryBoxDesrcr">
+                        <h2>{{ catalogCategory.category.title }}</h2>
+                    </div>
+                </a>
+            </div>
     {% endfor %}
 {% endblock %}
