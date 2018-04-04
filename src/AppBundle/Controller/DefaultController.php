@@ -249,13 +249,15 @@ class DefaultController extends Controller
             $searchString .= ' -' . implode(' -', $excludeWords);
             $searchGoods = $this->searchByStringAndLimit($searchString, 5);
             if (isset($searchGoods['matches'])) {
-                $categoryImage = json_decode(end($searchGoods['matches'])['attrs']['pictures'])[0];
+                if ($searchGoods['total_found'] >= 5) {
+                    $categoryImage = json_decode(end($searchGoods['matches'])['attrs']['pictures'])[0];
+                    $catalogCategories[] = [
+                        'category' => $category,
+                        'image' => $categoryImage,
+                        'url' => '/catalog/' . $category->getAlias(),
+                    ];
+                }
             }
-            $catalogCategories[] = [
-                'category' => $category,
-                'image' => $categoryImage,
-                'url' => '/catalog/' . $category->getAlias(),
-            ];
         }
 
         $this->getMainMenuCategories();
