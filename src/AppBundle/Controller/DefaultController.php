@@ -43,6 +43,11 @@ class DefaultController extends Controller
     protected static $mainMenuCategories = [];
 
     /**
+     * @var string
+     */
+    protected static $canonicalLink;
+
+    /**
      * @Route("/", name="homepage",
      *      options={"sitemap" = true})
      */
@@ -175,7 +180,7 @@ class DefaultController extends Controller
                 }
             }
             $parentsUrl = $this->getParentCategoriesUrl($actualCategory);
-            $actualUrl = $parentsUrl . $actualCategory->getAlias();
+            $actualUrl = self::$canonicalLink = $parentsUrl . $actualCategory->getAlias();
             $pagination = [
                 'url' => $actualUrl . '?',
                 'currentPage' => $request->query->getInt('page', 1),
@@ -222,6 +227,7 @@ class DefaultController extends Controller
             'pagination' => $pagination,
             'parentsUrl' => $parentsUrl,
             'actualUrl' => $actualUrl,
+            'canonicalLink' => self::$canonicalLink,
             'mainMenuCategories' => self::$mainMenuCategories,
         ]);
     }
