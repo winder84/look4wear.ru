@@ -14,9 +14,7 @@
         </title>
         <meta name="description" content="{% if seoDescription is defined %}{{ seoDescription|raw|striptags }}{% else %}Каталог одежды и обуви look4wear.ru - ищем одежду для Вас!{% endif %}"/>
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-        {% if app.request.get('page') >= '0' %}
-            <link rel="canonical" href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}"/>
-        {% endif %}
+        <link rel="canonical" href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         {% block counters %}{% endblock %}
         {% if goods is defined and goods|length == 0 %}
