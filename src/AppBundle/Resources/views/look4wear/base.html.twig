@@ -12,7 +12,7 @@
                 {% endif %}
             {% endblock %}
         </title>
-        <meta name="description" content="{% if seoDescription is defined %}{{ seoDescription|raw|striptags }}{% else %}Каталог одежды и обуви look4wear.ru - ищем одежду для Вас!{% endif %}"/>
+        <meta name="description" content="{% if seoDescription is defined %}{{ seoDescription|raw|striptags|slice(0, 300) }}{% else %}Каталог одежды и обуви look4wear.ru - ищем одежду для Вас!{% endif %}"/>
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         {% if canonicalLink is defined and canonicalLink != '' %}
             <link rel="canonical" href="{{ canonicalLink }}"/>
