@@ -228,6 +228,10 @@ liip_imagine :
             quality : 75
             filters :
                 thumbnail  : { size : [280, ], mode : outbound }
+        main_thumb :
+            quality : 75
+            filters :
+                thumbnail  : { size : [750, ], mode : outbound }
 #                background : { size : [124, 94], position : center, color : '#000000' }
 
 presta_sitemap:
