@@ -9,7 +9,7 @@
                     <a href="{{ childrenCategory.url }}" class="progressive replace"
                        title="{{ childrenCategory.category.seoTitle }}">
                         {% if childrenCategory.image %}
-                            <img class="b-lazy" src="/bundles/app/images/no-image.png"
+                            <img class="b-lazy" src="{{ asset('/bundles/app/images/no-image.png') }}"
                                  data-src="{{ childrenCategory.image | my_replace | imagine_filter('my_thumb') }}"
                                  title="{{ childrenCategory.category.seoTitle }}" alt=""/>
                         {% endif %}
@@ -28,13 +28,13 @@
                     <a class="productLink" target="_blank" rel="nofollow" href="#" data-product-alias="{{ goodsItem.attrs.alias }}">
                         {% if goodsItem.attrs.pictures %}
                             <div class="goodsImg">
-                                <img class="b-lazy" src="/bundles/app/images/no-image.png"
+                                <img class="b-lazy" src="{{ asset('/bundles/app/images/no-image.png') }}"
                                      data-src="{{ goodsItem.attrs.pictures| json_decode.0 | my_replace | imagine_filter('my_thumb') }}"
                                      alt="" onerror="this.style.display='none'"/>
                             </div>
                         {% else %}
                             <div class="goodsImg">
-                                <img class="b-lazy" src="/bundles/app/images/no-image.png" alt="" onerror="this.style.display='none'"/>
+                                <img class="b-lazy" src="{{ asset('/bundles/app/images/no-image.png') }}" alt="" onerror="this.style.display='none'"/>
                             </div>
                         {% endif %}
                         <div class="goodsDescr">
