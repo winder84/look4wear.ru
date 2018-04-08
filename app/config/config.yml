@@ -35,7 +35,7 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
-
+    exception_controller:  AppBundle:Exception:show404
     form_themes:
         - '@SonataFormatter/Form/formatter.html.twig'
 
