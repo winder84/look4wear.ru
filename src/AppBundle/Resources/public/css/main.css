@@ -130,7 +130,7 @@ header form button:hover {
 .childrenCategories {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     flex-flow: row wrap;
     margin-left: -15px;
     margin-right: -5px;
