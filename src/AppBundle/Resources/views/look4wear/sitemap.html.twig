@@ -4,7 +4,7 @@
     <section class="sitemap_page">
         <h1>Карта сайта look4wear.ru</h1>
         <ul>
-            {% macro recursiveCategory(category) %}
+            {% macro recursiveCategory(category, allVendors) %}
                 {% import _self as self %}
                 <li>
                     {% if not category.parentCategory %}
@@ -13,6 +13,17 @@
                         <h5>
                     {% endif %}
                         <a href="{{ category|get_category_url }}" title="{{ category.seoTitle }}">{{ category.title }}</a>
+                        {% if category.data.topVendors is defined and category.data.topVendors and category.parentCategory %}
+                            <ul>
+                                {% for categoryVendorAlias, categoryVendor in category.data.topVendors %}
+                                    {% if loop.index <= 10 and allVendors[categoryVendorAlias] is defined and allVendors[categoryVendorAlias] %}
+                                        <li>
+                                            <a href="/filter/{{ category.alias }}/{{ categoryVendorAlias }}" title="{{ category.seoTitle }}">{{ allVendors[categoryVendorAlias].name }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
                     {% if not category.parentCategory %}
                         </h4>
                     {% else %}
@@ -22,7 +33,7 @@
                     {% if category.childrenCategories|length %}
                         <ul>
                             {% for child in category.childrenCategories %}
-                                {{ self.recursiveCategory(child) }}
+                                {{ self.recursiveCategory(child, allVendors) }}
                             {% endfor %}
                         </ul>
                     {% endif %}
@@ -32,7 +43,7 @@
             {% if parentCategories %}
                 <ul>
                     {% for category in parentCategories %}
-                        {{ self.recursiveCategory(category) }}
+                        {{ self.recursiveCategory(category, allVendors) }}
                     {% endfor %}
                 </ul>
             {% endif %}

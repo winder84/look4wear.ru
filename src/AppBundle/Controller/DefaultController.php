@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Category;
-use AppBundle\Entity\SeoText;
 use AppBundle\Entity\Vendor;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -291,6 +290,13 @@ class DefaultController extends Controller
                 'isActive' => true,
                 'parentCategory' => null,
             ]);
+        $vendors = self::$em
+            ->getRepository('AppBundle:Vendor')
+            ->findAll();
+        $allVendors = [];
+        foreach ($vendors as $vendor) {
+            $allVendors[$vendor->getAlias()] = $vendor;
+        }
 
         $this->getMainMenuCategories();
         return $this->render('AppBundle:look4wear:sitemap.html.twig', [
@@ -298,6 +304,7 @@ class DefaultController extends Controller
             'pageTitle' => self::$pageTitle,
             'seoDescription' => 'Карта сайта look4wear.ru',
             'parentCategories' => $categories,
+            'allVendors' => $allVendors,
             'mainMenuCategories' => self::$mainMenuCategories,
         ]);
     }
