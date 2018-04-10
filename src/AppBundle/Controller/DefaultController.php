@@ -151,7 +151,9 @@ class DefaultController extends Controller
             $excludeWords = explode(';', $actualCategory->getExcludeWords());
             $excludeWords = array_filter($excludeWords);
             $searchString = $actualCategory->getSearchString();
-            $searchString .= ' -' . implode(' -', $excludeWords);
+            if ($excludeWords) {
+                $searchString .= ' -' . implode(' -', $excludeWords);
+            }
             $searchGoods = $this->searchByString($searchString, $request->query->getInt('page', 0));
             if (isset($searchGoods['matches'])) {
                 $matches = $searchGoods['matches'];
@@ -163,7 +165,9 @@ class DefaultController extends Controller
                         $excludeWords = explode(';', $childrenCategory->getExcludeWords());
                         $excludeWords = array_filter($excludeWords);
                         $searchString = $childrenCategory->getSearchString();
-                        $searchString .= ' -' . implode(' -', $excludeWords);
+                        if ($excludeWords) {
+                            $searchString .= ' -' . implode(' -', $excludeWords);
+                        }
                         $searchGoods = $this->searchByStringAndLimit($searchString, 5);
                         if (isset($searchGoods['matches'])) {
                             $categoryImage = json_decode(end($searchGoods['matches'])['attrs']['pictures'])[0];
