@@ -255,7 +255,9 @@ class DefaultController extends Controller
             $excludeWords = explode(';', $category->getExcludeWords());
             $excludeWords = array_filter($excludeWords);
             $searchString = $category->getSearchString();
-            $searchString .= ' -' . implode(' -', $excludeWords);
+            if ($excludeWords) {
+                $searchString .= ' -' . implode(' -', $excludeWords);
+            }
             $searchGoods = $this->searchByStringAndLimit($searchString, 5);
             if (isset($searchGoods['matches'])) {
                 if ($searchGoods['total_found'] >= 5) {
@@ -354,7 +356,9 @@ class DefaultController extends Controller
                     self::$seoDescription = $seoText->getText();
                 }
             }
-            $searchString .= ' -' . implode(' -', $excludeWords);
+            if ($excludeWords) {
+                $searchString .= ' -' . implode(' -', $excludeWords);
+            }
             $searchGoods = $this->searchByString($searchString, $request->query->getInt('page', 0));
             if (isset($searchGoods['matches'])) {
                 $matches = $searchGoods['matches'];
