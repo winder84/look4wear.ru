@@ -27,12 +27,12 @@
                 <div class="item" data-goods-id="{{ goodsItem.attrs.goodsid }}">
                     <a class="productLink" target="_blank" rel="nofollow" href="#"
                        data-product-alias="{{ goodsItem.attrs.alias }}"
-                       title="Купить {{ goodsItem.attrs.name }} {{ goodsItem.attrs.vendorname }} по выгодной цене.">
+                       title="Купить {{ goodsItem.attrs.name }} по выгодной цене.">
                         {% if goodsItem.attrs.pictures %}
                             <div class="goodsImg">
                                 <img class="b-lazy" src="{{ asset('/bundles/app/images/no-image.png') }}"
                                      data-src="{{ goodsItem.attrs.pictures| json_decode.0 | my_replace | imagine_filter('my_thumb') }}"
-                                     alt="Купить {{ goodsItem.attrs.name }} {{ goodsItem.attrs.vendorname }} в интернет-магазине."
+                                     alt="Купить {{ goodsItem.attrs.name }} в интернет-магазине."
                                      onerror="this.style.display='none'"/>
                             </div>
                         {% else %}
