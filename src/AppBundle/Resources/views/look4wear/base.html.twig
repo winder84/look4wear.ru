@@ -32,7 +32,7 @@
         {% block body %}{% endblock %}
         {% block footer %}{% endblock %}
         {% block stylesheets %}
-            {% stylesheets 'bundles/app/css/css.min/*' filter='cssrewrite' %}
+            {% stylesheets 'bundles/app/css/min/*' filter='cssrewrite' %}
                 <link rel="stylesheet" href="{{ asset_url }}" />
             {% endstylesheets %}
         {% endblock %}

@@ -173,7 +173,7 @@ header form button:hover {
     border: 1px solid #ddd;
     margin-bottom: 15px;
     vertical-align: top;
-    height: 270px;
+    height: 14rem;
     box-shadow: 1px 1px 3px #A69CA3;
 }
 
@@ -325,6 +325,11 @@ footer ul {
     font-weight: normal;
 }
 
+.childrenCategoryImg {
+    height: 11rem;
+    overflow: hidden;
+}
+
 /*----------------------------------------------------------------------------------------*/
 .mobileBlock {
     display: none;
@@ -428,6 +433,16 @@ footer ul {
 @media (max-width: 1350px) {
     header form input {
         width: 68%;
+    }
+}
+
+@media (max-width: 1280px) {
+    .childrenCategories .item {
+        height: 12rem;
+    }
+
+    .childrenCategoryImg {
+        height: 9rem;
     }
 }
 
