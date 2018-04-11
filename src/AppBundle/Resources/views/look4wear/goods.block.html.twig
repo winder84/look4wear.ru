@@ -9,9 +9,11 @@
                     <a href="{{ childrenCategory.url }}" class="progressive replace"
                        title="{{ childrenCategory.category.seoTitle }}">
                         {% if childrenCategory.image %}
-                            <img class="b-lazy" src="{{ asset('/bundles/app/images/no-image.png') }}"
-                                 data-src="{{ childrenCategory.image | my_replace | imagine_filter('my_thumb') }}"
-                                 title="{{ childrenCategory.category.seoTitle }}" alt=""/>
+                            <div class="childrenCategoryImg">
+                                <img class="b-lazy" src="{{ asset('/bundles/app/images/no-image.png') }}"
+                                     data-src="{{ childrenCategory.image | my_replace | imagine_filter('my_thumb') }}"
+                                     title="{{ childrenCategory.category.seoTitle }}" alt=""/>
+                            </div>
                         {% endif %}
                         <h2>{{ childrenCategory.category.name }}</h2>
                     </a>
