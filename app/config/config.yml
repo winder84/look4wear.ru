@@ -38,6 +38,7 @@ twig:
     exception_controller:  AppBundle:Exception:show404
     form_themes:
         - '@SonataFormatter/Form/formatter.html.twig'
+        - '@SonataMedia/Form/media_widgets.html.twig'
 
 sonata_formatter:
     default_formatter: text
@@ -124,6 +125,8 @@ doctrine:
                     SonataUserBundle: ~
                     FOSUserBundle: ~
                     AppBundle: ~
+                    ApplicationSonataMediaBundle: ~
+                    SonataMediaBundle: ~
                 dql:
                     string_functions:
                         regexp: DoctrineExtensions\Query\Mysql\Regexp
@@ -240,3 +243,38 @@ presta_sitemap:
         priority: 0.9
         changefreq: daily
         lastmod: now
+
+
+sonata_media:
+    class:
+        media: Application\Sonata\MediaBundle\Entity\Media
+        gallery: Application\Sonata\MediaBundle\Entity\Gallery
+        gallery_has_media: Application\Sonata\MediaBundle\Entity\GalleryHasMedia
+    db_driver: doctrine_orm # or doctrine_mongodb, doctrine_phpcr it is mandatory to choose one here
+    default_context: default # you need to set a context
+    contexts:
+        default:  # the default context is mandatory
+            providers:
+                - sonata.media.provider.dailymotion
+                - sonata.media.provider.youtube
+                - sonata.media.provider.image
+                - sonata.media.provider.file
+                - sonata.media.provider.vimeo
+
+            formats:
+                small: { width: 100 , quality: 70}
+                big:   { width: 500 , quality: 70}
+
+    cdn:
+        server:
+            path: /uploads/media # http://media.sonata-project.org/
+
+    filesystem:
+        local:
+            directory:  "%kernel.root_dir%/../web/uploads/media" #flex
+            #directory:  "%kernel.root_dir%/../web/uploads/media" #non-flex
+            create:     false
+
+    providers:
+        image:
+            resizer: sonata.media.resizer.square

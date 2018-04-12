@@ -8,7 +8,13 @@
                 <div class="item">
                     <a href="{{ childrenCategory.url }}" class="progressive replace"
                        title="{{ childrenCategory.category.seoTitle }}">
-                        {% if childrenCategory.image %}
+                        {% if childrenCategory.category.media %}
+                            <div class="childrenCategoryImg">
+                                <img class="b-lazy" src="{{ asset('/bundles/app/images/no-image.png') }}"
+                                     data-src="{% path childrenCategory.category.media, 'big' %}"
+                                     title="{{ childrenCategory.category.seoTitle }}" alt=""/>
+                            </div>
+                        {% elseif childrenCategory.image %}
                             <div class="childrenCategoryImg">
                                 <img class="b-lazy" src="{{ asset('/bundles/app/images/no-image.png') }}"
                                      data-src="{{ childrenCategory.image | my_replace | imagine_filter('my_thumb') }}"

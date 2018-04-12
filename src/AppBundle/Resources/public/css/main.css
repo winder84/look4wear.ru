@@ -289,6 +289,12 @@ footer ul {
     text-align: center;
 }
 
+.catalogCategoryBox {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .catalogItem {
     display: inline-block;
     width: 33%;

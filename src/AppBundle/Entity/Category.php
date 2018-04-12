@@ -109,6 +109,12 @@ class Category
      */
     private $inMainMenu;
 
+    /**
+     * @ORM\OneToOne(targetEntity="Application\Sonata\MediaBundle\Entity\Media",cascade={"persist"})
+     * @ORM\JoinColumn(name="media_id", referencedColumnName="id")
+     */
+    private $Media;
+
     public function __toString()
     {
         return (string) $this->getName();
@@ -451,5 +457,29 @@ class Category
     public function getInMainMenu()
     {
         return $this->inMainMenu;
+    }
+
+    /**
+     * Set media
+     *
+     * @param \Application\Sonata\MediaBundle\Entity\Media $media
+     *
+     * @return Category
+     */
+    public function setMedia(\Application\Sonata\MediaBundle\Entity\Media $media = null)
+    {
+        $this->Media = $media;
+
+        return $this;
+    }
+
+    /**
+     * Get media
+     *
+     * @return \Application\Sonata\MediaBundle\Entity\Media
+     */
+    public function getMedia()
+    {
+        return $this->Media;
     }
 }

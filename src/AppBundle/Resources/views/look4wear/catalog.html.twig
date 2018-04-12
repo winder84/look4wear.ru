@@ -5,11 +5,19 @@
     {% for catalogCategory in catalogCategories %}
             <div class="categoryBox catalogCategoryBox">
                 <a href="{{ catalogCategory.url }}" class="portfolio-link">
-                    <div class="categoryBoxImg">
-                        <img class="b-lazy" src="{{ catalogCategory.image | my_replace | imagine_filter('my_thumb') }}"
-                             data-src="{{ catalogCategory.image | my_replace | imagine_filter('my_thumb') }}"
-                             alt="">
-                    </div>
+                    {% if catalogCategory.category.media %}
+                        <div class="categoryBoxImg">
+                            <img class="b-lazy" src="{% path catalogCategory.category.media, 'big' %}"
+                                 data-src="{% path catalogCategory.category.media, 'big' %}"
+                                 alt="">
+                        </div>
+                    {% elseif catalogCategory.image %}
+                        <div class="categoryBoxImg">
+                            <img class="b-lazy" src="{{ catalogCategory.image | my_replace | imagine_filter('my_thumb') }}"
+                                 data-src="{{ catalogCategory.image | my_replace | imagine_filter('my_thumb') }}"
+                                 alt="">
+                        </div>
+                    {% endif %}
                     <div class="categoryBoxDesrcr">
                         <h2>{{ catalogCategory.category.title }}</h2>
                     </div>

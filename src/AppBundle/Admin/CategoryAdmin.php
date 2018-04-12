@@ -58,6 +58,8 @@ class CategoryAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
+            ->add('isActive')
+            ->add('inMainMenu')
             ->add('name')
             ->add('title', null, ['required' => true])
             ->add('seoTitle')
@@ -76,8 +78,10 @@ class CategoryAdmin extends AbstractAdmin
                 'placeholder' => 'Нет',
                 'required' => false,
             ))
-            ->add('isActive')
-            ->add('inMainMenu')
+            ->add('media', 'sonata_media_type', array(
+                'provider' => 'sonata.media.provider.image',
+                'context'  => 'default'
+            ))
         ;
     }
 
