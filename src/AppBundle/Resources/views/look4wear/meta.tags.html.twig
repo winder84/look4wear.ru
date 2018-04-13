@@ -12,6 +12,6 @@
       content="{{ app.request.getSchemeAndHttpHost() }}{% if canonicalLink is defined and canonicalLink != '' %}{{ canonicalLink }}{% elseif app.request.attributes.get('_route') %}{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}{% endif %}">
 <meta property="og:title"
       content="{% if seoTitle is defined and seoTitle %}{{ seoTitle|trim|slice(0, 64) }}{% else %}Каталог одежды и обуви look4wear.ru - ищем одежду для Вас!{% endif %}">
-<meta property="og:image" content="{% if category is defined and category %}{% path category.media, 'big' %}{% else %}{{ app.request.getSchemeAndHttpHost() }}/bundles/app/images/logo_L4W.svg{% endif %}">
+<meta property="og:image" content="{{ app.request.getSchemeAndHttpHost() }}{% if category is defined and category %}{% path category.media, 'big' %}{% else %}/bundles/app/images/logo_L4W.svg{% endif %}">
 <meta property="og:description"
       content="{% if seoDescription is defined %}{{ seoDescription|raw|striptags|slice(0, 300) }}{% else %}Каталог одежды и обуви look4wear.ru - ищем одежду для Вас!{% endif %}">
