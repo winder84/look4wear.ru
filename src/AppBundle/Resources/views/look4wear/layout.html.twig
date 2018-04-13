@@ -1,6 +1,6 @@
 {% extends 'AppBundle:look4wear:base.html.twig' %}
 {% block metatags %}
-    {{ include('AppBundle:look4wear:meta.tags.html.twig', {'metaTags' : metaTags}) }}
+    {{ include('AppBundle:look4wear:meta.tags.html.twig') }}
 {% endblock %}
 {% block counters %}
     {% if (app.environment == 'prod') and ('.lan' not in app.request.host) %}
