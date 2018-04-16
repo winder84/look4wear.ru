@@ -97,6 +97,8 @@ sonata_admin:
         blocks:
             - { position: right, type: l4w.info.block }
             - { position: left, type: sonata.admin.block.admin_list }
+    title: 'Панель управления'
+    title_logo: bundles/app/images/logo_L4W.svg
 
 # Doctrine Configuration
 doctrine:
