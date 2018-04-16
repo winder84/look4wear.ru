@@ -26,7 +26,7 @@ class Goods
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Offer", inversedBy="goods", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Offer", inversedBy="Goods", cascade={"persist"})
      * @ORM\JoinColumn(name="offerId", referencedColumnName="id")
      **/
     private $Offer;

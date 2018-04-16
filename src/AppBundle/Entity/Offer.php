@@ -22,7 +22,7 @@ class Offer
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Goods", mappedBy="offer")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Goods", mappedBy="Offer")
      **/
     private $Goods;
 
