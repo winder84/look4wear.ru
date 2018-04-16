@@ -7,11 +7,11 @@
         {% for categoryTopVendor in categoryTopVendorsResult %}
             {% if loop.index <= 10 %}
                 <a href="/filter/{{ category.alias }}/{{ categoryTopVendor.alias }}"
-                   title="{{ category.title }} {{ categoryTopVendor.name }}. Товаров: {{ categoryTopVendor.count }} шт."
+                   title="Купить {{ category.title }} {{ categoryTopVendor.name }}. Товаров: {{ categoryTopVendor.count }} шт."
                    class="categoryTopVendor">
                     <div class="item">
                         {% if categoryTopVendor.imgUrl %}
-                            <img src="{{ asset('media/brands/') }}{{ categoryTopVendor.imgUrl }}" alt="">
+                            <img src="{{ asset('media/brands/') }}{{ categoryTopVendor.imgUrl }}" alt="изображение {{ category.title }} {{ categoryTopVendor.name }}">
                         {% else %}
                             {{ categoryTopVendor.name }}
                         {% endif %}

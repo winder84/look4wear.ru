@@ -63,7 +63,7 @@
                 <ul class="breadcrumbs">
                     {% for breadcrumb in breadcrumbs %}
                         <li class="breadcrumb-item">
-                            <a href="{{ breadcrumb.link }}">{{ breadcrumb.title }}</a>
+                            <a href="{{ breadcrumb.link }}" {% if breadcrumb.seoTitle is defined %}title="{{ breadcrumb.seoTitle }}" {% endif %}>{{ breadcrumb.title }}</a>
                         </li>
                         {% if not loop.last %}
                             \

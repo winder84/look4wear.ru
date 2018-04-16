@@ -574,16 +574,31 @@ class DefaultController extends Controller
     private function getBreadcrumbs(Category $category, Vendor $vendor = null)
     {
         if ($vendor) {
-            $breadcrumbs[] = ['link' => '/filter/' . $category->getAlias() . '/' . $vendor->getAlias(), 'title' => $category->getTitle() . ' "' . $vendor->getName() . '"'];
+            $breadcrumbs[] = [
+                'link' => '/filter/' . $category->getAlias() . '/' . $vendor->getAlias(),
+                'title' => $category->getTitle() . ' "' . $vendor->getName() . '"',
+            ];
         } else {
-            $breadcrumbs[] = ['link' => $this->getParentCategoriesUrl($category) . $category->getAlias(), 'title' => $category->getName()];
+            $breadcrumbs[] = [
+                'link' => $this->getParentCategoriesUrl($category) . $category->getAlias(),
+                'title' => $category->getName(),
+                'seoTitle' => $category->getSeoTitle(),
+            ];
         }
         $parentCategory = $category->getParentCategory();
         while ($parentCategory) {
-            $breadcrumbs[] = ['link' => $this->getParentCategoriesUrl($parentCategory) . $parentCategory->getAlias(), 'title' => $parentCategory->getName()];
+            $breadcrumbs[] = [
+                'link' => $this->getParentCategoriesUrl($parentCategory) . $parentCategory->getAlias(),
+                'title' => $parentCategory->getName(),
+                'seoTitle' => $parentCategory->getSeoTitle(),
+            ];
             $parentCategory = $parentCategory->getParentCategory();
         }
-        $breadcrumbs[] = ['link' => '/', 'title' => 'Главная'];
+        $breadcrumbs[] = [
+            'link' => '/',
+            'title' => 'Главная',
+            'seoTitle' => 'Одежда для всей семьи по выгодным ценам.',
+        ];
 
         return array_reverse($breadcrumbs);
     }

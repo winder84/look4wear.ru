@@ -18,7 +18,7 @@
                             <div class="childrenCategoryImg">
                                 <img class="b-lazy" src="{{ asset('/bundles/app/images/no-image.png') }}"
                                      data-src="{{ childrenCategory.image | my_replace | imagine_filter('my_thumb') }}"
-                                     title="{{ childrenCategory.category.seoTitle }}" alt=""/>
+                                     alt="фото {{ childrenCategory.category.seoTitle }}"/>
                             </div>
                         {% endif %}
                         <h2>{{ childrenCategory.category.name }}</h2>
