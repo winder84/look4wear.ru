@@ -33,6 +33,11 @@
         <section class="goodsSection">
             {% for goodsItem in goods %}
                 <div class="item" data-goods-id="{{ goodsItem.attrs.goodsid }}">
+                    {% if goodsItem.attrs.price < goodsItem.attrs.oldprice %}
+                        <div class="discountBlock">
+                            -{{ ((goodsItem.attrs.oldprice - goodsItem.attrs.price) / goodsItem.attrs.oldprice * 100)|round }}%
+                        </div>
+                    {% endif %}
                     <a class="productLink" target="_blank" rel="nofollow" href="#"
                        data-product-alias="{{ goodsItem.attrs.alias }}"
                        title="Купить {{ goodsItem.attrs.name }} по выгодной цене.">

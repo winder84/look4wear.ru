@@ -178,6 +178,7 @@ header form button:hover {
 }
 
 .goodsSection .item {
+    position: relative;
     display: inline-block;
     width: 18%;
     margin: 0 0 12px 24px;
@@ -336,12 +337,28 @@ footer ul {
     overflow: hidden;
 }
 
+.discountBlock {
+    position: absolute;
+    right: 0;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+    width: 55px;
+    background: #e40808;
+    color: #fff;
+    font-size: 1.2rem;
+    padding: 1rem 0;
+    font-weight: bold;
+    margin: 0.2rem;
+}
+
 /*----------------------------------------------------------------------------------------*/
 .mobileBlock {
     display: none;
     width: 100%;
     background: #9ca69c;
     position: fixed;
+    z-index: 1;
 }
 
 .mobileBlock a {
