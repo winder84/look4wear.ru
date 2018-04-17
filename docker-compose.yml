@@ -1,0 +1,20 @@
+version: '2'
+
+services:
+
+  app:
+    container_name: sf.app
+    build: docker/php-fpm
+    volumes:
+      - .:/app
+      - ./app/logs:/app/app/logs
+      - ./app/cache.:/app/app/cache
+    working_dir: /app
+
+  nginx:
+    container_name: sf.nginx
+    build: docker/nginx
+    volumes_from:
+      - app
+    ports:
+      - "81:80"
