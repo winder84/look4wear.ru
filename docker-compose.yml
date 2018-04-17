@@ -8,7 +8,7 @@ services:
     volumes:
       - .:/app
       - ./app/logs:/app/app/logs
-      - ./app/cache.:/app/app/cache
+      - ./app/cache:/app/app/cache
     working_dir: /app
 
   nginx:
