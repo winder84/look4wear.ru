@@ -5,6 +5,8 @@ services:
   app:
     container_name: sf.app
     build: docker/php-fpm
+    environment:
+      TIMEZONE: Europe/Moscow
     volumes:
       - .:/app
       - ./app/logs:/app/app/logs
@@ -17,4 +19,4 @@ services:
     volumes_from:
       - app
     ports:
-      - "81:80"
+      - 8080:80

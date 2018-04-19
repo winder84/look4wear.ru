@@ -169,15 +169,9 @@ fos_user:
 
 sphinxsearch:
     searchd:
-        # Host name for your Sphinx daemon
-        host: localhost
-        # Port number for your Sphinx daemon
-        port: 9312
-        # If you want to connect via scoket
-#        socket: /path/to/socket.file
+        host: '%sphinx_host%'
+        port: '%sphinx_port%'
     indexes:
-        # List of sphinx index names (key) and entity names (value)
-        # to use it in searchEx() method
         Goods: "AppBundle:Goods"
 
 assetic:
