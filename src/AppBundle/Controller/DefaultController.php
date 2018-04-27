@@ -534,6 +534,14 @@ class DefaultController extends Controller
         if (!$goods) {
             throw $this->createNotFoundException('The $goods does not exist');
         }
+        return $this->render('AppBundle:look4wear:buy.html.twig', [
+            'seoTitle' => 'Осуществляется переход в магазин ' . $goods->getOffer()->getName(),
+            'pageTitle' => 'Осуществляется переход в магазин ' . $goods->getOffer()->getName(),
+            'seoDescription' => 'Осуществляется переход в магазин ' . $goods->getOffer()->getName(),
+            'childrenCategories' => [],
+            'mainMenuCategories' => self::$mainMenuCategories,
+            'goods' => $goods,
+        ]);
         return $this->redirect($goods->getURl());
     }
 
