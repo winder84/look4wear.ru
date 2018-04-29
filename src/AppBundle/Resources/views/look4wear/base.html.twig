@@ -25,7 +25,7 @@
         {% block body %}{% endblock %}
         {% block footer %}{% endblock %}
         {% block stylesheets %}
-            {% stylesheets 'bundles/app/css/*.min.css' filter='cssrewrite' %}
+            {% stylesheets 'bundles/app/css/main.css' filter='cssrewrite' %}
                 <link rel="stylesheet" href="{{ asset_url }}" />
             {% endstylesheets %}
         {% endblock %}

@@ -1,14 +1,14 @@
 body {
     margin: 0;
     padding: 0;
-    background: #f5f9eb;
-    color: #87603F;
+    background: #eef5ee;
+    color: #081822;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 body a {
     text-decoration: none;
-    color: #87603F;
+    color: #081822;
 }
 
 body h1 {
@@ -22,7 +22,7 @@ body a:hover {
 }
 
 header {
-    background: #9ca69c;
+    background: #b5d1f1;
 }
 
 header section {
@@ -81,11 +81,11 @@ header form button:hover {
     width: 100%;
     text-align: center;
     line-height: 3rem;
-    background: #595D5D;
+    background: #081822;
 }
 
 .mainMenu nav a {
-    color: #e2e3e0;
+    color: #eef5ee;
     margin: 0 .7rem;
 }
 
@@ -103,10 +103,6 @@ header form button:hover {
 
 .breadcrumbs li {
     display: inline-block;
-}
-
-.goodsSection {
-    width: 100%;
 }
 
 .vendorsWrapper, .otherCategoriesWrapper {
@@ -138,6 +134,8 @@ header form button:hover {
 }
 
 .goodsSection {
+    display: flex;
+    justify-content: center;
     flex-flow: row wrap;
     margin: 0 -5px 20px -10px;
     text-align: center;
@@ -167,25 +165,22 @@ header form button:hover {
 }
 
 .childrenCategories .item {
-    display: inline-block;
-    width: 10%;
+    display: flex;
+    width: 9%;
     margin-left: 15px;
-    border: 1px solid #ddd;
     margin-bottom: 15px;
     vertical-align: top;
     height: 14rem;
-    box-shadow: 1px 1px 3px #A69CA3;
 }
 
 .goodsSection .item {
     position: relative;
-    display: inline-block;
+    display: flex;
     width: 18%;
+    height: auto;
     margin: 0 0 12px 24px;
-    border: 1px solid #999;
     vertical-align: top;
     overflow: hidden;
-    box-shadow: 0 1px #D3C9CF;
 }
 
 .childrenCategories .item h2 {
@@ -208,13 +203,12 @@ header form button:hover {
 
 .goodsDescr {
     width: 100%;
-    background: #E7E3E0;
     border-top: 1px solid #999;
     font-size: 0.9rem;
 }
 
 .goodsPrice {
-    color: #336C5A;
+    color: #244769;
     font-weight: bold;
 }
 
@@ -231,12 +225,12 @@ header form button:hover {
     margin: 0 10px;
     font-size: 1.3rem;
     font-weight: bold;
-    color: #336C5A;
+    color: #244769;
 }
 
 .paginationUl li a {
     font-weight: normal;
-    color: #336C5A;
+    color: #244769;
 }
 
 .titleDiv h3 {
@@ -250,12 +244,12 @@ header form button:hover {
 .greenLine {
     width: 100%;
     height: 20px;
-    background: #595D5D;
+    background: #081822;
     margin: 10px 0 0 0;
 }
 
 footer {
-    background: #9ca69c;
+    background: #b5d1f1;
     padding: 1rem 10%;
 }
 
@@ -280,13 +274,19 @@ footer ul {
     margin: 10px auto;
 }
 
+section.indexSection {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-flow: row wrap;
+}
+
 .categoryBox {
+    display: flex;
     width: 49%;
-    display: inline-block;
     vertical-align: top;
     overflow: hidden;
     margin: 0 0 20px 0;
-    border: 1px solid #999;
     text-align: center;
 }
 
@@ -314,11 +314,13 @@ footer ul {
 
 .categoryBoxDesrcr {
     width: 100%;
-    background: #f5f9eb;
+    margin: -5rem 0 0 0;
+    position: relative;
+    overflow: hidden;
+    background: #b5d1f1;
 }
 
 .categoryBoxImg {
-    height: 400px;
     overflow: hidden;
 }
 
@@ -352,11 +354,15 @@ footer ul {
     margin: 0.2rem;
 }
 
+a.productLink {
+    width: 100%;
+}
+
 /*----------------------------------------------------------------------------------------*/
 .mobileBlock {
     display: none;
     width: 100%;
-    background: #9ca69c;
+    background: #b5d1f1;
     position: fixed;
     z-index: 1;
 }
@@ -393,7 +399,7 @@ footer ul {
 .menu__icon span {
     display: block;
     position: absolute;
-    height: 9px;
+    height: 5px;
     width: 100%;
     background: #333333;
     border-radius: 9px;
@@ -430,8 +436,7 @@ footer ul {
 }
 
 .mobileBlock.menu_state_open .menu__icon span:nth-child(4) {
-    top: 18px;
-    left: 50%;
+    display: none;
 }
 
 .mobileBlock.menu_state_open .menu__links {
@@ -494,7 +499,7 @@ footer ul {
         left: 0;
         margin-top: 69px;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.9);
+        background-color: rgba(08, 18, 22, 0.97);
         z-index: 1000;
         overflow: auto;
     }
@@ -550,10 +555,6 @@ footer ul {
         padding: 0;
     }
 
-    .categoryBox {
-        width: 48%;
-    }
-
     .catalogItem {
         width: 100%;
     }
@@ -569,7 +570,7 @@ footer ul {
     }
 
     .childrenCategories .item {
-        width: 20%;
+        width: 14%;
         height: auto;
     }
 
@@ -590,10 +591,6 @@ footer ul {
 
     .vendorsWrapper .item {
         width: 120px;
-    }
-
-    .categoryBoxImg {
-        height: auto;
     }
 
     .categoryBoxDesrcr h2 {

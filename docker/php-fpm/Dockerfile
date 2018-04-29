@@ -55,5 +55,6 @@ RUN docker-php-ext-enable xdebug \
     && echo "xdebug.remote_port = 9001" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 RUN usermod -u 1000 www-data
+ADD start.sh /start.sh
 
 CMD php-fpm -F
