@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Category;
 use AppBundle\Entity\Vendor;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -42,9 +43,38 @@ class DefaultController extends Controller
     protected static $mainMenuCategories = [];
 
     /**
+     * @var ArrayCollection
+     */
+    protected static $parentCategories;
+
+    /**
      * @var string
      */
     protected static $canonicalLink;
+
+    public function __construct(EntityManager $entityManager)
+    {
+        self::$em = $entityManager;
+        self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
+        self::$parentCategories = self::$em
+            ->getRepository('AppBundle:Category')
+            ->findBy([
+                'isActive' => true,
+                'parentCategory' => null,
+            ]);
+        $mainMenuCategories = self::$em
+            ->getRepository('AppBundle:Category')
+            ->findBy([
+                'isActive' => true,
+                'inMainMenu' => true,
+            ]);
+        foreach ($mainMenuCategories as $mainMenuCategory) {
+            self::$mainMenuCategories[] = [
+                'title' => $mainMenuCategory->getTitle(),
+                'link' => $this->getParentCategoriesUrl($mainMenuCategory) . $mainMenuCategory->getAlias(),
+            ];
+        }
+    }
 
     /**
      * @Route("/", name="homepage",
@@ -52,11 +82,7 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $this->getMainMenuCategories();
-        return $this->render('AppBundle:look4wear:index.html.twig', array(
-            'base_dir' => realpath($this->container->getParameter('kernel.root_dir') . '/..') . DIRECTORY_SEPARATOR,
-            'mainMenuCategories' => self::$mainMenuCategories,
-        ));
+        return $this->defaultRender('AppBundle:look4wear:index.html.twig');
     }
 
 //    /**
@@ -88,7 +114,6 @@ class DefaultController extends Controller
      */
     public function vendorAction($alias, Request $request)
     {
-        self::$em = $this->getDoctrine()->getManager();
         $goods = [];
         $totalCount = 0;
         $vendor = self::$em
@@ -109,12 +134,10 @@ class DefaultController extends Controller
             $totalCount = count($goods);
         }
 
-        $this->getMainMenuCategories();
-        return $this->render('AppBundle:look4wear:vendor.html.twig', [
+        return $this->defaultRender('AppBundle:look4wear:vendor.html.twig', [
             'goods' => $goods,
             'totalCount' => $totalCount,
-            'mainMenuCategories' => self::$mainMenuCategories,
-        ]);
+            ]);
     }
 
     /**
@@ -125,8 +148,6 @@ class DefaultController extends Controller
      */
     public function catalogAction($token, Request $request)
     {
-        self::$em = $this->getDoctrine()->getManager();
-        self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
         $actualCategory = null;
         $categoryAliases = explode('/', $token);
         $categories = [];
@@ -145,7 +166,6 @@ class DefaultController extends Controller
         }
         $matches = [];
         $totalCount = 0;
-        $childrenCategories = [];
         $pagination = null;
         if ($actualCategory) {
             $excludeWords = explode(';', $actualCategory->getExcludeWords());
@@ -159,29 +179,6 @@ class DefaultController extends Controller
                 $matches = $searchGoods['matches'];
             }
             $totalCount = $searchGoods['total_found'];
-            if (count($actualCategory->getChildrenCategories()) > 0) {
-                foreach ($actualCategory->getChildrenCategories() as $childrenCategory) {
-                    if ($childrenCategory->getIsActive()) {
-                        $excludeWords = explode(';', $childrenCategory->getExcludeWords());
-                        $excludeWords = array_filter($excludeWords);
-                        $searchString = $childrenCategory->getSearchString();
-                        if ($excludeWords) {
-                            $searchString .= ' -' . implode(' -', $excludeWords);
-                        }
-                        $searchGoods = $this->searchByStringAndLimit($searchString, 5);
-                        if (isset($searchGoods['matches'])) {
-                            $categoryImage = json_decode(end($searchGoods['matches'])['attrs']['pictures'])[0];
-                        }
-                        if ($searchGoods['total_found'] > 0) {
-                            $childrenCategories[] = [
-                                'category' => $childrenCategory,
-                                'image' => $categoryImage,
-                                'url' => self::getParentCategoriesUrl($childrenCategory) . $childrenCategory->getAlias(),
-                            ];
-                        }
-                    }
-                }
-            }
             $parentsUrl = $this->getParentCategoriesUrl($actualCategory);
             $actualUrl = self::$canonicalLink = $parentsUrl . $actualCategory->getAlias();
             $pagination = [
@@ -215,23 +212,35 @@ class DefaultController extends Controller
                 }
             }
         }
-
-        $this->getMainMenuCategories();
-        return $this->render('AppBundle:look4wear:category.html.twig', [
+        if ($actualCategory->getChildrenCategories()) {
+            foreach ($actualCategory->getChildrenCategories() as $childrenCategory) {
+                $menuCategories[] = $childrenCategory;
+            }
+        }
+        $menuCategories[] = $actualCategory;
+        if ($actualCategory->getParentCategory()->getChildrenCategories()) {
+            foreach ($actualCategory->getParentCategory()->getChildrenCategories() as $brotherCategory) {
+                $menuCategories[] = $brotherCategory;
+            }
+        }
+        $menuCategories[] = $parentCategory = $actualCategory->getParentCategory();
+        while ($parentCategory->getParentCategory()) {
+            $menuCategories[] = $parentCategory = $parentCategory->getParentCategory();
+        }
+        return $this->defaultRender('AppBundle:look4wear:category.html.twig', [
             'breadcrumbs' => $this->getBreadcrumbs($actualCategory),
-            'category' => $actualCategory,
+            'actualCategory' => $actualCategory,
+            'actualParentCategories' => $menuCategories,
             'categoryTopVendorsResult' => $categoryTopVendorsResult,
             'goods' => $matches,
             'totalCount' => $totalCount,
             'pageTitle' => $actualCategory->getTitle(),
             'seoTitle' => $actualCategory->getSeoTitle(),
             'seoDescription' => $actualCategory->getDescription() ? $actualCategory->getDescription() : $actualCategory->getSeoTitle(),
-            'childrenCategories' => $childrenCategories,
             'pagination' => $pagination,
             'parentsUrl' => $parentsUrl,
             'actualUrl' => $actualUrl,
             'canonicalLink' => self::$canonicalLink,
-            'mainMenuCategories' => self::$mainMenuCategories,
         ]);
     }
 
@@ -243,8 +252,6 @@ class DefaultController extends Controller
     public function catalogPageAction()
     {
         $catalogCategories = [];
-        self::$em = $this->getDoctrine()->getManager();
-        self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
         $categories = self::$em
             ->getRepository('AppBundle:Category')
             ->findBy([
@@ -271,13 +278,11 @@ class DefaultController extends Controller
             }
         }
 
-        $this->getMainMenuCategories();
-        return $this->render('AppBundle:look4wear:catalog.html.twig', [
+        return $this->defaultRender('AppBundle:look4wear:catalog.html.twig', [
             'seoTitle' => self::$seoTitle,
             'seoDescription' => 'Каталог look4wear.ru - отличная и удобная платформа для выбора одежды по Вашему вкусу!',
             'pageTitle' => self::$pageTitle,
             'catalogCategories' => $catalogCategories,
-            'mainMenuCategories' => self::$mainMenuCategories,
         ]);
     }
 
@@ -288,8 +293,6 @@ class DefaultController extends Controller
      */
     public function sitemapPageAction()
     {
-        self::$em = $this->getDoctrine()->getManager();
-        self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
         $categories = self::$em
             ->getRepository('AppBundle:Category')
             ->findBy([
@@ -304,14 +307,12 @@ class DefaultController extends Controller
             $allVendors[$vendor->getAlias()] = $vendor;
         }
 
-        $this->getMainMenuCategories();
-        return $this->render('AppBundle:look4wear:sitemap.html.twig', [
+        return $this->defaultRender('AppBundle:look4wear:sitemap.html.twig', [
             'seoTitle' => 'Карта сайта look4wear.ru',
             'pageTitle' => self::$pageTitle,
             'seoDescription' => 'Карта сайта look4wear.ru',
             'parentCategories' => $categories,
             'allVendors' => $allVendors,
-            'mainMenuCategories' => self::$mainMenuCategories,
         ]);
     }
 
@@ -326,8 +327,6 @@ class DefaultController extends Controller
     {
         $matches = [];
         $totalCount = 0;
-        self::$em = $this->getDoctrine()->getManager();
-        self::$em->getConnection()->getConfiguration()->setSQLLogger(null);
         /** @var Category $category */
         $category = self::$em
             ->getRepository('AppBundle:Category')
@@ -432,8 +431,7 @@ class DefaultController extends Controller
         arsort($otherCategories);
         $otherCategories = array_slice($otherCategories, 0, 20);
 
-        $this->getMainMenuCategories();
-        return $this->render('AppBundle:look4wear:filter.html.twig', [
+        return $this->defaultRender('AppBundle:look4wear:filter.html.twig', [
             'breadcrumbs' => $breadcrumbs,
             'goods' => $matches,
             'totalCount' => $totalCount,
@@ -446,7 +444,6 @@ class DefaultController extends Controller
             'vendorAlias' => $vendorAlias,
             'parentsUrl' => $parentsUrl,
             'seoDescription' => self::$seoDescription,
-            'mainMenuCategories' => self::$mainMenuCategories,
         ]);
     }
 
@@ -470,8 +467,7 @@ class DefaultController extends Controller
             'totalPagesCount' => ceil($totalCount / self::$resultsOnPage),
         ];
 
-        $this->getMainMenuCategories();
-        return $this->render('AppBundle:look4wear:search.html.twig', [
+        return $this->defaultRender('AppBundle:look4wear:search.html.twig', [
             'goods' => $matches,
             'seoTitle' => '',
             'pageTitle' => '',
@@ -479,7 +475,6 @@ class DefaultController extends Controller
             'totalCount' => $totalCount,
             'searchString' => $searchString,
             'pagination' => $pagination,
-            'mainMenuCategories' => self::$mainMenuCategories,
         ]);
     }
 
@@ -492,14 +487,12 @@ class DefaultController extends Controller
     public function aboutAction(Request $request)
     {
 
-        $this->getMainMenuCategories();
-        return $this->render('AppBundle:look4wear:about.html.twig', [
+        return $this->defaultRender('AppBundle:look4wear:about.html.twig', [
             'seoTitle' => 'О проекте look4wear.ru',
             'pageTitle' => '',
             'seoDescription' => 'look4wear.ru – ваш незаменимый помощник в шоппинге! На нашем портале собрана мужская и женская одежда самых известных марок,
              а также обувь и аксессуары. Модные бренды размещают здесь свои каталоги, чтобы вы могли сделать покупки всего за пару кликов.',
             'childrenCategories' => [],
-            'mainMenuCategories' => self::$mainMenuCategories,
         ]);
     }
 
@@ -512,13 +505,11 @@ class DefaultController extends Controller
     public function shippingAction(Request $request)
     {
 
-        $this->getMainMenuCategories();
-        return $this->render('AppBundle:look4wear:shipping.html.twig', [
+        return $this->defaultRender('AppBundle:look4wear:shipping.html.twig', [
             'seoTitle' => 'Доставка и возврат',
             'pageTitle' => '',
             'seoDescription' => 'Условия доставки товаров в каталоге look4wear.ru. Возможность возврата товара в магазин.',
             'childrenCategories' => [],
-            'mainMenuCategories' => self::$mainMenuCategories,
         ]);
     }
 
@@ -534,15 +525,14 @@ class DefaultController extends Controller
         if (!$goods) {
             throw $this->createNotFoundException('The $goods does not exist');
         }
-        return $this->render('AppBundle:look4wear:buy.html.twig', [
+
+        return $this->defaultRender('AppBundle:look4wear:shipping.html.twig', [
             'seoTitle' => 'Осуществляется переход в магазин ' . $goods->getOffer()->getName(),
             'pageTitle' => 'Осуществляется переход в магазин ' . $goods->getOffer()->getName(),
             'seoDescription' => 'Осуществляется переход в магазин ' . $goods->getOffer()->getName(),
             'childrenCategories' => [],
-            'mainMenuCategories' => self::$mainMenuCategories,
             'goods' => $goods,
         ]);
-        return $this->redirect($goods->getURl());
     }
 
     /**
@@ -633,20 +623,11 @@ class DefaultController extends Controller
         return $parentsUrl;
     }
 
-    private function getMainMenuCategories()
+    private function defaultRender($templateName, $templateArgs = [])
     {
-        self::$em = $this->getDoctrine()->getManager();
-        $mainMenuCategories = self::$em
-            ->getRepository('AppBundle:Category')
-            ->findBy([
-                'isActive' => true,
-                'inMainMenu' => true,
-            ]);
-        foreach ($mainMenuCategories as $mainMenuCategory) {
-            self::$mainMenuCategories[] = [
-                'title' => $mainMenuCategory->getTitle(),
-                'link' => $this->getParentCategoriesUrl($mainMenuCategory) . $mainMenuCategory->getAlias(),
-            ];
-        }
+        return $this->render($templateName, [
+            'mainMenuCategories' => self::$mainMenuCategories,
+            'parentCategories' => self::$parentCategories,
+        ] + $templateArgs);
     }
 }

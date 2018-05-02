@@ -74,7 +74,6 @@ class CategoryAdmin extends AbstractAdmin
                 'class' => 'AppBundle:Category',
                 'choice_label' => 'name',
                 'label' => 'Родительская категория',
-                'empty_value' => true,
                 'placeholder' => 'Нет',
                 'required' => false,
             ))

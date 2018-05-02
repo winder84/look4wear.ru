@@ -9,8 +9,8 @@ services:
       TIMEZONE: Europe/Moscow
     volumes:
       - .:/app
-      - ./app/logs:/app/app/logs
-      - ./app/cache:/app/app/cache
+      - ./var/logs:/app/var/logs
+      - ./var/cache:/app/var/cache
     working_dir: /app
 
   nginx:

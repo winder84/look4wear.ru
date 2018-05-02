@@ -1,0 +1,39 @@
+<section class="sideMenu">
+    <ul>
+        {% macro recursiveCategory(category, actualParentCategories, actualCategory) %}
+            {% import _self as self %}
+            {% if category in actualParentCategories %}
+                <li>
+                    {% if not category.parentCategory %}
+                    <h3>
+                        {% else %}
+                        <h4>
+                            {% endif %}
+                            <a href="{{ category|get_category_url }}" {% if actualCategory == category %}class="active" {% endif %}
+                               title="{{ category.seoTitle }}">{{ category.title }}</a>
+                            {% if not category.parentCategory %}
+                    </h3>
+                {% else %}
+                    </h4>
+                    {% endif %}
+
+                    {% if category.childrenCategories|length %}
+                        <ul>
+                            {% for child in category.childrenCategories %}
+                                {{ self.recursiveCategory(child, actualParentCategories, actualCategory) }}
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endif %}
+        {% endmacro %}
+        {% import _self as self %}
+        {% if parentCategories %}
+            <ul>
+                {% for category in parentCategories %}
+                    {{ self.recursiveCategory(category, actualParentCategories, actualCategory) }}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </ul>
+</section>

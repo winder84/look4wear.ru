@@ -2,9 +2,9 @@
 
 {% block content %}
     {{ include('AppBundle:look4wear:goods.block.html.twig', { 'goods': goods }) }}
-    {% if category.description %}
+    {% if actualCategory.description %}
         <div class="descriptionDiv">
-            {{ category.description|raw }}
+            {{ actualCategory.description|raw }}
         </div>
     {% endif %}
     {% if categoryTopVendorsResult %}

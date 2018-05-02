@@ -2,7 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
-    - { resource: @AppBundle/Resources/config/services.yml }
+    - { resource: '@AppBundle/Resources/config/services.yml' }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -30,6 +30,8 @@ framework:
         handler_id: ~
     fragments: ~
     http_method_override: true
+    assets:
+        version:  "1.0"
 
 # Twig Configuration
 twig:
@@ -39,6 +41,8 @@ twig:
     form_themes:
         - '@SonataFormatter/Form/formatter.html.twig'
         - '@SonataMedia/Form/media_widgets.html.twig'
+    paths:
+            "%kernel.root_dir%": app
 
 sonata_formatter:
     default_formatter: text
@@ -154,6 +158,9 @@ sonata_block:
 sonata_user:
     security_acl: true
     manager_type: orm # can be orm or mongodb
+    class:            # Entity Classes
+        user:               Application\Sonata\UserBundle\Entity\User
+        group:              Application\Sonata\UserBundle\Entity\Group
 
 fos_user:
     db_driver:      orm # can be orm or odm
@@ -166,6 +173,10 @@ fos_user:
 
     service:
         user_manager: sonata.user.orm.user_manager
+
+    from_email:
+        address: "rr@rr.rr"
+        sender_name: "%mailer_user%"
 
 sphinxsearch:
     searchd:

@@ -5,7 +5,8 @@
     "autoload": {
         "psr-4": {
             "AppBundle\\": "src/AppBundle",
-            "Application\\": "src/Application"
+            "Application\\": "src/Application",
+            "SphinxsearchBundle\\": "vendor/iakumai/sphinxsearch-bundle"
         },
         "classmap": [
             "app/AppKernel.php",
@@ -27,7 +28,7 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "liip/imagine-bundle": "^1.9",
         "presta/sitemap-bundle": "^1.5",
-        "sensio/distribution-bundle": "~4.0",
+        "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^3.0.2",
         "sonata-project/admin-bundle": "^3.20",
         "sonata-project/block-bundle": "^3.12",
@@ -35,11 +36,11 @@
         "sonata-project/easy-extends-bundle": "^2.2",
         "sonata-project/formatter-bundle": "^3.4",
         "sonata-project/media-bundle": "^3.12",
-        "sonata-project/user-bundle": "^3.2",
+        "sonata-project/user-bundle": "^4.0",
         "symfony/assetic-bundle": "^2.8",
         "symfony/monolog-bundle": "^3.0.2",
         "symfony/swiftmailer-bundle": "~2.3,>=2.3.10",
-        "symfony/symfony": "2.8.*",
+        "symfony/symfony": "3.4.*",
         "twig/twig": "^1.0||^2.0",
         "twitter/bootstrap": "3.*"
     },

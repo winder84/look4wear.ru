@@ -1,75 +1,50 @@
-{% if goods is defined and goods|length > 0 %}
     {% if pageTitle %}
         <h1>{{ pageTitle }}</h1>
     {% endif %}
-    {% if childrenCategories is defined and childrenCategories|length > 0 %}
-        <section class="childrenCategories">
-            {% for childrenCategory in childrenCategories %}
-                <div class="item">
-                    <a href="{{ childrenCategory.url }}" class="progressive replace"
-                       title="{{ childrenCategory.category.seoTitle }}">
-                        {% if childrenCategory.category.media %}
-                            <div class="childrenCategoryImg">
-                                <img class="b-lazy" src="{{ asset('/bundles/app/images/no-image.png') }}"
-                                     data-src="{% path childrenCategory.category.media, 'big' %}"
-                                     title="{{ childrenCategory.category.seoTitle }}" alt=""/>
-                            </div>
-                        {% elseif childrenCategory.image %}
-                            <div class="childrenCategoryImg">
-                                <img class="b-lazy" src="{{ asset('/bundles/app/images/no-image.png') }}"
-                                     data-src="{{ childrenCategory.image | my_replace | imagine_filter('my_thumb') }}"
-                                     alt="фото {{ childrenCategory.category.seoTitle }}"/>
-                            </div>
-                        {% endif %}
-                        <h2>{{ childrenCategory.category.name }}</h2>
-                    </a>
-                </div>
-            {% endfor %}
-        </section>
-        <hr/>
-    {% endif %}
 
-    {% if goods is defined and goods|length > 0 %}
-        <section class="goodsSection">
-            {% for goodsItem in goods %}
-                <div class="item" data-goods-id="{{ goodsItem.attrs.goodsid }}">
-                    {% if goodsItem.attrs.price < goodsItem.attrs.oldprice %}
-                        <div class="discountBlock">
-                            -{{ ((goodsItem.attrs.oldprice - goodsItem.attrs.price) / goodsItem.attrs.oldprice * 100)|round }}%
-                        </div>
-                    {% endif %}
-                    <a class="productLink" target="_blank" rel="nofollow" href="#"
-                       data-product-alias="{{ goodsItem.attrs.alias }}"
-                       title="Купить {{ goodsItem.attrs.name }} по выгодной цене.">
-                        {% if goodsItem.attrs.pictures %}
-                            <div class="goodsImg">
-                                <img class="b-lazy" src="{{ asset('/bundles/app/images/no-image.png') }}"
-                                     data-src="{{ goodsItem.attrs.pictures| json_decode.0 | my_replace | imagine_filter('my_thumb') }}"
-                                     alt="Купить {{ goodsItem.attrs.name }} в интернет-магазине."
-                                     onerror="this.style.display='none'"/>
-                            </div>
-                        {% else %}
-                            <div class="goodsImg">
-                                <img class="b-lazy" src="{{ asset('/bundles/app/images/no-image.png') }}" alt=""
-                                     onerror="this.style.display='none'"/>
+    <div class="goodsMain">
+        {% include 'AppBundle:look4wear:side.menu.html.twig'%}
+        {% if goods is defined and goods|length > 0 %}
+            <section class="goodsSection">
+                {% for goodsItem in goods %}
+                    <div class="item" data-goods-id="{{ goodsItem.attrs.goodsid }}">
+                        {% if goodsItem.attrs.price < goodsItem.attrs.oldprice %}
+                            <div class="discountBlock">
+                                -{{ ((goodsItem.attrs.oldprice - goodsItem.attrs.price) / goodsItem.attrs.oldprice * 100)|round }}%
                             </div>
                         {% endif %}
-                        <div class="goodsDescr">
-                            {{ goodsItem.attrs.vendorname }}
-                            <br/>
-                            {{ goodsItem.attrs.name|length > 28 ? goodsItem.attrs.name|slice(0, 28) ~ '...' : goodsItem.attrs.name }}
-                            <br/>
-                            Цена:
-                            <span class="goodsPrice">{{ goodsItem.attrs.price }} руб</span>
-                        </div>
-                    </a>
-                </div>
-            {% endfor %}
-            {% if pagination is defined %}
-                {{ include('AppBundle:look4wear:pagination.html.twig', { 'pagination': pagination }) }}
-            {% endif %}
-        </section>
-    {% endif %}
-{% else %}
-    {{ include('AppBundle:look4wear:goods.not.found.html.twig') }}
-{% endif %}
+                        <a class="productLink" target="_blank" rel="nofollow" href="#"
+                           data-product-alias="{{ goodsItem.attrs.alias }}"
+                           title="Купить {{ goodsItem.attrs.name }} по выгодной цене.">
+                            {% if goodsItem.attrs.pictures %}
+                                <div class="goodsImg">
+                                    <img class="b-lazy" src="{{ asset('/bundles/app/images/no-image.png') }}"
+                                         data-src="{{ goodsItem.attrs.pictures| json_decode.0 | my_replace | imagine_filter('my_thumb') }}"
+                                         alt="Купить {{ goodsItem.attrs.name }} в интернет-магазине."
+                                         onerror="this.style.display='none'"/>
+                                </div>
+                            {% else %}
+                                <div class="goodsImg">
+                                    <img class="b-lazy" src="{{ asset('/bundles/app/images/no-image.png') }}" alt=""
+                                         onerror="this.style.display='none'"/>
+                                </div>
+                            {% endif %}
+                            <div class="goodsDescr">
+                                {{ goodsItem.attrs.vendorname }}
+                                <br/>
+                                {{ goodsItem.attrs.name|length > 28 ? goodsItem.attrs.name|slice(0, 28) ~ '...' : goodsItem.attrs.name }}
+                                <br/>
+                                Цена:
+                                <span class="goodsPrice">{{ goodsItem.attrs.price }} руб</span>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+                {% if pagination is defined %}
+                    {{ include('AppBundle:look4wear:pagination.html.twig', { 'pagination': pagination }) }}
+                {% endif %}
+            </section>
+        {% else %}
+            {{ include('AppBundle:look4wear:goods.not.found.html.twig') }}
+        {% endif %}
+    </div>
