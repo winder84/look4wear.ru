@@ -341,12 +341,31 @@ a.productLink {
     width: 25%;
 }
 
+.sideMenu ul {
+    list-style: none;
+    margin: 0 0 0 1rem;
+    padding: 0;
+}
+
+
+.sideMenu ul li {
+    margin: 0.5rem 0 0 0;
+}
+
 .sideMenu h3, .sideMenu h4 {
     margin: 0;
 }
 
+.sideMenu h3 {
+    font-size: 1.2rem;
+}
+
 .sideMenu a.active {
     color: red;
+}
+
+.sideMenu a {
+    font-weight: normal;
 }
 
 /*----------------------------------------------------------------------------------------*/

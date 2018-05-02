@@ -218,15 +218,16 @@ class DefaultController extends Controller
             }
         }
         $menuCategories[] = $actualCategory;
-        if ($actualCategory->getParentCategory()->getChildrenCategories()) {
+        if ($actualCategory->getParentCategory() && $actualCategory->getParentCategory()->getChildrenCategories()) {
             foreach ($actualCategory->getParentCategory()->getChildrenCategories() as $brotherCategory) {
                 $menuCategories[] = $brotherCategory;
             }
         }
         $menuCategories[] = $parentCategory = $actualCategory->getParentCategory();
-        while ($parentCategory->getParentCategory()) {
+        while ($parentCategory && $parentCategory->getParentCategory()) {
             $menuCategories[] = $parentCategory = $parentCategory->getParentCategory();
         }
+        $menuCategories = array_merge($menuCategories, self::$parentCategories);
         return $this->defaultRender('AppBundle:look4wear:category.html.twig', [
             'breadcrumbs' => $this->getBreadcrumbs($actualCategory),
             'actualCategory' => $actualCategory,
@@ -430,6 +431,22 @@ class DefaultController extends Controller
         }
         arsort($otherCategories);
         $otherCategories = array_slice($otherCategories, 0, 20);
+        if ($category->getChildrenCategories()) {
+            foreach ($category->getChildrenCategories() as $childrenCategory) {
+                $menuCategories[] = $childrenCategory;
+            }
+        }
+        $menuCategories[] = $category;
+        if ($category->getParentCategory() && $category->getParentCategory()->getChildrenCategories()) {
+            foreach ($category->getParentCategory()->getChildrenCategories() as $brotherCategory) {
+                $menuCategories[] = $brotherCategory;
+            }
+        }
+        $menuCategories[] = $parentCategory = $category->getParentCategory();
+        while ($parentCategory && $parentCategory->getParentCategory()) {
+            $menuCategories[] = $parentCategory = $parentCategory->getParentCategory();
+        }
+        $menuCategories = array_merge($menuCategories, self::$parentCategories);
 
         return $this->defaultRender('AppBundle:look4wear:filter.html.twig', [
             'breadcrumbs' => $breadcrumbs,
@@ -438,7 +455,8 @@ class DefaultController extends Controller
             'seoTitle' => self::$seoTitle,
             'pageTitle' => self::$pageTitle,
             'pagination' => $pagination,
-            'category' => $category,
+            'actualCategory' => $category,
+            'actualParentCategories' => $menuCategories,
             'categoryTopVendorsResult' => $categoryTopVendorsResult,
             'otherCategories' => $otherCategories,
             'vendorAlias' => $vendorAlias,
