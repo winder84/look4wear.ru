@@ -10,7 +10,7 @@
                         <h4>
                             {% endif %}
                             <a href="{{ category|get_category_url }}" {% if actualCategory == category %}class="active" {% endif %}
-                               title="{{ category.seoTitle }}">{{ category.title }}</a>
+                               title="{{ category.seoTitle }}">{{ category.name }}</a>
                             {% if not category.parentCategory %}
                     </h3>
                 {% else %}
