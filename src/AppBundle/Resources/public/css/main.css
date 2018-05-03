@@ -188,7 +188,7 @@ header form button:hover {
 .paginationUl {
     list-style: none;
     margin: 0 auto;
-    width: 40%;
+    width: 100%;
     padding: 0;
 
 }
@@ -204,6 +204,7 @@ header form button:hover {
 .paginationUl li a {
     font-weight: normal;
     color: #244769;
+    font-size: 1rem;
 }
 
 .titleDiv h3 {
@@ -361,11 +362,15 @@ a.productLink {
 }
 
 .sideMenu a.active {
-    color: red;
+    color: #e40808;
 }
 
 .sideMenu a {
     font-weight: normal;
+}
+
+.descriptionDiv a {
+    color: #e40808;
 }
 
 /*----------------------------------------------------------------------------------------*/
