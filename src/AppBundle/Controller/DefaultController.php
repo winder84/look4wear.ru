@@ -544,7 +544,7 @@ class DefaultController extends Controller
             throw $this->createNotFoundException('The $goods does not exist');
         }
 
-        return $this->defaultRender('AppBundle:look4wear:shipping.html.twig', [
+        return $this->defaultRender('AppBundle:look4wear:buy.html.twig', [
             'seoTitle' => 'Осуществляется переход в магазин ' . $goods->getOffer()->getName(),
             'pageTitle' => 'Осуществляется переход в магазин ' . $goods->getOffer()->getName(),
             'seoDescription' => 'Осуществляется переход в магазин ' . $goods->getOffer()->getName(),
