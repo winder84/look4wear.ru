@@ -300,10 +300,10 @@ class parseCommand extends ContainerAwareCommand
                 }
                 break;
             case 'price':
-                self::$goods->setPrice(floatval($value));
+                self::$goods->setPrice(floatval(str_replace(' ', '', $value)));
                 break;
             case 'oldprice':
-                self::$goods->setOldPrice(floatval($value));
+                self::$goods->setOldPrice(floatval(str_replace(' ', '', $value)));
                 break;
             case 'url':
                 self::$goods->setUrl($value);
