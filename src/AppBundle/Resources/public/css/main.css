@@ -115,6 +115,7 @@ header form button:hover {
     margin-left: -15px;
     margin-right: -5px;
     text-align: center;
+    justify-content: center;
 }
 
 .otherCategoriesWrapper {
@@ -162,7 +163,7 @@ header form button:hover {
     height: auto;
     vertical-align: top;
     overflow: hidden;
-    margin: 0 0 1rem 0;
+    margin: 0 0.5rem 1rem 0;
 }
 
 .vendorsWrapper .item img, .goodsSection img {
@@ -339,7 +340,7 @@ a.productLink {
 
 .sideMenu {
     display: flex;
-    width: 25%;
+    width: 20%;
 }
 
 .sideMenu ul {
