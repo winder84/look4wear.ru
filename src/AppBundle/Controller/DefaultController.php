@@ -490,6 +490,8 @@ class DefaultController extends Controller
             'seoTitle' => '',
             'pageTitle' => '',
             'childrenCategories' => [],
+            'actualParentCategories' => self::$parentCategories,
+            'actualCategory' => null,
             'totalCount' => $totalCount,
             'searchString' => $searchString,
             'pagination' => $pagination,
