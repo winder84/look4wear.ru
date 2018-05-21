@@ -6,7 +6,7 @@
         <title>
             {% block title %}
                 {% if seoTitle is defined and seoTitle %}
-                    {{ seoTitle|trim|slice(0, 64) }}
+                    {{ seoTitle }}
                 {% else %}
                     Каталог одежды и обуви look4wear.ru - ищем одежду для Вас!
                 {% endif %}
