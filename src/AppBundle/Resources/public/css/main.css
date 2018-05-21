@@ -95,6 +95,10 @@ header form button:hover {
     padding: 10px 0;
 }
 
+.content h1 {
+    font-size: 1.4rem;
+}
+
 .breadcrumbs {
     list-style: none;
     margin: 0;

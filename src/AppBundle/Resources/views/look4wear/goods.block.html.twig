@@ -1,5 +1,5 @@
-    {% if pageTitle %}
-        <h1>{{ pageTitle }}</h1>
+    {% if pageTitle or seoTitle %}
+        <h1>{% if seoTitle %}{{ seoTitle }}{% else %}{{ pageTitle }}{% endif %}</h1>
     {% endif %}
 
     <div class="goodsMain">
