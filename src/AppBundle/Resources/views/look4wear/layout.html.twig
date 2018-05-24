@@ -19,21 +19,21 @@
         <a href="/">
             <img style="margin: 5px 0;" src="/bundles/app/images/logo_L4W.svg" width="50px" title="look4wear.ru - сервис поиска одежды." alt="look4wear - сервис поиска одежды.">
         </a>
-        <div class="menu__links">
-            <a class="menu__links-item" href="/catalog_page">Каталог</a>
-            <a class="menu__links-item" href="/about">О пректе</a>
-            <a class="menu__links-item" href="/site_map">Карта сайта</a>
-            <hr />
-            {% if mainMenuCategories %}
-                {% for mainMenuCategory in mainMenuCategories %}
-                    <a class="menu__links-item" href="{{ mainMenuCategory.link }}">{{ mainMenuCategory.title }}</a>
-                {% endfor %}
-            {% endif %}
-            <hr />
-            <section class="mobileCategoriesMenu">
-                {% include 'AppBundle:look4wear:side.menu.html.twig'%}
-            </section>
-        </div>
+    </div>
+    <div class="menu__links">
+        <a class="menu__links-item" href="/catalog_page">Каталог</a>
+        <a class="menu__links-item" href="/about">О пректе</a>
+        <a class="menu__links-item" href="/site_map">Карта сайта</a>
+        <hr />
+        {% if mainMenuCategories %}
+            {% for mainMenuCategory in mainMenuCategories %}
+                <a class="menu__links-item" href="{{ mainMenuCategory.link }}">{{ mainMenuCategory.title }}</a>
+            {% endfor %}
+        {% endif %}
+        <hr />
+        <section class="mobileCategoriesMenu">
+            {% include 'AppBundle:look4wear:side.menu.html.twig'%}
+        </section>
     </div>
     <header>
         <section>

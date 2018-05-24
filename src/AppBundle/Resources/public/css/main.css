@@ -378,10 +378,6 @@ a.productLink {
     color: #e40808;
 }
 
-section.mobileCategoriesMenu {
-    padding: 0 0 1rem 3rem;
-}
-
 .mobileCategoriesMenu ul {
     padding: 0 0 0 2rem;
 }
@@ -389,6 +385,10 @@ section.mobileCategoriesMenu {
 .mobileCategoriesMenu a {
     color: #fff;
     float: none !important;
+}
+
+.mobileCategoriesMenu h4 {
+    margin: 1rem 0 0 0;
 }
 
 .mobileCategoriesMenu a.active {
@@ -401,7 +401,7 @@ section.mobileCategoriesMenu {
     width: 100%;
     background: #b5d1f1;
     position: fixed;
-    z-index: 1;
+    z-index: 1001;
 }
 
 .mobileBlock a {
@@ -536,11 +536,12 @@ section.mobileCategoriesMenu {
         top: 0;
         right: 0;
         left: 0;
-        margin-top: 69px;
+        padding-top: 69px;
         height: 100%;
         background-color: rgba(08, 18, 22, 0.97);
         z-index: 1000;
         overflow: auto;
+        box-sizing: border-box;
     }
 
     .menu__links-item {
@@ -549,8 +550,8 @@ section.mobileCategoriesMenu {
         text-align: center;
         color: #ffffff;
         width: 100%;
-        font-size: 2rem;
-        margin: 2rem 0 0 0 !important;
+        font-size: 1.5rem;
+        margin: 1rem 0 0 0 !important;
     }
 
     .indexSection h1 {
@@ -601,6 +602,20 @@ section.mobileCategoriesMenu {
     .catalogItem {
         width: 100%;
     }
+
+    section.mobileCategoriesMenu {
+        padding: 0 0 1rem 23rem;
+    }
+
+    .mobileCategoriesMenu h3 {
+        font-size: 2rem;
+        font-weight: normal;
+    }
+
+    .mobileCategoriesMenu h4 {
+        font-size: 1.5rem;
+        font-weight: normal;
+    }
 }
 
 @media screen and (max-width: 1024px) {
@@ -637,6 +652,10 @@ section.mobileCategoriesMenu {
 
     .categoryBoxDesrcr p {
         font-size: 0.8rem;
+    }
+
+    section.mobileCategoriesMenu {
+        padding: 0 0 1rem 14rem;
     }
 }
 
@@ -722,5 +741,26 @@ section.mobileCategoriesMenu {
 
     .breadcrumbs a {
         font-size: 0.8rem;
+    }
+
+    section.mobileCategoriesMenu {
+        padding: 0 0 1rem 2rem;
+    }
+
+    .mobileCategoriesMenu h3 {
+        font-size: 1.5rem;
+        font-weight: normal;
+        margin: 0.8rem 0;
+    }
+
+    .mobileCategoriesMenu h4 {
+        font-size: 1.2rem;
+        font-weight: normal;
+    }
+}
+
+@media (max-width: 380px) {
+    section.mobileCategoriesMenu {
+        padding: 0 0 1rem 1rem;
     }
 }
