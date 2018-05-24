@@ -424,6 +424,10 @@ a.productLink {
     text-decoration: underline;
 }
 
+.menu__links {
+    display: none;
+}
+
 .menu__icon {
     display: none;
     width: 45px;
