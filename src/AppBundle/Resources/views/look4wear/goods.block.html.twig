@@ -3,7 +3,9 @@
     {% endif %}
 
     <div class="goodsMain">
-        {% include 'AppBundle:look4wear:side.menu.html.twig'%}
+        <section class="sideMenu">
+            {% include 'AppBundle:look4wear:side.menu.html.twig'%}
+        </section>
         {% if goods is defined and goods|length > 0 %}
             <section class="goodsSection">
                 {% for goodsItem in goods %}

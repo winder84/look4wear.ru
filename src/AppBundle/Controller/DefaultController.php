@@ -45,7 +45,7 @@ class DefaultController extends Controller
     /**
      * @var ArrayCollection
      */
-    protected static $parentCategories;
+    protected static $parentCategories = [];
 
     /**
      * @var string
