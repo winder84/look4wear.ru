@@ -7,9 +7,9 @@
             {% include 'AppBundle:look4wear:side.menu.html.twig'%}
         </section>
         {% if goods is defined and goods|length > 0 %}
-            <section class="goodsSection">
+            <section class="goodsSection" itemscope itemtype="http://schema.org/ItemList">
                 {% for goodsItem in goods %}
-                    <div class="item" data-goods-id="{{ goodsItem.attrs.goodsid }}">
+                    <div class="item" data-goods-id="{{ goodsItem.attrs.goodsid }}" itemprop="itemListElement" itemscope itemtype="http://schema.org/Product">
                         {% if goodsItem.attrs.price < goodsItem.attrs.oldprice %}
                             <div class="discountBlock">
                                 -{{ ((goodsItem.attrs.oldprice - goodsItem.attrs.price) / goodsItem.attrs.oldprice * 100)|round }}%
@@ -20,7 +20,7 @@
                            title="Купить {{ goodsItem.attrs.name }} по выгодной цене.">
                             {% if goodsItem.attrs.pictures %}
                                 <div class="goodsImg">
-                                    <img class="b-lazy" src="{{ asset('/bundles/app/images/no-image.png') }}"
+                                    <img class="b-lazy" src="{{ asset('/bundles/app/images/no-image.png') }}" itemprop="image"
                                          data-src="{{ goodsItem.attrs.pictures| json_decode.0 | my_replace | imagine_filter('my_thumb') }}"
                                          alt="Купить {{ goodsItem.attrs.name }} в интернет-магазине."
                                          onerror="this.style.display='none'"/>
@@ -32,12 +32,12 @@
                                 </div>
                             {% endif %}
                             <div class="goodsDescr">
-                                {{ goodsItem.attrs.vendorname }}
+                                <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">{{ goodsItem.attrs.vendorname }}</span>
                                 <br/>
-                                {{ goodsItem.attrs.name|length > 28 ? goodsItem.attrs.name|slice(0, 28) ~ '...' : goodsItem.attrs.name }}
+                                <span itemprop="name">{{ goodsItem.attrs.name|length > 24 ? goodsItem.attrs.name|slice(0, 24) ~ '...' : goodsItem.attrs.name }}</span>
                                 <br/>
                                 Цена:
-                                <span class="goodsPrice">{{ goodsItem.attrs.price }} руб</span>
+                                <span class="goodsPrice" itemprop="price">{{ goodsItem.attrs.price }}</span><span class="goodsPrice" itemprop="priceCurrency" content="RUB">руб</span>
                             </div>
                         </a>
                     </div>
