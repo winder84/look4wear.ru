@@ -393,6 +393,7 @@ class DefaultController extends Controller
                 }
             }
         }
+        $parentsUrl = null;
         if ($category && $vendor) {
             self::$seoTitle = $category->getTitle() . ' ' . $vendor->getName() .
                 '. Купить в интернет-магазине по выгодной цене и с доставкой по России.';
