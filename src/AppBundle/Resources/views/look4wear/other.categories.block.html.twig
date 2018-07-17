@@ -6,7 +6,7 @@
     <div class="otherCategoriesWrapper">
         {% for alias, otherCategory in otherCategories %}
             {% if loop.index <= 10 %}
-                <a href="/filter/{{ alias }}/{{ vendorAlias }}"
+                <a href="{{ otherCategory.link }}/brand/{{ vendorAlias }}"
                    title="{{ otherCategory.title }} {{ otherCategory.vendorName }}. Товаров: {{ otherCategory.count }} шт.">
                     <h2 class="item">
                         {{ otherCategory.title }} ({{ otherCategory.count }}&nbsp;шт.)

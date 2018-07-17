@@ -141,6 +141,167 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/catalog/{token}/brand/{vendorAlias}", name="filter", requirements={"token"=".+"})
+     * @param $token
+     * @param $vendorAlias
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function filterAction($token, $vendorAlias, Request $request)
+    {
+        $category = null;
+        $categoryAliases = explode('/', $token);
+        $categories = [];
+        foreach ($categoryAliases as $categoryAlias) {
+            $categories[] = self::$em
+                ->getRepository('AppBundle:Category')
+                ->findOneBy([
+                    'alias' => $categoryAlias
+                ]);
+        }
+        $categories = array_filter($categories);
+        $categoryAliases = array_filter($categoryAliases);
+        if (count($categoryAliases) == count($categories)) {
+            $category = end($categories);
+        }
+        $matches = [];
+        $totalCount = 0;
+        /** @var Vendor $category */
+        $vendor = self::$em
+            ->getRepository('AppBundle:Vendor')
+            ->findOneBy([
+                'alias' => $vendorAlias
+            ]);
+        $parentsUrl = null;
+        if ($category) {
+            $excludeWords = explode(';', $category->getExcludeWords());
+            $excludeWords = array_filter($excludeWords);
+            $searchString = $category->getSearchString();
+            if ($vendor) {
+                $searchString .= ' @vendorAlias =' . $vendorAlias;
+//                $searchString .= ' ' . $vendorAlias;
+                $seoText = self::$em
+                    ->getRepository('AppBundle:SeoText')
+                    ->findOneBy([
+                        'alias' => $categoryAlias . '/' . $vendorAlias
+                    ]);
+                if ($seoText) {
+                    self::$seoDescription = $seoText->getText();
+                }
+            }
+            if ($excludeWords) {
+                $searchString .= ' -' . implode(' -', $excludeWords);
+            }
+            $searchGoods = $this->searchByString($searchString, $request->query->getInt('page', 0));
+            if (isset($searchGoods['matches'])) {
+                $matches = $searchGoods['matches'];
+            }
+            $totalCount = $searchGoods['total_found'];
+            $parentsUrl = $this->getParentCategoriesUrl($category);
+            $actualUrl = self::$canonicalLink = $parentsUrl . $category->getAlias();
+            $pagination = [
+                'url' => $actualUrl . '/brand/' . $vendor->getAlias() . '?',
+                'currentPage' => $request->query->getInt('page', 1),
+                'totalPagesCount' => ceil($totalCount / self::$resultsOnPage),
+            ];
+            $categoryTopVendors = $category->getData()['topVendors'];
+            $categoryTopVendorsResult = [];
+            if ($categoryTopVendors) {
+                foreach ($categoryTopVendors as $categoryTopVendorAlias => $categoryTopVendorCount) {
+                    $categoryTopVendor = self::$em
+                        ->getRepository('AppBundle:Vendor')
+                        ->findOneBy([
+                            'alias' => $categoryTopVendorAlias
+                        ]);
+                    if ($categoryTopVendor && $categoryTopVendorAlias != $vendorAlias) {
+                        $imgUrl = '';
+                        if (file_exists($this->get('kernel')->getRootDir() . '/../web/media/brands/' . $categoryTopVendorAlias . '.png')) {
+                            $imgUrl = $categoryTopVendorAlias . '.png';
+                        }
+                        $categoryTopVendorsResult[] = [
+                            'alias' => $categoryTopVendorAlias,
+                            'name' => $categoryTopVendor->getName(),
+                            'count' => $categoryTopVendorCount,
+                            'imgUrl' => $imgUrl,
+                        ];
+                    }
+                }
+            }
+        }
+        if ($category && $vendor) {
+            self::$seoTitle = $category->getTitle() . ' ' . $vendor->getName() .
+                '. Купить в интернет-магазине по выгодной цене и с доставкой по России.';
+            self::$pageTitle = ucfirst($category->getTitle()) . ' ' . $vendor->getName();
+            if (!self::$seoDescription) {
+                self::$seoDescription = self::$seoTitle;
+            }
+            $parentsUrl = $this->getParentCategoriesUrl($category);
+            $breadcrumbs = $this->getBreadcrumbs($category, $vendor);
+        } else {
+            $breadcrumbs = $this->getBreadcrumbs($category);
+        }
+
+        $otherCategories = [];
+        $qb = self::$em->createQueryBuilder();
+        $qb->select('c')
+            ->from('AppBundle:Category', 'c')
+            ->where('c.parentCategory != 0')
+            ->andWhere('REGEXP(c.data, :regexp) = true')
+            ->andWhere('c.isActive = 1')
+            ->setParameter('regexp', '[[:<:]]' . $vendorAlias . '[[:>:]]');
+        $categories = $qb->getQuery()->getResult();
+        /** @var Category $categoryItem */
+        foreach ($categories as $categoryItem) {
+            if ($categoryItem->getId() != $category->getId()) {
+                if (isset($categoryItem->getData()['topVendors'][$vendorAlias])) {
+                    $otherCategories[$categoryItem->getAlias()] = [
+                        'title' => $categoryItem->getTitle(),
+                        'count' => $categoryItem->getData()['topVendors'][$vendorAlias],
+                        'link' => $this->getParentCategoriesUrl($categoryItem) . $categoryItem->getAlias(),
+                    ];
+                    if ($vendor) {
+                        $otherCategories[$categoryItem->getAlias()]['vendorName'] = $vendor->getName();
+                    }
+                }
+            }
+        }
+        arsort($otherCategories);
+        $otherCategories = array_slice($otherCategories, 0, 20);
+        if ($category->getChildrenCategories()) {
+            foreach ($category->getChildrenCategories() as $childrenCategory) {
+                $menuCategories[] = $childrenCategory;
+            }
+        }
+        $menuCategories[] = $category;
+        if ($category->getParentCategory() && $category->getParentCategory()->getChildrenCategories()) {
+            foreach ($category->getParentCategory()->getChildrenCategories() as $brotherCategory) {
+                $menuCategories[] = $brotherCategory;
+            }
+        }
+        $menuCategories[] = $parentCategory = $category->getParentCategory();
+        while ($parentCategory && $parentCategory->getParentCategory()) {
+            $menuCategories[] = $parentCategory = $parentCategory->getParentCategory();
+        }
+        $menuCategories = array_merge($menuCategories, self::$parentCategories);
+
+        return $this->defaultRender('AppBundle:look4wear:filter.html.twig', [
+            'breadcrumbs' => $breadcrumbs,
+            'goods' => $matches,
+            'totalCount' => $totalCount,
+            'seoTitle' => self::$seoTitle,
+            'pageTitle' => self::$pageTitle,
+            'pagination' => $pagination,
+            'actualCategory' => $category,
+            'actualParentCategories' => $menuCategories,
+            'categoryTopVendorsResult' => $categoryTopVendorsResult,
+            'otherCategories' => $otherCategories,
+            'vendorAlias' => $vendorAlias,
+            'parentsUrl' => $parentsUrl,
+            'seoDescription' => self::$seoDescription,
+        ]);
+    }
+
+    /**
      * @Route("/catalog/{token}", name="catalog", requirements={"token"=".+"})
      * @param $token
      * @param Request $request
@@ -318,152 +479,25 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/filter/{categoryAlias}/{vendorAlias}", name="filter")
+     * @Route("/filter/{categoryAlias}/{vendorAlias}", name="filter_old")
      * @param $categoryAlias
      * @param $vendorAlias
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function filterAction($categoryAlias, $vendorAlias, Request $request)
+    public function filterOldAction($categoryAlias, $vendorAlias, Request $request)
     {
-        $matches = [];
-        $totalCount = 0;
+
         /** @var Category $category */
         $category = self::$em
             ->getRepository('AppBundle:Category')
             ->findOneBy([
                 'alias' => $categoryAlias
             ]);
-        /** @var Category $category */
-        $vendor = self::$em
-            ->getRepository('AppBundle:Vendor')
-            ->findOneBy([
-                'alias' => $vendorAlias
-            ]);
-        if ($category) {
-            $excludeWords = explode(';', $category->getExcludeWords());
-            $excludeWords = array_filter($excludeWords);
-            $searchString = $category->getSearchString();
-            if ($vendor) {
-                $searchString .= ' @vendorAlias =' . $vendorAlias;
-//                $searchString .= ' ' . $vendorAlias;
-                $seoText = self::$em
-                    ->getRepository('AppBundle:SeoText')
-                    ->findOneBy([
-                        'alias' => $categoryAlias . '/' . $vendorAlias
-                    ]);
-                if ($seoText) {
-                    self::$seoDescription = $seoText->getText();
-                }
-            }
-            if ($excludeWords) {
-                $searchString .= ' -' . implode(' -', $excludeWords);
-            }
-            $searchGoods = $this->searchByString($searchString, $request->query->getInt('page', 0));
-            if (isset($searchGoods['matches'])) {
-                $matches = $searchGoods['matches'];
-            }
-            $totalCount = $searchGoods['total_found'];
-            $pagination = [
-                'url' => '/filter/' . $categoryAlias . '/' . $vendorAlias . '?',
-                'currentPage' => $request->query->getInt('page', 1),
-                'totalPagesCount' => ceil($totalCount / self::$resultsOnPage),
-            ];
-            $categoryTopVendors = $category->getData()['topVendors'];
-            $categoryTopVendorsResult = [];
-            if ($categoryTopVendors) {
-                foreach ($categoryTopVendors as $categoryTopVendorAlias => $categoryTopVendorCount) {
-                    $categoryTopVendor = self::$em
-                        ->getRepository('AppBundle:Vendor')
-                        ->findOneBy([
-                            'alias' => $categoryTopVendorAlias
-                        ]);
-                    if ($categoryTopVendor && $categoryTopVendorAlias != $vendorAlias) {
-                        $imgUrl = '';
-                        if (file_exists($this->get('kernel')->getRootDir() . '/../web/media/brands/' . $categoryTopVendorAlias . '.png')) {
-                            $imgUrl = $categoryTopVendorAlias . '.png';
-                        }
-                        $categoryTopVendorsResult[] = [
-                            'alias' => $categoryTopVendorAlias,
-                            'name' => $categoryTopVendor->getName(),
-                            'count' => $categoryTopVendorCount,
-                            'imgUrl' => $imgUrl,
-                        ];
-                    }
-                }
-            }
-        }
-        $parentsUrl = null;
-        if ($category && $vendor) {
-            self::$seoTitle = $category->getTitle() . ' ' . $vendor->getName() .
-                '. Купить в интернет-магазине по выгодной цене и с доставкой по России.';
-            self::$pageTitle = ucfirst($category->getTitle()) . ' ' . $vendor->getName();
-            if (!self::$seoDescription) {
-                self::$seoDescription = self::$seoTitle;
-            }
-            $parentsUrl = $this->getParentCategoriesUrl($category);
-            $breadcrumbs = $this->getBreadcrumbs($category, $vendor);
-        } else {
-            $breadcrumbs = $this->getBreadcrumbs($category);
-        }
-
-        $otherCategories = [];
-        $qb = self::$em->createQueryBuilder();
-        $qb->select('c')
-            ->from('AppBundle:Category', 'c')
-            ->where('c.parentCategory != 0')
-            ->andWhere('REGEXP(c.data, :regexp) = true')
-            ->andWhere('c.isActive = 1')
-            ->setParameter('regexp', '[[:<:]]' . $vendorAlias . '[[:>:]]');
-        $categories = $qb->getQuery()->getResult();
-        /** @var Category $categoryItem */
-        foreach ($categories as $categoryItem) {
-            if ($categoryItem->getId() != $category->getId()) {
-                if (isset($categoryItem->getData()['topVendors'][$vendorAlias])) {
-                    $otherCategories[$categoryItem->getAlias()] = [
-                        'title' => $categoryItem->getTitle(),
-                        'count' => $categoryItem->getData()['topVendors'][$vendorAlias],
-                    ];
-                    if ($vendor) {
-                        $otherCategories[$categoryItem->getAlias()]['vendorName'] = $vendor->getName();
-                    }
-                }
-            }
-        }
-        arsort($otherCategories);
-        $otherCategories = array_slice($otherCategories, 0, 20);
-        if ($category->getChildrenCategories()) {
-            foreach ($category->getChildrenCategories() as $childrenCategory) {
-                $menuCategories[] = $childrenCategory;
-            }
-        }
-        $menuCategories[] = $category;
-        if ($category->getParentCategory() && $category->getParentCategory()->getChildrenCategories()) {
-            foreach ($category->getParentCategory()->getChildrenCategories() as $brotherCategory) {
-                $menuCategories[] = $brotherCategory;
-            }
-        }
-        $menuCategories[] = $parentCategory = $category->getParentCategory();
-        while ($parentCategory && $parentCategory->getParentCategory()) {
-            $menuCategories[] = $parentCategory = $parentCategory->getParentCategory();
-        }
-        $menuCategories = array_merge($menuCategories, self::$parentCategories);
-
-        return $this->defaultRender('AppBundle:look4wear:filter.html.twig', [
-            'breadcrumbs' => $breadcrumbs,
-            'goods' => $matches,
-            'totalCount' => $totalCount,
-            'seoTitle' => self::$seoTitle,
-            'pageTitle' => self::$pageTitle,
-            'pagination' => $pagination,
-            'actualCategory' => $category,
-            'actualParentCategories' => $menuCategories,
-            'categoryTopVendorsResult' => $categoryTopVendorsResult,
-            'otherCategories' => $otherCategories,
+        return $this->redirectToRoute('filter', [
+            'token' => $this->getParentCategoriesUrl($category, false) . $category->getAlias(),
             'vendorAlias' => $vendorAlias,
-            'parentsUrl' => $parentsUrl,
-            'seoDescription' => self::$seoDescription,
-        ]);
+        ], 301);
     }
 
     /**
@@ -594,16 +628,15 @@ class DefaultController extends Controller
     {
         if ($vendor) {
             $breadcrumbs[] = [
-                'link' => '/filter/' . $category->getAlias() . '/' . $vendor->getAlias(),
+                'link' => $this->getParentCategoriesUrl($category) . $category->getAlias() . '/brand/' . $vendor->getAlias(),
                 'title' => $category->getTitle() . ' "' . $vendor->getName() . '"',
             ];
-        } else {
-            $breadcrumbs[] = [
-                'link' => $this->getParentCategoriesUrl($category) . $category->getAlias(),
-                'title' => $category->getName(),
-                'seoTitle' => $category->getSeoTitle(),
-            ];
         }
+        $breadcrumbs[] = [
+            'link' => $this->getParentCategoriesUrl($category) . $category->getAlias(),
+            'title' => $category->getName(),
+            'seoTitle' => $category->getSeoTitle(),
+        ];
         $parentCategory = $category->getParentCategory();
         while ($parentCategory) {
             $breadcrumbs[] = [
@@ -624,12 +657,17 @@ class DefaultController extends Controller
 
     /**
      * @param Category $category
+     * @param boolean $withCatalog
      * @return string
      */
-    private function getParentCategoriesUrl(Category $category)
+    private function getParentCategoriesUrl(Category $category, $withCatalog = true)
     {
         $parentCategories = [];
-        $parentsUrl = '/catalog/';
+        if ($withCatalog) {
+            $parentsUrl = '/catalog/';
+        } else {
+            $parentsUrl = '';
+        }
         $parentCategories[] = $parentCategory = $category->getParentCategory();
         while ($parentCategory && $parentCategories[] = $parentCategory = $parentCategory->getParentCategory()) {
         }

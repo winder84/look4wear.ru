@@ -79,7 +79,7 @@ class SitemapSubscriber implements EventSubscriberInterface
                                 new UrlConcrete(
                                     $this->urlGenerator->generate(
                                         'filter',
-                                        ['categoryAlias' => $category->getAlias(), 'vendorAlias' => $categoryVendor],
+                                        ['token' => $categoryUrl, 'vendorAlias' => $categoryVendor],
                                         UrlGeneratorInterface::ABSOLUTE_URL
                                     )
                                 ),
