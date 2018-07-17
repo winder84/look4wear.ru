@@ -198,7 +198,10 @@ class DefaultController extends Controller
             }
             $totalCount = $searchGoods['total_found'];
             $parentsUrl = $this->getParentCategoriesUrl($category);
-            $actualUrl = self::$canonicalLink = $parentsUrl . $category->getAlias();
+            $actualUrl = $parentsUrl . $category->getAlias();
+            if ($request->query->getInt('page', 0)) {
+                self::$canonicalLink = $actualUrl . '/brand/' . $vendor->getAlias();
+            }
             $pagination = [
                 'url' => $actualUrl . '/brand/' . $vendor->getAlias() . '?',
                 'currentPage' => $request->query->getInt('page', 1),
@@ -298,6 +301,7 @@ class DefaultController extends Controller
             'vendorAlias' => $vendorAlias,
             'parentsUrl' => $parentsUrl,
             'seoDescription' => self::$seoDescription,
+            'canonicalLink' => self::$canonicalLink,
         ]);
     }
 
@@ -341,7 +345,10 @@ class DefaultController extends Controller
             }
             $totalCount = $searchGoods['total_found'];
             $parentsUrl = $this->getParentCategoriesUrl($actualCategory);
-            $actualUrl = self::$canonicalLink = $parentsUrl . $actualCategory->getAlias();
+            $actualUrl = $parentsUrl . $actualCategory->getAlias();
+            if ($request->query->getInt('page', 0)) {
+                self::$canonicalLink = $actualUrl;
+            }
             $pagination = [
                 'url' => $actualUrl . '?',
                 'currentPage' => $request->query->getInt('page', 1),

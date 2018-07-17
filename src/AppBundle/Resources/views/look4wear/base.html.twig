@@ -14,8 +14,6 @@
         </title>
         {% if canonicalLink is defined and canonicalLink != '' %}
             <link rel="canonical" href="{{ canonicalLink }}"/>
-        {% elseif app.request.attributes.get('_route') %}
-            <link rel="canonical" href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}"/>
         {% endif %}
         {% block counters %}{% endblock %}
         {% block metatags %}{% endblock %}
