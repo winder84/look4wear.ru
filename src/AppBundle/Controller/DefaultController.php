@@ -172,6 +172,11 @@ class DefaultController extends Controller
             ->findOneBy([
                 'alias' => $vendorAlias
             ]);
+        if ($category && !$vendor) {
+            return $this->redirectToRoute('catalog', [
+                'token' => $token,
+            ], 301);
+        }
         $parentsUrl = null;
         if ($category) {
             $excludeWords = explode(';', $category->getExcludeWords());
