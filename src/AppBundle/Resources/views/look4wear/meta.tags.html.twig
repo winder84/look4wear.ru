@@ -5,6 +5,9 @@
 {% if goods is defined and goods|length == 0 %}
     <meta name="robots" content="noindex">
 {% endif %}
+{% if keywords is defined and keywords %}
+    <meta name="keywords" content="{{ keywords }}">
+{% endif %}
 <meta name="Document-state" content="Dynamic">
 <meta http-equiv="Cache-Control" content="max-age=3600, must-revalidate">
 
