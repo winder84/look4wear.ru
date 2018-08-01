@@ -5,7 +5,7 @@
     </div>
     <div class="vendorsWrapper">
         {% for categoryTopVendor in categoryTopVendorsResult %}
-            {% if loop.index <= 10 %}
+            {% if loop.index <= 10 and vendorAlias != categoryTopVendor.alias %}
                 <a href="{{ actualCategory|get_category_url }}/brand/{{ categoryTopVendor.alias }}"
                    title="Купить {{ actualCategory.title }} {{ categoryTopVendor.name }}. Товаров: {{ categoryTopVendor.count }} шт."
                    class="categoryTopVendor">

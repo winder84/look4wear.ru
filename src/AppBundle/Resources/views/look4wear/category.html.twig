@@ -8,6 +8,6 @@
         </div>
     {% endif %}
     {% if categoryTopVendorsResult %}
-        {{ include('AppBundle:look4wear:top.vendors.block.html.twig', { 'categoryTopVendorsResult': categoryTopVendorsResult, 'title': 'Популярные бренды этой категории' }) }}
+        {{ include('AppBundle:look4wear:top.vendors.block.html.twig', { 'categoryTopVendorsResult': categoryTopVendorsResult, 'title': 'Популярные бренды этой категории', 'vendorAlias': '' }) }}
     {% endif %}
 {% endblock %}

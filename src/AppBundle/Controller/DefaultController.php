@@ -221,12 +221,12 @@ class DefaultController extends Controller
                         ->findOneBy([
                             'alias' => $categoryTopVendorAlias
                         ]);
-                    if ($categoryTopVendor && $categoryTopVendorAlias != $vendorAlias) {
+                    if ($categoryTopVendor) {
                         $imgUrl = '';
                         if (file_exists($this->get('kernel')->getRootDir() . '/../web/media/brands/' . $categoryTopVendorAlias . '.png')) {
                             $imgUrl = $categoryTopVendorAlias . '.png';
                         }
-                        $categoryTopVendorsResult[] = [
+                        $categoryTopVendorsResult[$categoryTopVendorAlias] = [
                             'alias' => $categoryTopVendorAlias,
                             'name' => $categoryTopVendor->getName(),
                             'count' => $categoryTopVendorCount,
@@ -376,7 +376,7 @@ class DefaultController extends Controller
                     if (file_exists($this->get('kernel')->getRootDir() . '/../web/media/brands/' . $categoryTopVendorAlias . '.png')) {
                         $imgUrl = $categoryTopVendorAlias . '.png';
                     }
-                    $categoryTopVendorsResult[] = [
+                    $categoryTopVendorsResult[$categoryTopVendorAlias] = [
                         'alias' => $categoryTopVendorAlias,
                         'name' => $categoryTopVendor->getName(),
                         'count' => $categoryTopVendorCount,

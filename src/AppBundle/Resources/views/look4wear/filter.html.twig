@@ -8,7 +8,7 @@
         </div>
     {% endif %}
     {% if categoryTopVendorsResult %}
-        {{ include('AppBundle:look4wear:top.vendors.block.html.twig', { 'categoryTopVendorsResult': categoryTopVendorsResult, 'title': 'Другие бренды этой категории' }) }}
+        {{ include('AppBundle:look4wear:top.vendors.block.html.twig', { 'categoryTopVendorsResult': categoryTopVendorsResult, 'title': 'Другие бренды этой категории', 'vendorAlias': vendorAlias }) }}
     {% endif %}
     {% if otherCategories %}
         {{ include('AppBundle:look4wear:other.categories.block.html.twig', { 'otherCategories': otherCategories, 'title': 'Другие категории этого бренда' }) }}

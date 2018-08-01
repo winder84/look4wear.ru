@@ -1,28 +1,44 @@
 <ul>
-    {% macro recursiveCategory(category, actualParentCategories, actualCategory) %}
+    {% macro recursiveCategory(category, actualParentCategories, actualCategory, vendorAlias, categoryTopVendorsResult) %}
         {% import _self as self %}
         {% if category in actualParentCategories %}
             <li>
-                {% if not category.parentCategory %}
+            {% if not category.parentCategory %}
                 <h3>
-                    {% else %}
-                    <h4>
-                        {% endif %}
-                        <a href="{{ category|get_category_url }}" {% if actualCategory == category %}class="active" {% endif %}
-                           title="{{ category.seoTitle }}">{{ category.name }}</a>
-                        {% if not category.parentCategory %}
+            {% else %}
+                <h4>
+            {% endif %}
+            <a href="{{ category|get_category_url }}" {% if actualCategory == category %}class="active" {% endif %}
+               title="{{ category.seoTitle }}">{{ category.name }}</a>
+            {% if not category.parentCategory %}
                 </h3>
             {% else %}
                 </h4>
-                {% endif %}
-
-                {% if category.childrenCategories|length %}
-                    <ul>
-                        {% for child in category.childrenCategories %}
-                            {{ self.recursiveCategory(child, actualParentCategories, actualCategory) }}
-                        {% endfor %}
-                    </ul>
-                {% endif %}
+            {% endif %}
+            {% if category.childrenCategories|length %}
+                <ul>
+                    {% for child in category.childrenCategories %}
+                        {{ self.recursiveCategory(child, actualParentCategories, actualCategory, vendorAlias, categoryTopVendorsResult) }}
+                    {% endfor %}
+                </ul>
+            {% elseif category.parentCategory and category.data.topVendors and actualCategory == category %}
+                <ul>
+                    {% for topVendor, count in category.data.topVendors|slice(0, 5) %}
+                        <li>
+                            <h4>
+                                <a href="{{ category|get_category_url }}/brand/{{ topVendor }}" {% if vendorAlias is defined and vendorAlias == topVendor %}class="active" {% endif %}
+                                   title="{{ category.seoTitle }} {{ topVendor }}">
+                                    {% if categoryTopVendorsResult[topVendor] is defined %}
+                                        {{ categoryTopVendorsResult[topVendor].name }}
+                                    {% else %}
+                                        {{ topVendor }}
+                                    {% endif %}
+                                </a>
+                            </h4>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
             </li>
         {% endif %}
     {% endmacro %}
@@ -31,7 +47,9 @@
         <ul>
             {% for category in parentCategories %}
                 {% if actualParentCategories is defined and actualCategory is defined %}
-                    {{ self.recursiveCategory(category, actualParentCategories, actualCategory) }}
+                    {% set vendorAlias = vendorAlias|default('') %}
+                    {% set categoryTopVendorsResult = categoryTopVendorsResult|default() %}
+                    {{ self.recursiveCategory(category, actualParentCategories, actualCategory, vendorAlias, categoryTopVendorsResult) }}
                 {% endif %}
             {% endfor %}
         </ul>
