@@ -307,7 +307,7 @@ class DefaultController extends Controller
             'parentsUrl' => $parentsUrl,
             'seoDescription' => self::$seoDescription,
             'canonicalLink' => self::$canonicalLink,
-            'keywords' => $category->getTitle() . ' ' . $vendor->getName(),
+            'keywords' => $category->getKeywords() ? $category->getKeywords() . ' ' . $vendor->getName() : $category->getTitle() . ' ' . $vendor->getName(),
         ]);
     }
 
@@ -416,7 +416,7 @@ class DefaultController extends Controller
             'parentsUrl' => $parentsUrl,
             'actualUrl' => $actualUrl,
             'canonicalLink' => self::$canonicalLink,
-            'keywords' => $actualCategory->getTitle(),
+            'keywords' => $actualCategory->getKeywords() ?: $actualCategory->getTitle(),
         ]);
     }
 
