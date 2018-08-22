@@ -48,6 +48,15 @@ class DefaultController extends Controller
     protected static $parentCategories = [];
 
     /**
+     * @var array
+     */
+    protected static $menuItems = [
+        'catalogPage' => 'Каталог',
+        'about_page' => 'О проекте',
+        'sitemap_page' => 'Карта сайта',
+    ];
+
+    /**
      * @var string
      */
     protected static $canonicalLink;
@@ -701,6 +710,7 @@ class DefaultController extends Controller
         return $this->render($templateName, [
             'mainMenuCategories' => self::$mainMenuCategories,
             'parentCategories' => self::$parentCategories,
+            'menuItems' => self::$menuItems,
         ] + $templateArgs);
     }
 }

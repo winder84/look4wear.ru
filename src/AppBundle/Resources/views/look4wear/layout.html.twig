@@ -16,18 +16,36 @@
             <span></span>
             <span></span>
         </div>
-        <a href="/">
-            <img style="margin: 5px 0;" src="/bundles/app/images/logo_L4W.svg" width="50px" title="look4wear.ru - сервис поиска одежды." alt="look4wear - сервис поиска одежды.">
-        </a>
+        {% if app.request.attributes.get('_route') != 'homepage' %}
+            <a href="/">
+                <img style="margin: 5px 0;" src="/bundles/app/images/logo_L4W.svg" width="50px" title="look4wear.ru - сервис поиска одежды." alt="look4wear - сервис поиска одежды.">
+            </a>
+        {% else %}
+            <span>
+                <img style="margin: 5px 0;" src="/bundles/app/images/logo_L4W.svg" width="50px" title="look4wear.ru - сервис поиска одежды." alt="look4wear - сервис поиска одежды.">
+            </span>
+        {% endif %}
     </div>
     <div class="menu__links">
-        <a class="menu__links-item" href="/catalog_page">Каталог</a>
-        <a class="menu__links-item" href="/about">О проекте</a>
-        <a class="menu__links-item" href="/site_map">Карта сайта</a>
+        {% for menuItemKey, menuItemValue in menuItems %}
+            {% if app.request.attributes.get('_route') == menuItemKey %}
+                <span class="menu__links-item active">{{ menuItemValue }}</span>
+            {% else %}
+                <a class="menu__links-item" href="{{ path(menuItemKey) }}">
+                    {{ menuItemValue }}
+                </a>
+            {% endif %}
+        {% endfor %}
         <hr />
         {% if mainMenuCategories %}
             {% for mainMenuCategory in mainMenuCategories %}
-                <a class="menu__links-item" href="{{ mainMenuCategory.link }}">{{ mainMenuCategory.title }}</a>
+                {% if path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) == mainMenuCategory.link %}
+                    <span class="active">{{ mainMenuCategory.title }}</span>
+                {% else %}
+                    <a href="{{ mainMenuCategory.link }}">
+                        {{ mainMenuCategory.title }}
+                    </a>
+                {% endif %}
             {% endfor %}
         {% endif %}
         <hr />
@@ -38,22 +56,40 @@
     <header>
         <section>
             <aside>
-                <a href="/">
-                    <img style="margin: 5px 0;" src="/bundles/app/images/logo_L4W.svg" width="50px" title="look4wear.ru - сервис поиска одежды." alt="look4wear - сервис поиска одежды.">
-                </a>
+                {% if app.request.attributes.get('_route') != 'homepage' %}
+                    <a href="/">
+                        <img style="margin: 5px 0;" src="/bundles/app/images/logo_L4W.svg" width="50px" title="look4wear.ru - сервис поиска одежды." alt="look4wear - сервис поиска одежды.">
+                    </a>
+                {% else %}
+                    <span>
+                        <img style="margin: 5px 0;" src="/bundles/app/images/logo_L4W.svg" width="50px" title="look4wear.ru - сервис поиска одежды." alt="look4wear - сервис поиска одежды.">
+                    </span>
+                {% endif %}
             </aside>
             {{ include('AppBundle:look4wear:search.form.html.twig') }}
             <nav role="navigation">
-                <a href="/catalog_page">Каталог</a>
-                <a href="/about">О проекте</a>
-                <a href="/site_map">Карта сайта</a>
+                {% for menuItemKey, menuItemValue in menuItems %}
+                    {% if app.request.attributes.get('_route') == menuItemKey %}
+                        <span class="active">{{ menuItemValue }}</span>
+                    {% else %}
+                        <a href="{{ path(menuItemKey) }}">
+                            {{ menuItemValue }}
+                        </a>
+                    {% endif %}
+                {% endfor %}
             </nav>
         </section>
         {% if mainMenuCategories %}
             <section class="mainMenu">
                 <nav role="navigation">
                     {% for mainMenuCategory in mainMenuCategories %}
-                        <a href="{{ mainMenuCategory.link }}">{{ mainMenuCategory.title }}</a>
+                        {% if path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) == mainMenuCategory.link %}
+                            <span class="active">{{ mainMenuCategory.title }}</span>
+                        {% else %}
+                            <a href="{{ mainMenuCategory.link }}">
+                                {{ mainMenuCategory.title }}
+                            </a>
+                        {% endif %}
                     {% endfor %}
                 </nav>
             </section>
@@ -97,9 +133,17 @@
         <div class="footerItem">
             <h4>Полезные ссылки:</h4>
             <ul>
-                <li><a href="/site_map">Карта сайта</a></li>
-                <li><a href="/about">О проекте</a></li>
-                <li><a href="/shipping">Доставка и возврат</a></li>
+                {% for menuItemKey, menuItemValue in menuItems %}
+                    <li>
+                        {% if app.request.attributes.get('_route') == menuItemKey %}
+                            <span class="active">{{ menuItemValue }}</span>
+                        {% else %}
+                            <a href="{{ path(menuItemKey) }}">
+                                {{ menuItemValue }}
+                            </a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
             </ul>
         </div>
     </footer>

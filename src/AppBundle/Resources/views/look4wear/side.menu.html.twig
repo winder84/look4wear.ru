@@ -8,8 +8,15 @@
             {% else %}
                 <h4>
             {% endif %}
-            <a href="{{ category|get_category_url }}" {% if actualCategory == category %}class="active" {% endif %}
-               title="{{ category.seoTitle }}">{{ category.name }}</a>
+                {% if path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) == category|get_category_url %}
+                    <span class="active">
+                        {{ category.name }}
+                    </span>
+                {% else %}
+                    <a href="{{ category|get_category_url }}" title="{{ category.seoTitle }}">
+                        {{ category.name }}
+                    </a>
+                {% endif %}
             {% if not category.parentCategory %}
                 </h3>
             {% else %}
@@ -26,14 +33,23 @@
                     {% for topVendor, count in category.data.topVendors|slice(0, 5) %}
                         <li>
                             <h4>
-                                <a href="{{ category|get_category_url }}/brand/{{ topVendor }}" {% if vendorAlias is defined and vendorAlias == topVendor %}class="active" {% endif %}
-                                   title="{{ category.seoTitle }} {{ topVendor }}">
-                                    {% if categoryTopVendorsResult[topVendor] is defined %}
-                                        {{ categoryTopVendorsResult[topVendor].name }}
-                                    {% else %}
-                                        {{ topVendor }}
-                                    {% endif %}
-                                </a>
+                                {% if path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) == category|get_category_url ~ '/brand/' ~ topVendor %}
+                                    <span class="active">
+                                        {% if categoryTopVendorsResult[topVendor] is defined %}
+                                            {{ categoryTopVendorsResult[topVendor].name }}
+                                        {% else %}
+                                            {{ topVendor }}
+                                        {% endif %}
+                                    </span>
+                                {% else %}
+                                    <a href="{{ category|get_category_url }}/brand/{{ topVendor }}" {{ category.seoTitle }} {{ topVendor }}>
+                                        {% if categoryTopVendorsResult[topVendor] is defined %}
+                                            {{ categoryTopVendorsResult[topVendor].name }}
+                                        {% else %}
+                                            {{ topVendor }}
+                                        {% endif %}
+                                    </a>
+                                {% endif %}
                             </h4>
                         </li>
                     {% endfor %}

@@ -366,8 +366,8 @@ a.productLink {
     font-size: 1.2rem;
 }
 
-.sideMenu a.active {
-    color: #e40808;
+.active {
+    color: #e40808 !important;
 }
 
 .sideMenu a {
@@ -379,20 +379,21 @@ a.productLink {
 }
 
 .mobileCategoriesMenu ul {
-    padding: 0 0 0 2rem;
+    padding: 0 0 0 1rem;
 }
 
 .mobileCategoriesMenu a {
     color: #fff;
     float: none !important;
+    text-align: left;
+}
+
+.mobileCategoriesMenu span {
+    text-align: left;
 }
 
 .mobileCategoriesMenu h4 {
     margin: 1rem 0 0 0;
-}
-
-.mobileCategoriesMenu a.active {
-    color: #e40808;
 }
 
 /*----------------------------------------------------------------------------------------*/
@@ -404,7 +405,7 @@ a.productLink {
     z-index: 1001;
 }
 
-.mobileBlock a {
+.mobileBlock a, .mobileBlock span {
     float: right;
     display: inline-block;
     margin: 5px 10px 0 0;
