@@ -618,14 +618,9 @@ a.productLink {
         padding: 0 0 1rem 23rem;
     }
 
-    .mobileCategoriesMenu h3 {
+    .mobileCategoriesMenu li {
         font-size: 2rem;
-        font-weight: normal;
-    }
-
-    .mobileCategoriesMenu h4 {
-        font-size: 1.5rem;
-        font-weight: normal;
+        margin: 1.5em 0.5rem;
     }
 }
 
@@ -762,15 +757,9 @@ a.productLink {
         padding: 0 0 1rem 2rem;
     }
 
-    .mobileCategoriesMenu h3 {
-        font-size: 1.5rem;
-        font-weight: normal;
-        margin: 0.8rem 0;
-    }
-
-    .mobileCategoriesMenu h4 {
+    section.mobileCategoriesMenu li {
         font-size: 1.2rem;
-        font-weight: normal;
+        margin: 1rem 0.5rem;
     }
 }
 

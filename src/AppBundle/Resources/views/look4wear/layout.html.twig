@@ -40,9 +40,9 @@
         {% if mainMenuCategories %}
             {% for mainMenuCategory in mainMenuCategories %}
                 {% if path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) == mainMenuCategory.link %}
-                    <span class="active">{{ mainMenuCategory.title }}</span>
+                    <span class="menu__links-item active">{{ mainMenuCategory.title }}</span>
                 {% else %}
-                    <a href="{{ mainMenuCategory.link }}">
+                    <a class="menu__links-item" href="{{ mainMenuCategory.link }}">
                         {{ mainMenuCategory.title }}
                     </a>
                 {% endif %}
