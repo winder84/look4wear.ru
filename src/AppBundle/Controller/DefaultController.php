@@ -316,6 +316,7 @@ class DefaultController extends Controller
             'parentsUrl' => $parentsUrl,
             'seoDescription' => self::$seoDescription,
             'canonicalLink' => self::$canonicalLink,
+            'vendor' => $vendor,
             'keywords' => $category->getKeywords() ? $category->getKeywords() . ' ' . $vendor->getName() : $category->getTitle() . ' ' . $vendor->getName(),
         ]);
     }

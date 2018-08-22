@@ -2,6 +2,7 @@
 
 {% block content %}
     {{ include('AppBundle:look4wear:goods.block.html.twig', { 'goods': goods }) }}
+    <h2>{{ actualCategory.title }} {{ vendor.name }}</h2>
     {% if seoDescription %}
         <div class="descriptionDiv">
             {{ seoDescription|raw }}
