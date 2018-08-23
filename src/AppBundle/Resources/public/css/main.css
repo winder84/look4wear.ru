@@ -319,6 +319,10 @@ section.indexSection {
     font-weight: normal;
 }
 
+.sitemap_page {
+    margin: 0 0 0 30%;
+}
+
 .childrenCategoryImg {
     height: 11rem;
     overflow: hidden;
@@ -760,6 +764,10 @@ a.productLink {
     section.mobileCategoriesMenu li {
         font-size: 1.2rem;
         margin: 1rem 0.5rem;
+    }
+
+    .sitemap_page {
+        margin: 0 auto;
     }
 }
 
