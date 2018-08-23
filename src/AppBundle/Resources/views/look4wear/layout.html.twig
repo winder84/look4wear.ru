@@ -39,7 +39,7 @@
         <hr />
         {% if mainMenuCategories %}
             {% for mainMenuCategory in mainMenuCategories %}
-                {% if path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) == mainMenuCategory.link %}
+                {% if app.request.attributes.get('_route') and app.request.attributes.get('_route_params') and path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) == mainMenuCategory.link %}
                     <span class="menu__links-item active">{{ mainMenuCategory.title }}</span>
                 {% else %}
                     <a class="menu__links-item" href="{{ mainMenuCategory.link }}">
@@ -83,7 +83,7 @@
             <section class="mainMenu">
                 <nav role="navigation">
                     {% for mainMenuCategory in mainMenuCategories %}
-                        {% if path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) == mainMenuCategory.link %}
+                        {% if app.request.attributes.get('_route') and app.request.attributes.get('_route_params') and path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) == mainMenuCategory.link %}
                             <span class="active">{{ mainMenuCategory.title }}</span>
                         {% else %}
                             <a href="{{ mainMenuCategory.link }}">

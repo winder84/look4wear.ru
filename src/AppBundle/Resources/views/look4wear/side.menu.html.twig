@@ -3,7 +3,7 @@
         {% import _self as self %}
         {% if category in actualParentCategories %}
             <li>
-            {% if path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) == category|get_category_url %}
+            {% if app.request.attributes.get('_route') and app.request.attributes.get('_route_params') and path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) == category|get_category_url %}
                 <span class="active">
                     {{ category.name }}
                 </span>
@@ -22,7 +22,7 @@
                 <ul>
                     {% for topVendor, count in category.data.topVendors|slice(0, 5) %}
                         <li>
-                            {% if path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) == category|get_category_url ~ '/brand/' ~ topVendor %}
+                            {% if app.request.attributes.get('_route') and app.request.attributes.get('_route_params') and path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) == category|get_category_url ~ '/brand/' ~ topVendor %}
                                 <span class="active">
                                     {% if categoryTopVendorsResult[topVendor] is defined %}
                                         {{ categoryTopVendorsResult[topVendor].name }}

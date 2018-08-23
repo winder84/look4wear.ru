@@ -22,6 +22,15 @@ class ExceptionController extends Controller
     protected static $mainMenuCategories = [];
 
     /**
+     * @var array
+     */
+    protected static $menuItems = [
+        'catalogPage' => 'Каталог',
+        'about_page' => 'О проекте',
+        'sitemap_page' => 'Карта сайта',
+    ];
+
+    /**
      * @Route("/404")
      */
     public function show404Action()
@@ -40,7 +49,8 @@ class ExceptionController extends Controller
             ];
         }
         return $this->render('AppBundle:Exception:show404.html.twig', [
-            'mainMenuCategories' => self::$mainMenuCategories
+            'mainMenuCategories' => self::$mainMenuCategories,
+            'menuItems' => self::$menuItems,
         ]);
     }
 
