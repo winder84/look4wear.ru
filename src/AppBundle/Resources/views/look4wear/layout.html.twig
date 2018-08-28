@@ -103,9 +103,13 @@
                 <ul class="breadcrumbs" itemscope itemtype="http://schema.org/BreadcrumbList">
                     {% for breadcrumb in breadcrumbs %}
                         <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a href="{{ breadcrumb.link }}" {% if breadcrumb.seoTitle is defined %}title="{{ breadcrumb.seoTitle }}" {% endif %} itemprop="item">
+                            {% if breadcrumb.link %}
+                                <a href="{{ breadcrumb.link }}" {% if breadcrumb.seoTitle is defined %}title="{{ breadcrumb.seoTitle }}" {% endif %} itemprop="item">
+                                    <span itemprop="name">{{ breadcrumb.title }}</span>
+                                </a>
+                            {% else %}
                                 <span itemprop="name">{{ breadcrumb.title }}</span>
-                            </a>
+                            {% endif %}
                         </li>
                         {% if not loop.last %}
                             \

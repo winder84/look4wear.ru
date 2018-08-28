@@ -652,15 +652,21 @@ class DefaultController extends Controller
     {
         if ($vendor) {
             $breadcrumbs[] = [
-                'link' => $this->getParentCategoriesUrl($category) . $category->getAlias() . '/brand/' . $vendor->getAlias(),
+                'link' => '',
                 'title' => $category->getTitle() . ' "' . $vendor->getName() . '"',
             ];
+            $breadcrumbs[] = [
+                'link' => $this->getParentCategoriesUrl($category) . $category->getAlias(),
+                'title' => $category->getName(),
+                'seoTitle' => $category->getSeoTitle(),
+            ];
+        } else {
+            $breadcrumbs[] = [
+                'link' => '',
+                'title' => $category->getName(),
+                'seoTitle' => $category->getSeoTitle(),
+            ];
         }
-        $breadcrumbs[] = [
-            'link' => $this->getParentCategoriesUrl($category) . $category->getAlias(),
-            'title' => $category->getName(),
-            'seoTitle' => $category->getSeoTitle(),
-        ];
         $parentCategory = $category->getParentCategory();
         while ($parentCategory) {
             $breadcrumbs[] = [
