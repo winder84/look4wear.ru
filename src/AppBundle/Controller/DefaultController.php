@@ -53,6 +53,7 @@ class DefaultController extends Controller
     protected static $menuItems = [
         'catalogPage' => 'Каталог',
         'about_page' => 'О проекте',
+        'shipping_page' => 'Доставка и возврат',
         'sitemap_page' => 'Карта сайта',
     ];
 
