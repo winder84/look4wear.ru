@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class DefaultController extends Controller
 {
@@ -214,9 +215,6 @@ class DefaultController extends Controller
             $totalCount = $searchGoods['total_found'];
             $parentsUrl = $this->getParentCategoriesUrl($category);
             $actualUrl = $parentsUrl . $category->getAlias();
-            if ($request->query->getInt('page', 0)) {
-                self::$canonicalLink = $actualUrl . '/brand/' . $vendor->getAlias();
-            }
             $pagination = [
                 'url' => $actualUrl . '/brand/' . $vendor->getAlias() . '?',
                 'currentPage' => $request->query->getInt('page', 1),
@@ -301,6 +299,16 @@ class DefaultController extends Controller
             $menuCategories[] = $parentCategory = $parentCategory->getParentCategory();
         }
         $menuCategories = array_merge($menuCategories, self::$parentCategories);
+        $link = $this->generateUrl(
+            'filter', [
+            'token' => $token,
+            'vendorAlias' => $vendorAlias,
+        ],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+        if ($link != $request->getUri()) {
+            self::$canonicalLink = $link;
+        }
 
         return $this->defaultRender('AppBundle:look4wear:filter.html.twig', [
             'breadcrumbs' => $breadcrumbs,
@@ -363,9 +371,6 @@ class DefaultController extends Controller
             $totalCount = $searchGoods['total_found'];
             $parentsUrl = $this->getParentCategoriesUrl($actualCategory);
             $actualUrl = $parentsUrl . $actualCategory->getAlias();
-            if ($request->query->getInt('page', 0)) {
-                self::$canonicalLink = $actualUrl;
-            }
             $pagination = [
                 'url' => $actualUrl . '?',
                 'currentPage' => $request->query->getInt('page', 1),
@@ -413,6 +418,15 @@ class DefaultController extends Controller
             $menuCategories[] = $parentCategory = $parentCategory->getParentCategory();
         }
         $menuCategories = array_merge($menuCategories, self::$parentCategories);
+        $link = $this->generateUrl(
+            'catalog', [
+            'token' => $token
+        ],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+        if ($link != $request->getUri()) {
+            self::$canonicalLink = $link;
+        }
         return $this->defaultRender('AppBundle:look4wear:category.html.twig', [
             'breadcrumbs' => $this->getBreadcrumbs($actualCategory),
             'actualCategory' => $actualCategory,
