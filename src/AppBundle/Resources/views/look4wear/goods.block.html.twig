@@ -1,7 +1,11 @@
-    {% if pageTitle or seoTitle %}
-        <h1>{% if seoTitle %}{{ seoTitle }}{% else %}{{ pageTitle }}{% endif %}</h1>
+    {% if actualCategory is defined %}
+        <h1>
+            {{ actualCategory.title }}
+            {% if vendor is defined %}
+                {{ vendor.name }}
+            {% endif %}
+        </h1>
     {% endif %}
-
     <div class="goodsMain">
         <section class="sideMenu">
             {% include 'AppBundle:look4wear:side.menu.html.twig'%}
