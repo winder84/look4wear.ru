@@ -565,7 +565,6 @@ class DefaultController extends Controller
             'pageTitle' => '',
             'childrenCategories' => [],
             'actualParentCategories' => self::$parentCategories,
-            'actualCategory' => null,
             'totalCount' => $totalCount,
             'searchString' => $searchString,
             'pagination' => $pagination,
