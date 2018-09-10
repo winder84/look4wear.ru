@@ -24,6 +24,11 @@ class DefaultController extends Controller
     protected static $resultsOnPage = 20;
 
     /**
+     * @var int
+     */
+    protected static $topVendorsOnPage = 10;
+
+    /**
      * @var string
      */
     protected static $seoTitle = '';
@@ -220,29 +225,11 @@ class DefaultController extends Controller
                 'currentPage' => $request->query->getInt('page', 1),
                 'totalPagesCount' => ceil($totalCount / self::$resultsOnPage),
             ];
-            $categoryTopVendors = $category->getData()['topVendors'];
-            $categoryTopVendorsResult = [];
-            if ($categoryTopVendors) {
-                foreach ($categoryTopVendors as $categoryTopVendorAlias => $categoryTopVendorCount) {
-                    $categoryTopVendor = self::$em
-                        ->getRepository('AppBundle:Vendor')
-                        ->findOneBy([
-                            'alias' => $categoryTopVendorAlias
-                        ]);
-                    if ($categoryTopVendor) {
-                        $imgUrl = '';
-                        if (file_exists($this->get('kernel')->getRootDir() . '/../web/media/brands/' . $categoryTopVendorAlias . '.png')) {
-                            $imgUrl = $categoryTopVendorAlias . '.png';
-                        }
-                        $categoryTopVendorsResult[$categoryTopVendorAlias] = [
-                            'alias' => $categoryTopVendorAlias,
-                            'name' => $categoryTopVendor->getName(),
-                            'count' => $categoryTopVendorCount,
-                            'imgUrl' => $imgUrl,
-                        ];
-                    }
-                }
+            $categoryTopVendors = [];
+            if (isset($category->getData()['topVendors'])) {
+                $categoryTopVendors = $category->getData()['topVendors'];
             }
+            $categoryTopVendorsResult = $this->getCategoryTopVendors($categoryTopVendors, $vendor);
         }
         if ($category && $vendor) {
             self::$seoTitle = $category->getTitle() . ' ' . $vendor->getName() .
@@ -377,31 +364,11 @@ class DefaultController extends Controller
                 'totalPagesCount' => ceil($totalCount / self::$resultsOnPage),
             ];
         }
+        $categoryTopVendors = [];
         if (isset($actualCategory->getData()['topVendors'])) {
             $categoryTopVendors = $actualCategory->getData()['topVendors'];
         }
-        $categoryTopVendorsResult = [];
-        if ($categoryTopVendors) {
-            foreach ($categoryTopVendors as $categoryTopVendorAlias => $categoryTopVendorCount) {
-                $categoryTopVendor = self::$em
-                    ->getRepository('AppBundle:Vendor')
-                    ->findOneBy([
-                        'alias' => $categoryTopVendorAlias
-                    ]);
-                if ($categoryTopVendor) {
-                    $imgUrl = '';
-                    if (file_exists($this->get('kernel')->getRootDir() . '/../web/media/brands/' . $categoryTopVendorAlias . '.png')) {
-                        $imgUrl = $categoryTopVendorAlias . '.png';
-                    }
-                    $categoryTopVendorsResult[$categoryTopVendorAlias] = [
-                        'alias' => $categoryTopVendorAlias,
-                        'name' => $categoryTopVendor->getName(),
-                        'count' => $categoryTopVendorCount,
-                        'imgUrl' => $imgUrl,
-                    ];
-                }
-            }
-        }
+        $categoryTopVendorsResult = $this->getCategoryTopVendors($categoryTopVendors);
         if ($actualCategory->getChildrenCategories()) {
             foreach ($actualCategory->getChildrenCategories() as $childrenCategory) {
                 $menuCategories[] = $childrenCategory;
@@ -724,6 +691,40 @@ class DefaultController extends Controller
         }
 
         return $parentsUrl;
+    }
+
+    /**
+     * @param $topVendors
+     * @param Vendor|null $vendor
+     * @return array
+     */
+    private function getCategoryTopVendors($topVendors, Vendor $vendor = null)
+    {
+        $categoryTopVendorsResult = [];
+        if ($topVendors) {
+            $topVendors = array_slice($topVendors, 0, self::$topVendorsOnPage + 1);
+            $categoryTopVendors = self::$em
+                ->getRepository('AppBundle:Vendor')
+                ->findBy([
+                    'alias' => array_keys($topVendors)
+                ]);
+            foreach ($categoryTopVendors as $categoryTopVendor) {
+                if ($categoryTopVendor != $vendor) {
+                    $imgUrl = '';
+                    if (file_exists($this->get('kernel')->getRootDir() . '/../web/media/brands/' . $categoryTopVendor->getAlias() . '.png')) {
+                        $imgUrl = $categoryTopVendor->getAlias() . '.png';
+                    }
+                    $categoryTopVendorsResult[$categoryTopVendor->getAlias()] = [
+                        'alias' => $categoryTopVendor->getAlias(),
+                        'name' => $categoryTopVendor->getName(),
+                        'count' => $topVendors[$categoryTopVendor->getAlias()],
+                        'imgUrl' => $imgUrl,
+                    ];
+                }
+            }
+        }
+
+        return $categoryTopVendorsResult;
     }
 
     private function defaultRender($templateName, $templateArgs = [])
