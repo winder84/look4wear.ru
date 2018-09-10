@@ -1,9 +1,11 @@
 # www.robotstxt.org/
 # www.google.com/support/webmasters/bin/answer.py?hl=en&answer=156449
 
+Host: https://look4wear.ru
+
 User-agent: *
 Allow: /
-Sitemap: https://look4wear.ru/sitemap.xml
-Host: https://look4wear.ru
 Disallow: /search
 Disallow: /goods/buy/
+
+Sitemap: https://look4wear.ru/sitemap.xml
