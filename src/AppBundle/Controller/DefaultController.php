@@ -165,21 +165,7 @@ class DefaultController extends Controller
      */
     public function filterAction($token, $vendorAlias, Request $request)
     {
-        $category = null;
-        $categoryAliases = explode('/', $token);
-        $categories = [];
-        foreach ($categoryAliases as $categoryAlias) {
-            $categories[] = self::$em
-                ->getRepository('AppBundle:Category')
-                ->findOneBy([
-                    'alias' => $categoryAlias
-                ]);
-        }
-        $categories = array_filter($categories);
-        $categoryAliases = array_filter($categoryAliases);
-        if (count($categoryAliases) == count($categories)) {
-            $category = end($categories);
-        }
+        $category = $this->getActualCategoryByToken($token);
         $matches = [];
         $totalCount = 0;
         /** @var Vendor $category */
@@ -204,7 +190,7 @@ class DefaultController extends Controller
                 $seoText = self::$em
                     ->getRepository('AppBundle:SeoText')
                     ->findOneBy([
-                        'alias' => $categoryAlias . '/' . $vendorAlias
+                        'alias' => $category->getAlias() . '/' . $vendorAlias
                     ]);
                 if ($seoText) {
                     self::$seoDescription = $seoText->getText();
@@ -325,22 +311,7 @@ class DefaultController extends Controller
      */
     public function catalogAction($token, Request $request)
     {
-        $actualCategory = null;
-        $categoryAliases = explode('/', $token);
-        $categories = [];
-        $categoryTopVendors = [];
-        foreach ($categoryAliases as $categoryAlias) {
-            $categories[] = self::$em
-                ->getRepository('AppBundle:Category')
-                ->findOneBy([
-                    'alias' => $categoryAlias
-                ]);
-        }
-        $categories = array_filter($categories);
-        $categoryAliases = array_filter($categoryAliases);
-        if (count($categoryAliases) == count($categories)) {
-            $actualCategory = end($categories);
-        }
+        $actualCategory = $this->getActualCategoryByToken($token);
         $matches = [];
         $totalCount = 0;
         $pagination = null;
@@ -725,6 +696,31 @@ class DefaultController extends Controller
         }
 
         return $categoryTopVendorsResult;
+    }
+
+    /**
+     * @param $token
+     * @return mixed|null
+     */
+    private function getActualCategoryByToken($token)
+    {
+        $categoryAliases = explode('/', $token);
+        $categories = [];
+        $actualCategory = null;
+        foreach ($categoryAliases as $categoryAlias) {
+            $categories[] = self::$em
+                ->getRepository('AppBundle:Category')
+                ->findOneBy([
+                    'alias' => $categoryAlias
+                ]);
+        }
+        $categories = array_filter($categories);
+        $categoryAliases = array_filter($categoryAliases);
+        if (count($categoryAliases) == count($categories)) {
+            $actualCategory = end($categories);
+        }
+
+        return $actualCategory;
     }
 
     private function defaultRender($templateName, $templateArgs = [])
