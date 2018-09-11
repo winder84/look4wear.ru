@@ -1,5 +1,5 @@
 <ul>
-    {% macro recursiveCategory(category, actualParentCategories, actualCategory, vendorAlias, categoryTopVendorsResult) %}
+    {% macro recursiveCategory(category, actualParentCategories, actualCategory, vendor, categoryTopVendorsResult) %}
         {% import _self as self %}
         {% if category in actualParentCategories %}
             <li>
@@ -15,7 +15,7 @@
             {% if category.childrenCategories|length %}
                 <ul>
                     {% for child in category.childrenCategories %}
-                        {{ self.recursiveCategory(child, actualParentCategories, actualCategory, vendorAlias, categoryTopVendorsResult) }}
+                        {{ self.recursiveCategory(child, actualParentCategories, actualCategory, vendor, categoryTopVendorsResult) }}
                     {% endfor %}
                 </ul>
             {% elseif category.parentCategory and category.data.topVendors and actualCategory == category %}
@@ -27,7 +27,7 @@
                                     {% if categoryTopVendorsResult[topVendor] is defined %}
                                         {{ categoryTopVendorsResult[topVendor].name }}
                                     {% else %}
-                                        {{ topVendor }}
+                                        {{ vendor.name }}
                                     {% endif %}
                                 </span>
                             {% else %}
@@ -35,7 +35,7 @@
                                     {% if categoryTopVendorsResult[topVendor] is defined %}
                                         {{ categoryTopVendorsResult[topVendor].name }}
                                     {% else %}
-                                        {{ topVendor }}
+                                        {{ vendor.name }}
                                     {% endif %}
                                 </a>
                             {% endif %}
@@ -51,9 +51,9 @@
         <ul>
             {% for category in parentCategories %}
                 {% if actualParentCategories is defined and actualCategory is defined %}
-                    {% set vendorAlias = vendorAlias|default('') %}
+                    {% set vendor = vendor|default('') %}
                     {% set categoryTopVendorsResult = categoryTopVendorsResult|default() %}
-                    {{ self.recursiveCategory(category, actualParentCategories, actualCategory, vendorAlias, categoryTopVendorsResult) }}
+                    {{ self.recursiveCategory(category, actualParentCategories, actualCategory, vendor, categoryTopVendorsResult) }}
                 {% endif %}
             {% endfor %}
         </ul>
