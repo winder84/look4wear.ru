@@ -68,6 +68,38 @@ class DefaultController extends Controller
      */
     protected static $canonicalLink;
 
+    /**
+     * @var array
+     */
+    protected static $firstDescriptionArray = [
+        'Одежда для всей семьи в интернет-магазине.',
+        'Каталог look4wear.ru, одежда для мужчин и женщин.',
+        'Интернет-магазин одежды и обуви.',
+        'Каталог современной обуви и одежды look4wear.ru.',
+        'Интернет-магазин современной и модной одежды.',
+        'Интернет-магазин модной одежды и обуви.',
+        'Каталог одежды из разных интернет-магазинов.',
+        'Собрание интернет-магазинов одежды и обуви для детей и взрослых.',
+        'Последние коллекции одежды для семьи.',
+        'Одежда качественных брендов в интернет-магазине.',
+    ];
+
+    /**
+     * @var array
+     */
+    protected static $secondDescriptionArray = [
+        'Купоны, выгодные цены и акции от интернет-магазинов.',
+        'Доставка по территории СНГ. Выгодные цены и акции.',
+        'Заманчивые предложения, купоны и доставка по РФ.',
+        'Доставка по России и СНГ. Качественные товары из интернет-мазанов.',
+        'Интересные предложения и выгодные акции от ведущих интернет-магазинов одежды.',
+        'Широкий ассортимент акционных товаров. Доставка по РФ.',
+        'Бесплатная доставка по РФ. Большой выбор товаров.',
+        'Цены на одежду популярных интернет-магазинов.',
+        'Характеристики и отзывы на одежду и обувь.',
+        'Без переплат и очередей.',
+    ];
+
     public function __construct(EntityManager $entityManager)
     {
         self::$em = $entityManager;
@@ -221,9 +253,6 @@ class DefaultController extends Controller
             self::$seoTitle = $category->getTitle() . ' ' . $vendor->getName() .
                 '. Купить в интернет-магазине по выгодной цене и с доставкой по России.';
             self::$pageTitle = ucfirst($category->getTitle()) . ' ' . $vendor->getName();
-            if (!self::$seoDescription) {
-                self::$seoDescription = self::$seoTitle;
-            }
             $parentsUrl = $this->getParentCategoriesUrl($category);
             $breadcrumbs = $this->getBreadcrumbs($category, $vendor);
         } else {
@@ -283,11 +312,12 @@ class DefaultController extends Controller
             self::$canonicalLink = $link;
         }
 
+        $page = $request->query->getInt('page', 0);
         return $this->defaultRender('AppBundle:look4wear:filter.html.twig', [
             'breadcrumbs' => $breadcrumbs,
             'goods' => $matches,
             'totalCount' => $totalCount,
-            'seoTitle' => self::$seoTitle,
+            'seoTitle' => self::$seoTitle . ($page ? ' - стр.' . $page : ''),
             'pageTitle' => self::$pageTitle,
             'pagination' => $pagination,
             'actualCategory' => $category,
@@ -296,7 +326,7 @@ class DefaultController extends Controller
             'otherCategories' => $otherCategories,
             'vendorAlias' => $vendorAlias,
             'parentsUrl' => $parentsUrl,
-            'seoDescription' => self::$seoDescription,
+            'seoDescription' => self::$seoDescription ?: $this->getDefaultDescription($category, $vendor),
             'canonicalLink' => self::$canonicalLink,
             'vendor' => $vendor,
             'keywords' => $category->getKeywords() ? $category->getKeywords() . ' ' . $vendor->getName() : $category->getTitle() . ' ' . $vendor->getName(),
@@ -365,6 +395,7 @@ class DefaultController extends Controller
         if ($link != $request->getUri()) {
             self::$canonicalLink = $link;
         }
+        $page = $request->query->getInt('page', 0);
         return $this->defaultRender('AppBundle:look4wear:category.html.twig', [
             'breadcrumbs' => $this->getBreadcrumbs($actualCategory),
             'actualCategory' => $actualCategory,
@@ -373,8 +404,8 @@ class DefaultController extends Controller
             'goods' => $matches,
             'totalCount' => $totalCount,
             'pageTitle' => $actualCategory->getTitle(),
-            'seoTitle' => $actualCategory->getSeoTitle(),
-            'seoDescription' => $actualCategory->getDescription() ? $actualCategory->getDescription() : $actualCategory->getSeoTitle(),
+            'seoTitle' => $actualCategory->getSeoTitle() . ($page ? ' - стр.' . $page : ''),
+            'seoDescription' => $actualCategory->getDescription() ?: $this->getDefaultDescription($actualCategory),
             'pagination' => $pagination,
             'parentsUrl' => $parentsUrl,
             'actualUrl' => $actualUrl,
@@ -730,5 +761,14 @@ class DefaultController extends Controller
             'parentCategories' => self::$parentCategories,
             'menuItems' => self::$menuItems,
         ] + $templateArgs);
+    }
+
+    private function getDefaultDescription(Category $category, Vendor $vendor = null)
+    {
+        $obj = $vendor ?: $category;
+        $firstNumber = substr($obj->getId(), 0, 1);
+        $lastNumber = substr($obj->getId(), -1, 1);
+
+        return self::$firstDescriptionArray[$firstNumber] . $category->getTitle() . ($vendor ? ' ' . $vendor->getName() : '') . '.' . self::$secondDescriptionArray[$lastNumber];
     }
 }
