@@ -100,6 +100,22 @@ class DefaultController extends Controller
         'Без переплат и очередей.',
     ];
 
+    /**
+     * @var array
+     */
+    protected static $seoTitles = [
+        'Купить %s недорого – фото, цена, характеристики.',
+        '%s купить в России с бесплатной доставкой!',
+        'Купить %s – в интернет-магазине look4wear.ru',
+        'Заказать %s с доставкой в день заказа!',
+        'Заказать %s в России - низкие цены, доставка.',
+        '%s - купить по выгодной цене. Бесплатная доставка.',
+        '%s - широкий ассортимент, успейте заказать!',
+        '%s по низким ценам: широкий выбор, акции, доставка.',
+        'Купить %s в интернет-магазине по низким ценам.',
+        'Купить %s в каталоге одежды и обуви look4wear.ru.',
+    ];
+
     public function __construct(EntityManager $entityManager)
     {
         self::$em = $entityManager;
@@ -250,8 +266,8 @@ class DefaultController extends Controller
             $categoryTopVendorsResult = $this->getCategoryTopVendors($categoryTopVendors, $vendor);
         }
         if ($category && $vendor) {
-            self::$seoTitle = $category->getTitle() . ' ' . $vendor->getName() .
-                '. Купить в интернет-магазине по выгодной цене и с доставкой по России.';
+            $vendorLastNumber = substr($vendor->getId(), 0, 1);
+            self::$seoTitle = sprintf(self::$seoTitles[$vendorLastNumber], mb_strtolower($category->getTitle() . ' ' . $vendor->getName(), 'UTF-8'));
             self::$pageTitle = ucfirst($category->getTitle()) . ' ' . $vendor->getName();
             $parentsUrl = $this->getParentCategoriesUrl($category);
             $breadcrumbs = $this->getBreadcrumbs($category, $vendor);
