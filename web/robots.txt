@@ -5,6 +5,7 @@ User-agent: Yandex
 Allow: /
 Disallow: /search/
 Disallow: /goods/buy/
+Host: https://look4wear.ru
 
 User-agent: Googlebot
 Allow: /
@@ -17,4 +18,3 @@ Disallow: /search/
 Disallow: /goods/buy/
 
 Sitemap: https://look4wear.ru/sitemap.xml
-Host: https://look4wear.ru
