@@ -3,6 +3,16 @@
 
 Host: https://look4wear.ru
 
+User-agent: Yandex
+Allow: /
+Disallow: /search
+Disallow: /goods/buy/
+
+User-agent: Googlebot
+Allow: /
+Disallow: /search
+Disallow: /goods/buy/
+
 User-agent: *
 Allow: /
 Disallow: /search
