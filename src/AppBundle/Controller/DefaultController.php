@@ -57,7 +57,6 @@ class DefaultController extends Controller
      * @var array
      */
     protected static $menuItems = [
-        'catalogPage' => 'Каталог',
         'about_page' => 'О проекте',
         'shipping_page' => 'Доставка и возврат',
         'sitemap_page' => 'Карта сайта',
@@ -427,48 +426,6 @@ class DefaultController extends Controller
             'actualUrl' => $actualUrl,
             'canonicalLink' => self::$canonicalLink,
             'keywords' => $actualCategory->getKeywords() ?: $actualCategory->getTitle(),
-        ]);
-    }
-
-    /**
-     * @Route("/catalog_page", name="catalogPage",
-     *      options={"sitemap" = true})
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function catalogPageAction()
-    {
-        $catalogCategories = [];
-        $categories = self::$em
-            ->getRepository('AppBundle:Category')
-            ->findBy([
-                'isActive' => true,
-                'parentCategory' => null,
-            ]);
-        foreach ($categories as $category) {
-            $excludeWords = explode(';', $category->getExcludeWords());
-            $excludeWords = array_filter($excludeWords);
-            $searchString = $category->getSearchString();
-            if ($excludeWords) {
-                $searchString .= ' -' . implode(' -', $excludeWords);
-            }
-            $searchGoods = $this->searchByStringAndLimit($searchString, 5);
-            if (isset($searchGoods['matches'])) {
-                if ($searchGoods['total_found'] >= 5) {
-                    $categoryImage = json_decode(end($searchGoods['matches'])['attrs']['pictures'])[0];
-                    $catalogCategories[] = [
-                        'category' => $category,
-                        'image' => $categoryImage,
-                        'url' => '/catalog/' . $category->getAlias(),
-                    ];
-                }
-            }
-        }
-
-        return $this->defaultRender('AppBundle:look4wear:catalog.html.twig', [
-            'seoTitle' => self::$seoTitle,
-            'seoDescription' => 'Каталог look4wear.ru - отличная и удобная платформа для выбора одежды по Вашему вкусу!',
-            'pageTitle' => self::$pageTitle,
-            'catalogCategories' => $catalogCategories,
         ]);
     }
 
