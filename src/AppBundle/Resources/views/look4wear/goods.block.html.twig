@@ -13,7 +13,7 @@
                                 -{{ ((goodsItem.attrs.oldprice - goodsItem.attrs.price) / goodsItem.attrs.oldprice * 100)|round }}%
                             </div>
                         {% endif %}
-                        <a class="productLink" target="_blank" rel="nofollow" href="#"
+                        <a class="productLink productLinkToChange" target="_blank" rel="nofollow" href="#"
                            data-product-alias="{{ goodsItem.attrs.alias }}"
                            title="Купить {{ goodsItem.attrs.name }} по выгодной цене.">
                             {% if goodsItem.attrs.pictures %}

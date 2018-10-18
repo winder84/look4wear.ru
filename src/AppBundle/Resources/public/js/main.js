@@ -14,7 +14,7 @@ var bLazy = new Blazy({
     }
 });
 
-$('.productLink').hover(function () {
+$('.productLinkToChange').hover(function () {
     $(this).prop('href', '/goods/buy/' + $(this).data('productAlias'));
 }, function () {
     $(this).prop('href', '#');

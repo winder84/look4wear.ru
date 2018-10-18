@@ -343,6 +343,19 @@ section.indexSection {
     margin: 0.2rem;
 }
 
+.article_block {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.article_block .goodsSection {
+    width: 100%;
+}
+
+.article_block .goodsSection .item {
+    width: 22%;
+}
+
 .articleText {
     min-height: 500px;
 }
@@ -706,7 +719,7 @@ a.productLink {
     }
 
     .goodsSection .item {
-        width: 48%;
+        width: 48% !important;
     }
 
     .goodsImg {
