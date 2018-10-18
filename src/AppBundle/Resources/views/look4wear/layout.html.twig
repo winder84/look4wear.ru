@@ -150,5 +150,21 @@
                 {% endfor %}
             </ul>
         </div>
+        <div class="footerItem">
+            <h4>Последние статьи:</h4>
+            <ul>
+                {% for lastArticle in lastArticles %}
+                    <li>
+                        {% if path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) == '/article/' ~ lastArticle.alias %}
+                            <span class="active">{{ lastArticle.title|slice(0, 30) ~ '...' }}</span>
+                        {% else %}
+                            <a href="/article/{{ lastArticle.alias }}">
+                                {{ lastArticle.title|slice(0, 30) ~ '...' }}
+                            </a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     </footer>
 {% endblock %}

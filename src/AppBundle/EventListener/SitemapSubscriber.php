@@ -2,6 +2,7 @@
 
 namespace AppBundle\EventListener;
 
+use AppBundle\Entity\Article;
 use AppBundle\Entity\Category;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use IAkumaI\SphinxsearchBundle\Search\Sphinxsearch;
@@ -88,6 +89,19 @@ class SitemapSubscriber implements EventSubscriberInterface
                     }
                 }
             }
+        }
+        $articles = $this->doctrine->getRepository(Article::class)->findBy([]);
+        foreach ($articles as $article) {
+            $urls->addUrl(
+                new UrlConcrete(
+                    $this->urlGenerator->generate(
+                        'article_page',
+                        ['alias' => $article->getAlias()],
+                        UrlGeneratorInterface::ABSOLUTE_URL
+                    )
+                ),
+                'articles'
+            );
         }
     }
 

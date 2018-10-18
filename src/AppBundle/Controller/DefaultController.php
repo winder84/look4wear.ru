@@ -54,6 +54,11 @@ class DefaultController extends Controller
     protected static $parentCategories = [];
 
     /**
+     * @var ArrayCollection
+     */
+    protected static $lastArticles = [];
+
+    /**
      * @var array
      */
     protected static $menuItems = [
@@ -131,6 +136,9 @@ class DefaultController extends Controller
                 'isActive' => true,
                 'inMainMenu' => true,
             ]);
+        self::$lastArticles = self::$em
+            ->getRepository('AppBundle:Article')
+            ->findBy([], ['id' => 'DESC'], 5);
         foreach ($mainMenuCategories as $mainMenuCategory) {
             self::$mainMenuCategories[] = [
                 'title' => $mainMenuCategory->getTitle(),
@@ -603,7 +611,6 @@ class DefaultController extends Controller
                     if (isset($searchGoods['matches'])) {
                         $goods = $searchGoods['matches'];
                     }
-                    $totalCount = $searchGoods['total_found'];
                     $parentsUrl = $this->getParentCategoriesUrl($category);
                     $actualUrl = $parentsUrl . $category->getAlias();
                     $newBlock = '<p style="text-align: center;"><a target="_blank" class="productLink" href="' . $actualUrl .'">' . $category->getTitle() . '</a></p>';
@@ -784,6 +791,7 @@ class DefaultController extends Controller
             'mainMenuCategories' => self::$mainMenuCategories,
             'parentCategories' => self::$parentCategories,
             'menuItems' => self::$menuItems,
+            'lastArticles' => self::$lastArticles,
         ] + $templateArgs);
     }
 
