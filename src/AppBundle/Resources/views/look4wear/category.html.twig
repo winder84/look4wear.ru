@@ -1,6 +1,14 @@
 {% extends 'AppBundle:look4wear:layout.html.twig' %}
 
 {% block content %}
+    {% if actualCategory is defined %}
+        <h1>
+            {{ actualCategory.title }}
+            {% if vendor is defined %}
+                {{ vendor.name }}
+            {% endif %}
+        </h1>
+    {% endif %}
     {{ include('AppBundle:look4wear:goods.block.html.twig', { 'goods': goods }) }}
     <h2>{{ actualCategory.name }}</h2>
     {% if seoDescription %}

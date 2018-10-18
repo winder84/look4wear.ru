@@ -571,6 +571,57 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/article/{alias}", name="article_page")
+     */
+    public function articleAction($alias)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $article = $em
+            ->getRepository('AppBundle:Article')
+            ->findOneBy(['alias' => $alias]);
+        if (!$article) {
+            throw $this->createNotFoundException('The $article does not exist');
+        }
+
+        $articleText = $article->getText();
+
+        preg_match_all('%\[category\:(.*?)\]%', $articleText, $matches);
+        if (isset($matches[1])) {
+            foreach ($matches[1] as $blockInsertParams) {
+                list($categoryId, $categoryCount) = explode(',', $blockInsertParams);
+                $category = $em
+                    ->getRepository('AppBundle:Category')
+                    ->findOneBy(['id' => $categoryId]);
+                if ($category) {
+                    $excludeWords = explode(';', $category->getExcludeWords());
+                    $excludeWords = array_filter($excludeWords);
+                    $searchString = $category->getSearchString();
+                    if ($excludeWords) {
+                        $searchString .= ' -' . implode(' -', $excludeWords);
+                    }
+                    $searchGoods = $this->searchByStringAndLimit($searchString, (int)$categoryCount);
+                    if (isset($searchGoods['matches'])) {
+                        $goods = $searchGoods['matches'];
+                    }
+                    $totalCount = $searchGoods['total_found'];
+                    $parentsUrl = $this->getParentCategoriesUrl($category);
+                    $actualUrl = $parentsUrl . $category->getAlias();
+                    $newBlock = '<p style="text-align: center;"><a target="_blank" class="productLink" href="' . $actualUrl .'">' . $category->getTitle() . '</a></p>';
+                    $newBlock .= $this->render('AppBundle:look4wear:goods.block.html.twig', ['goods' => $goods])->getContent();
+                    $articleText = str_replace('[category:' . $blockInsertParams . ']', $newBlock, $articleText);
+                    $article->setText($articleText);
+                }
+            }
+        }
+
+        return $this->defaultRender('AppBundle:look4wear:article.html.twig', [
+            'seoTitle' => $article->getSeoTitle(),
+            'seoDescription' => $article->getSeoDescription(),
+            'article' => $article,
+        ]);
+    }
+
+    /**
      * @param $searchString
      * @param $page
      * @return mixed

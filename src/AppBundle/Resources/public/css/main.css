@@ -22,7 +22,7 @@ body a:hover {
 }
 
 header {
-    background: #b5d1f1;
+    background: #eee;
 }
 
 header section {
@@ -234,7 +234,7 @@ header form button:hover {
 }
 
 footer {
-    background: #b5d1f1;
+    background: #eee;
     padding: 1rem 10%;
 }
 
@@ -302,7 +302,7 @@ section.indexSection {
     margin: -5rem 0 0 0;
     position: relative;
     overflow: hidden;
-    background: #b5d1f1;
+    background: #eee;
 }
 
 .categoryBoxImg {
@@ -343,8 +343,13 @@ section.indexSection {
     margin: 0.2rem;
 }
 
+.articleText {
+    min-height: 500px;
+}
+
 a.productLink {
     width: 100%;
+    color: #428bca;
 }
 
 .goodsMain {
@@ -410,7 +415,7 @@ a.productLink {
 .mobileBlock {
     display: none;
     width: 100%;
-    background: #b5d1f1;
+    background: #eee;
     position: fixed;
     z-index: 1001;
 }

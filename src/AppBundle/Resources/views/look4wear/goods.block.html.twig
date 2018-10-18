@@ -1,15 +1,9 @@
-    {% if actualCategory is defined %}
-        <h1>
-            {{ actualCategory.title }}
-            {% if vendor is defined %}
-                {{ vendor.name }}
-            {% endif %}
-        </h1>
-    {% endif %}
     <div class="goodsMain">
-        <section class="sideMenu">
-            {% include 'AppBundle:look4wear:side.menu.html.twig'%}
-        </section>
+        {%  if actualCategory is defined %}
+            <section class="sideMenu">
+                {% include 'AppBundle:look4wear:side.menu.html.twig'%}
+            </section>
+        {% endif %}
         {% if goods is defined and goods|length > 0 %}
             <section class="goodsSection" itemscope itemtype="http://schema.org/ItemList">
                 {% for goodsItem in goods %}

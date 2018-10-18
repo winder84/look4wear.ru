@@ -1,0 +1,10 @@
+{% extends 'AppBundle:look4wear:layout.html.twig' %}
+
+{% block content %}
+    <section class="article_block">
+        <h1>{{ article.title }}</h1>
+        <div class="articleText">
+            {{ article.text|raw }}
+        </div>
+    </section>
+{% endblock %}
