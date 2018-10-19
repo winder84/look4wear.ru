@@ -1,0 +1,28 @@
+{% extends sonata_block.templates.block_base %}
+
+{% block block %}
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">{{ info.title }}</h3>
+        </div>
+        <div class="box-body">
+            <table class="table table-hover">
+                <tbody>
+                    {% for goodsItem in info.goods %}
+                        <tr>
+                            <td class="sonata-ba-list-label" style="width: 25%">
+                                <img width="50%" class="b-lazy" src="{{ goodsItem.pictures.0 | my_replace | imagine_filter('my_thumb') }}" />
+                            </td>
+                            <td class="sonata-ba-list-label">
+                                {{ goodsItem.model }} {{ goodsItem.name }}
+                            </td>
+                            <td class="sonata-ba-list-label">
+                                {{ goodsItem.price }} руб.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -62,3 +62,11 @@ services:
             - "@templating"
         tags:
             - { name: sonata.block }
+
+    last.goods.stat.block:
+        class: AppBundle\Block\Service\LastGoodsStat
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@templating"
+        tags:
+            - { name: sonata.block }

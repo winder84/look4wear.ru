@@ -100,6 +100,7 @@ sonata_admin:
     dashboard:
         blocks:
             - { position: right, type: l4w.info.block }
+            - { position: right, type: last.goods.stat.block }
             - { position: left, type: sonata.admin.block.admin_list }
     title: 'Панель управления'
     title_logo: bundles/app/images/logo_L4W.svg
@@ -154,6 +155,7 @@ sonata_block:
         sonata.user.block.menu:    # used to display the menu in profile pages
         sonata.user.block.account: # used to display menu option (login option)
         l4w.info.block:
+        last.goods.stat.block:
 
 sonata_user:
     security_acl: true
