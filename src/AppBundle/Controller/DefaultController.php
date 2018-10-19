@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Category;
+use AppBundle\Entity\GoodsStat;
 use AppBundle\Entity\Vendor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
@@ -558,8 +559,12 @@ class DefaultController extends Controller
 
     /**
      * @Route("/goods/buy/{alias}", name="goods_buy_route")
+     *
+     * @param $alias
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function productBuyAction($alias)
+    public function productBuyAction($alias, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $goods = $em
@@ -569,6 +574,7 @@ class DefaultController extends Controller
             throw $this->createNotFoundException('The $goods does not exist');
         }
 
+        $this->saveGoodsStat($goods->getId(), $request);
         return $this->defaultRender('AppBundle:look4wear:buy.html.twig', [
             'seoTitle' => 'Осуществляется переход в магазин ' . $goods->getOffer()->getName(),
             'pageTitle' => 'Осуществляется переход в магазин ' . $goods->getOffer()->getName(),
@@ -802,5 +808,16 @@ class DefaultController extends Controller
         $lastNumber = substr($obj->getId(), -1, 1);
 
         return self::$firstDescriptionArray[$firstNumber] . $category->getTitle() . ($vendor ? ' ' . $vendor->getName() : '') . '.' . self::$secondDescriptionArray[$lastNumber];
+    }
+
+    private function saveGoodsStat($goodsId, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $newGoodsStat = new GoodsStat();
+        $newGoodsStat->setClientIp($request->getClientIp());
+        $newGoodsStat->setClientUserAgent($request->headers->get('User-Agent'));
+        $newGoodsStat->setGoodsId($goodsId);
+        $em->persist($newGoodsStat);
+        $em->flush();
     }
 }

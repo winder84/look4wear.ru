@@ -3,19 +3,19 @@ services:
         class: AppBundle\Admin\OfferAdmin
         arguments: [~, AppBundle\Entity\Offer, SonataAdminBundle:CRUD]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Контент, label: Офферы }
+            - { name: sonata.admin, manager_type: orm, group: Импорт, label: Офферы }
 
     app.admin.goods:
         class: AppBundle\Admin\GoodsAdmin
         arguments: [~, AppBundle\Entity\Goods, SonataAdminBundle:CRUD]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Контент, label: Товары }
+            - { name: sonata.admin, manager_type: orm, group: Импорт, label: Товары }
 
     app.admin.vendor:
         class: AppBundle\Admin\VendorAdmin
         arguments: [~, AppBundle\Entity\Vendor, SonataAdminBundle:CRUD]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Контент, label: Бренды }
+            - { name: sonata.admin, manager_type: orm, group: Импорт, label: Бренды }
 
     app.admin.category:
         class: AppBundle\Admin\CategoryAdmin
@@ -36,6 +36,13 @@ services:
         arguments: [~, AppBundle\Entity\Article, SonataAdminBundle:CRUD]
         tags:
         - { name: sonata.admin, manager_type: orm, group: Контент, label: Статьи }
+        public: true
+
+    app.admin.goods_stat:
+        class: AppBundle\Admin\GoodsStatAdmin
+        arguments: [~, AppBundle\Entity\GoodsStat, SonataAdminBundle:CRUD]
+        tags:
+        - { name: sonata.admin, manager_type: orm, group: Статистика, label: Переходы }
         public: true
 
     app.sitemap.blog_post_subscriber:
