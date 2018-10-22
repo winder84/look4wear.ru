@@ -11,7 +11,7 @@
                     {% for goodsItem in info.goods %}
                         <tr>
                             <td class="sonata-ba-list-label" style="width: 25%">
-                                <img width="50%" class="b-lazy" src="{{ goodsItem.pictures.0 | my_replace | imagine_filter('my_thumb') }}" />
+                                <img width="40%" class="b-lazy" src="{{ goodsItem.pictures.0 | my_replace | imagine_filter('my_thumb') }}" />
                             </td>
                             <td class="sonata-ba-list-label">
                                 {{ goodsItem.model }} {{ goodsItem.name }}

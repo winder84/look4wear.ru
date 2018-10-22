@@ -79,6 +79,7 @@ class LastGoodsStat extends AbstractBlockService implements BlockServiceInterfac
             ->select('gs.goodsId, COUNT(gs.id) AS cnt')
             ->groupBy('gs.goodsId')
             ->orderBy('cnt', 'DESC')
+            ->addOrderBy('gs.goodsId')
             ->setMaxResults(5)
             ->getQuery();
         $goodsStats = $query->getResult();
