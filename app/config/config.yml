@@ -75,11 +75,10 @@ sonata_formatter:
             service: sonata.formatter.text.twigengine
             extensions: [] # Twig formatter cannot have extensions
 
-ivory_ck_editor:
+fos_ck_editor:
+    default_config: my_config
     configs:
-        default:
-            language:  '%locale%'
-            toolbar: standard
+        my_config:
 
 sonata_admin:
     assets:

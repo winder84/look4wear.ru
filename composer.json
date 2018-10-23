@@ -24,6 +24,7 @@
         "components/jquery": "1.11.1",
         "doctrine/doctrine-bundle": "~1.4",
         "doctrine/orm": "^2.4.8",
+        "friendsofsymfony/ckeditor-bundle": "^1.2",
         "iakumai/sphinxsearch-bundle": "dev-master",
         "incenteev/composer-parameter-handler": "~2.0",
         "jantaodev/sitemap-bundle": "^0.1.0",

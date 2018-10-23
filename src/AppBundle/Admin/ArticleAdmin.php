@@ -44,10 +44,12 @@ class ArticleAdmin extends AbstractAdmin
             ->add('title')
             ->add('seoTitle')
             ->add('seoDescription')
-            ->add('text', SimpleFormatterType::class, array(
-                'format' => 'richhtml',
-                'ckeditor_context' => 'default', // optional
-            ))
+            ->add('text', 'ckeditor', [
+                'config' => [
+                    'uiColor' => '#ffffff',
+                    'height' => '500',
+                ],
+            ])
         ;
     }
 

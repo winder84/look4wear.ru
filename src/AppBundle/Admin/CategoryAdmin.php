@@ -63,10 +63,12 @@ class CategoryAdmin extends AbstractAdmin
             ->add('name')
             ->add('title', null, ['required' => true])
             ->add('seoTitle')
-            ->add('description', SimpleFormatterType::class, array(
-                'format' => 'richhtml',
-                'ckeditor_context' => 'default', // optional
-            ))
+            ->add('description', 'ckeditor', [
+                'config' => [
+                    'uiColor' => '#ffffff',
+                    'height' => '500',
+                ],
+            ])
             ->add('searchString')
             ->add('excludeWords')
             ->add('keywords')

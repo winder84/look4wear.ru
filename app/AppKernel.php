@@ -33,7 +33,7 @@ class AppKernel extends Kernel
 
             new Liip\ImagineBundle\LiipImagineBundle(),
             new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
-            new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
+            new FOS\CKEditorBundle\FOSCKEditorBundle(),
             new Sonata\FormatterBundle\SonataFormatterBundle(),
 
             new Sonata\MediaBundle\SonataMediaBundle(),
