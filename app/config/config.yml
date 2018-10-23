@@ -249,7 +249,7 @@ liip_imagine :
 jantao_dev_sitemap:
     hosts:
     - look4wear.ru
-    gzip: false
+    gzip: true
     scheme: https_only
     robots:
         allow:
