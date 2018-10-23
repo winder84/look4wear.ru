@@ -25,7 +25,6 @@ class ExceptionController extends Controller
      * @var array
      */
     protected static $menuItems = [
-        'catalogPage' => 'Каталог',
         'about_page' => 'О проекте',
         'sitemap_page' => 'Карта сайта',
     ];

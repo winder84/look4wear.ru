@@ -29,17 +29,18 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new Sonata\UserBundle\SonataUserBundle(),
             new Application\Sonata\UserBundle\ApplicationSonataUserBundle(),
-            new IAkumaI\SphinxsearchBundle\SphinxsearchBundle(),
+            new \IAkumaI\SphinxsearchBundle\SphinxsearchBundle(),
 
             new Liip\ImagineBundle\LiipImagineBundle(),
             new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
             new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
             new Sonata\FormatterBundle\SonataFormatterBundle(),
-            new Presta\SitemapBundle\PrestaSitemapBundle(),
 
             new Sonata\MediaBundle\SonataMediaBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Application\Sonata\MediaBundle\ApplicationSonataMediaBundle(),
+
+            new JantaoDev\SitemapBundle\JantaoDevSitemapBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

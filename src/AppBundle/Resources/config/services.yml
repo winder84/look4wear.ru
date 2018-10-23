@@ -45,15 +45,6 @@ services:
         - { name: sonata.admin, manager_type: orm, group: Статистика, label: Переходы }
         public: true
 
-    app.sitemap.blog_post_subscriber:
-        class: AppBundle\EventListener\SitemapSubscriber
-        arguments:
-            - "@router"
-            - "@doctrine"
-            - "@iakumai.sphinxsearch.search"
-        tags:
-            - { name: "kernel.event_subscriber", priority: 100 }
-
     l4w.info.block:
         class: AppBundle\Block\Service\L4wInfo
         arguments:
@@ -70,3 +61,11 @@ services:
             - "@templating"
         tags:
             - { name: sonata.block }
+
+    app.some_listener:
+        class: AppBundle\EventListener\SitemapListener
+        arguments:
+            - "@router"
+            - "@doctrine"
+        tags:
+        - { name: jantao_dev.sitemap.listener }

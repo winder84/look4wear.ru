@@ -3,7 +3,6 @@
 parameters:
     #parameter_name: value
     router.request_context.host: look4wear.ru
-    router.request_context.scheme: https
 
 services:
     # default configuration for services in *this* file

@@ -22,9 +22,6 @@ _sonata_admin:
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.xml"
 
-presta_sitemap:
-    resource: "@PrestaSitemapBundle/Resources/config/routing.yml"
-
 _errors:
     resource: "@TwigBundle/Resources/config/routing/errors.xml"
     prefix:   /_error
