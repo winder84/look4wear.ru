@@ -9,7 +9,7 @@
     <meta name="keywords" content="{{ keywords }}">
 {% endif %}
 <meta name="Document-state" content="Dynamic">
-<meta http-equiv="Cache-Control" content="max-age=3600, must-revalidate">
+<meta http-equiv="Cache-Control" content="max-age=3600, must-revalidate, public">
 
 <meta property="og:url"
       content="{{ app.request.getSchemeAndHttpHost() }}{% if canonicalLink is defined and canonicalLink != '' %}{{ canonicalLink }}{% elseif app.request.attributes.get('_route') %}{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}{% endif %}">
