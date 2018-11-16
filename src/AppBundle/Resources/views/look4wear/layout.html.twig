@@ -66,7 +66,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <h4 class="text-light">Выбирайте одежду в нашем каталоге:</h4>
+                    <h4 class="text-light"><small>Выбирайте одежду в нашем каталоге:</small></h4>
                     <ul class="list-unstyled">
                         <li><a href="/catalog/dlya_mujchin">Мужская одежда</a></li>
                         <li><a href="/catalog/dlya_jenshin">Женская одежда</a></li>
@@ -75,7 +75,7 @@
                     </ul>
                 </div>
                 <div class="col-md-4">
-                    <h4 class="text-light">Полезные ссылки:</h4>
+                    <h4 class="text-light"><small>Полезные ссылки:</small></h4>
                     <ul class="list-unstyled">
                         {% for menuItemKey, menuItemValue in menuItems %}
                             <li>
@@ -92,7 +92,7 @@
                 </div>
                 {% if lastArticles is defined %}
                     <div class="col-md-4">
-                        <h4 class="text-light">Свежие статьи:</h4>
+                        <h4 class="text-light"><small>Свежие статьи:</small></h4>
                         <ul class="list-unstyled">
                             {% for lastArticle in lastArticles %}
                                 <li>
