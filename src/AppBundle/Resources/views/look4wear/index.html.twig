@@ -1,85 +1,57 @@
 {% extends 'AppBundle:look4wear:layout.html.twig' %}
 
 {% block content %}
-    {% if goods is defined %}
-        <ul>
-            {% for goodsItem in goods %}
-                <li>
-                    <ul>
-                        <li>{{ goodsItem.name }}</li>
-                        <li>{{ goodsItem.model }}</li>
-                        <li>{{ goodsItem.description }}</li>
-                        <li>
-                            {% for picture in goodsItem.pictures %}
-                                <img width="100" src="{{ picture|replace({'http:': ""}) }}">
-                            {% endfor %}
-                        </li>
-                        {% if goodsItem.params %}
-                            <li>
-                                <ul>
-                                    {% for paramName, paramValue in goodsItem.params %}
-                                        <li>{{ paramName }} : {{ paramValue }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
     <h1>look4wear.ru – ваш незаменимый помошник в шоппинге!</h1>
     <p>На нашем портале собрана мужская и женская одежда самых известных марок, а также обувь и аксессуары. Модные
         бренды размещают здесь свои каталоги, чтобы вы могли сделать покупки всего за пару кликов.</p>
-
-    <section class="indexSection">
-        <div class="categoryBox">
-            <a href="/catalog/dlya_jenshin" class="portfolio-link">
-                <div class="categoryBoxImg">
-                    <img class="b-lazy" src="/bundles/app/images/no-image.png" data-src="{{ asset('/bundles/app/images/main_jen.png') }}"
-                         alt="">
-                    <div class="categoryBoxDesrcr">
-                        <h2>Женская одежда</h2>
-                        <p>Последние коллекции по выгодным ценам!</p>
-                    </div>
+    <div class="album bg-light">
+        <div class="container px-0">
+            <div class="row">
+                <div class="col-lg-6 px-1">
+                    <a href="/catalog/dlya_jenshin" title="Женская одежда">
+                        <div class="card mb-4 box-shadow">
+                            <img class="b-lazy img-fluid" src="/bundles/app/images/no-image.png" data-src="{{ asset('/bundles/app/images/main_jen.png') }}" alt="">
+                            <div class="card-body">
+                                <h2>Женская одежда</h2>
+                                <p>Последние коллекции по выгодным ценам!</p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </a>
-        </div>
-        <div class="categoryBox">
-            <a href="/catalog/dlya_mujchin" class="portfolio-link">
-                <div class="categoryBoxImg">
-                    <img class="b-lazy" src="/bundles/app/images/no-image.png" data-src="{{ asset('/bundles/app/images/main_muj.png') }}"
-                         alt="">
-                    <div class="categoryBoxDesrcr">
-                        <h2>Мужская одежда</h2>
-                        <p>Качественная одежда с доставкой!</p>
-                    </div>
+                <div class="col-lg-6 px-1">
+                    <a href="/catalog/dlya_mujchin" title="Мужская одежда">
+                        <div class="card mb-4 box-shadow">
+                            <img class="b-lazy img-fluid" src="/bundles/app/images/no-image.png" data-src="{{ asset('/bundles/app/images/main_muj.png') }}" alt="">
+                            <div class="card-body">
+                                <h2>Мужская одежда</h2>
+                                <p>Качественная одежда с доставкой!</p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </a>
-        </div>
-        <div class="categoryBox">
-            <a href="/catalog/dlya_malchikov" class="portfolio-link">
-                <div class="categoryBoxImg">
-                    <img class="b-lazy" src="/bundles/app/images/no-image.png" data-src="{{ asset('/bundles/app/images/main_boys.png?367') }}"
-                         alt="">
-                    <div class="categoryBoxDesrcr">
-                        <h2>Одежда для мальчиков</h2>
-                        <p>Одежда для школы и повседневной жизни!</p>
-                    </div>
+                <div class="col-lg-6 px-1">
+                    <a href="/catalog/dlya_malchikov" title="Одежда для мальчиков">
+                        <div class="card mb-4 box-shadow">
+                            <img class="b-lazy img-fluid" src="/bundles/app/images/no-image.png" data-src="{{ asset('/bundles/app/images/main_boys.png?367') }}" alt="">
+                            <div class="card-body">
+                                <h2>Одежда для мальчиков</h2>
+                                <p>Одежда для школы и повседневной жизни!</p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </a>
-        </div>
-        <div class="categoryBox">
-            <a href="/catalog/dlya_devochek" class="portfolio-link">
-                <div class="categoryBoxImg">
-                    <img class="b-lazy" src="/bundles/app/images/no-image.png" data-src="{{ asset('/bundles/app/images/main_girls.png?367') }}"
-                         alt="">
-                    <div class="categoryBoxDesrcr">
-                        <h2>Одежда для девочек</h2>
-                        <p>Платья, юбки, одежда для школы и дома!</p>
-                    </div>
+                <div class="col-lg-6 px-1">
+                    <a href="/catalog/dlya_devochek" title="Одежда для девочек">
+                        <div class="card mb-4 box-shadow">
+                            <img class="b-lazy img-fluid" src="/bundles/app/images/no-image.png" data-src="{{ asset('/bundles/app/images/main_girls.png?367') }}" alt="">
+                            <div class="card-body">
+                                <h2>Одежда для девочек</h2>
+                                <p>Платья, юбки, одежда для школы и дома!</p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </a>
+            </div>
         </div>
-    </section>
+    </div>
 {% endblock %}

@@ -9,113 +9,53 @@
 {% endblock %}
 
 {% block header %}
-    <div class="mobileBlock">
-        <div class="menu__icon">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        {% if app.request.attributes.get('_route') != 'homepage' %}
-            <a href="/">
-                <img style="margin: 5px 0;" src="/bundles/app/images/logo_L4W.svg" width="50px" title="look4wear.ru - сервис поиска одежды." alt="look4wear - сервис поиска одежды.">
-            </a>
-        {% else %}
-            <span>
-                <img style="margin: 5px 0;" src="/bundles/app/images/logo_L4W.svg" width="50px" title="look4wear.ru - сервис поиска одежды." alt="look4wear - сервис поиска одежды.">
-            </span>
-        {% endif %}
-    </div>
-    <div class="menu__links">
-        {% for menuItemKey, menuItemValue in menuItems %}
-            {% if app.request.attributes.get('_route') == menuItemKey %}
-                <span class="menu__links-item active">{{ menuItemValue }}</span>
-            {% else %}
-                <a class="menu__links-item" href="{{ path(menuItemKey) }}">
-                    {{ menuItemValue }}
-                </a>
-            {% endif %}
-        {% endfor %}
-        <hr />
-        {% if mainMenuCategories %}
-            {% for mainMenuCategory in mainMenuCategories %}
-                {% if app.request.attributes.get('_route') and app.request.attributes.get('_route_params') and path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) == mainMenuCategory.link %}
-                    <span class="menu__links-item active">{{ mainMenuCategory.title }}</span>
-                {% else %}
-                    <a class="menu__links-item" href="{{ mainMenuCategory.link }}">
-                        {{ mainMenuCategory.title }}
-                    </a>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-        <hr />
-        <section class="mobileCategoriesMenu">
-            {% include 'AppBundle:look4wear:side.menu.html.twig'%}
-        </section>
-    </div>
-    <header>
-        <section>
-            <aside>
-                {% if app.request.attributes.get('_route') != 'homepage' %}
-                    <a href="/">
-                        <img style="margin: 5px 0;" src="/bundles/app/images/logo_L4W.svg" width="50px" title="look4wear.ru - сервис поиска одежды." alt="look4wear - сервис поиска одежды.">
-                    </a>
-                {% else %}
-                    <span>
-                        <img style="margin: 5px 0;" src="/bundles/app/images/logo_L4W.svg" width="50px" title="look4wear.ru - сервис поиска одежды." alt="look4wear - сервис поиска одежды.">
-                    </span>
-                {% endif %}
-            </aside>
-            {{ include('AppBundle:look4wear:search.form.html.twig') }}
-            <nav role="navigation">
-                {% for menuItemKey, menuItemValue in menuItems %}
-                    {% if app.request.attributes.get('_route') == menuItemKey %}
-                        <span class="active">{{ menuItemValue }}</span>
-                    {% else %}
-                        <a href="{{ path(menuItemKey) }}">
-                            {{ menuItemValue }}
-                        </a>
-                    {% endif %}
-                {% endfor %}
-            </nav>
-        </section>
-        {% if mainMenuCategories %}
-            <section class="mainMenu">
-                <nav role="navigation">
-                    {% for mainMenuCategory in mainMenuCategories %}
-                        {% if app.request.attributes.get('_route') and app.request.attributes.get('_route_params') and path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) == mainMenuCategory.link %}
-                            <span class="active">{{ mainMenuCategory.title }}</span>
-                        {% else %}
-                            <a href="{{ mainMenuCategory.link }}">
-                                {{ mainMenuCategory.title }}
-                            </a>
-                        {% endif %}
-                    {% endfor %}
-                </nav>
-            </section>
-        {% endif %}
-    </header>
-{% endblock %}
-{% block body %}
-    <main class="content">
-        {% if breadcrumbs is defined %}
-            <nav aria-label="breadcrumb" role="navigation">
-                <ul class="breadcrumbs" itemscope itemtype="http://schema.org/BreadcrumbList">
-                    {% for breadcrumb in breadcrumbs %}
-                        <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            {% if breadcrumb.link %}
-                                <a href="{{ breadcrumb.link }}" {% if breadcrumb.seoTitle is defined %}title="{{ breadcrumb.seoTitle }}" {% endif %} itemprop="item">
-                                    <span itemprop="name">{{ breadcrumb.title }}</span>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <img class="px-2" src="/bundles/app/images/logo_L4W.svg" width="50" height="34" title="look4wear.ru - сервис поиска одежды." alt="look4wear - сервис поиска одежды.">
+            <a class="navbar-brand pt-3" href="/">look4wear.ru</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    {% for menuItemKey, menuItemValue in menuItems %}
+                        {% if app.request.attributes.get('_route') == menuItemKey %}
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#">{{ menuItemValue }}
+                                    <span class="sr-only">(current)</span>
                                 </a>
-                            {% else %}
-                                <span itemprop="name">{{ breadcrumb.title }}</span>
-                            {% endif %}
-                        </li>
-                        {% if not loop.last %}
-                            \
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path(menuItemKey) }}">{{ menuItemValue }}</a>
+                            </li>
                         {% endif %}
                     {% endfor %}
                 </ul>
+                <hr />
+                <div class="d-none d-sm-block d-lg-none">
+                    {% include 'AppBundle:look4wear:side.menu.html.twig'%}
+                </div>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+{% block body %}
+    <main class="container" style="padding-top: 5rem">
+        {% if breadcrumbs is defined %}
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    {% for breadcrumb in breadcrumbs %}
+                        {% if breadcrumb.link %}
+                            <li class="breadcrumb-item">
+                                <a href="{{ breadcrumb.link }}" {% if breadcrumb.seoTitle is defined %}title="{{ breadcrumb.seoTitle }}" {% endif %}>{{ breadcrumb.title }}</a>
+                            </li>
+                        {% else %}
+                            <li class="breadcrumb-item active" aria-current="page">{{ breadcrumb.title }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ol>
             </nav>
         {% endif %}
         {% block content %}
@@ -123,50 +63,53 @@
     </main>
 {% endblock %}
 {% block footer %}
-    <div class="greenLine"></div>
-    <footer>
-        <div class="footerItem">
-            <h4>Выбирайте одежду в нашем каталоге:</h4>
-            <ul>
-                <li><a href="/catalog/dlya_mujchin">Мужская одежда</a></li>
-                <li><a href="/catalog/dlya_jenshin">Женская одежда</a></li>
-                <li><a href="/catalog/dlya_malchikov">Одежда для мальчиков</a></li>
-                <li><a href="/catalog/dlya_devochek">Одежда для девочек</a></li>
-            </ul>
-        </div>
-        <div class="footerItem">
-            <h4>Полезные ссылки:</h4>
-            <ul>
-                {% for menuItemKey, menuItemValue in menuItems %}
-                    <li>
-                        {% if app.request.attributes.get('_route') == menuItemKey %}
-                            <span class="active">{{ menuItemValue }}</span>
-                        {% else %}
-                            <a href="{{ path(menuItemKey) }}">
-                                {{ menuItemValue }}
-                            </a>
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% if lastArticles is defined %}
-            <div class="footerItem">
-                <h4>Последние статьи:</h4>
-                <ul>
-                    {% for lastArticle in lastArticles %}
-                        <li>
-                            {% if path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) == '/article/' ~ lastArticle.alias %}
-                                <span class="active">{{ lastArticle.title|slice(0, 30) ~ '...' }}</span>
-                            {% else %}
-                                <a href="/article/{{ lastArticle.alias }}">
-                                    {{ lastArticle.title|slice(0, 30) ~ '...' }}
-                                </a>
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                </ul>
+    <footer class="py-5 bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h4 class="text-light">Выбирайте одежду в нашем каталоге:</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="/catalog/dlya_mujchin">Мужская одежда</a></li>
+                        <li><a href="/catalog/dlya_jenshin">Женская одежда</a></li>
+                        <li><a href="/catalog/dlya_malchikov">Одежда для мальчиков</a></li>
+                        <li><a href="/catalog/dlya_devochek">Одежда для девочек</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h4 class="text-light">Полезные ссылки:</h4>
+                    <ul class="list-unstyled">
+                        {% for menuItemKey, menuItemValue in menuItems %}
+                            <li>
+                                {% if app.request.attributes.get('_route') == menuItemKey %}
+                                    <span class="active">{{ menuItemValue }}</span>
+                                {% else %}
+                                    <a href="{{ path(menuItemKey) }}">
+                                        {{ menuItemValue }}
+                                    </a>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% if lastArticles is defined %}
+                    <div class="col-md-4">
+                        <h4 class="text-light">Свежие статьи:</h4>
+                        <ul class="list-unstyled">
+                            {% for lastArticle in lastArticles %}
+                                <li>
+                                    {% if path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) == '/article/' ~ lastArticle.alias %}
+                                        <span class="active">{{ lastArticle.title|slice(0, 30) ~ '...' }}</span>
+                                    {% else %}
+                                        <a href="/article/{{ lastArticle.alias }}">
+                                            {{ lastArticle.title|slice(0, 30) ~ '...' }}
+                                        </a>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
             </div>
-        {% endif %}
+        </div>
     </footer>
 {% endblock %}

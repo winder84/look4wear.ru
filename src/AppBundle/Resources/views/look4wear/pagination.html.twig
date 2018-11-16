@@ -1,35 +1,35 @@
 {% spaceless %}
     {% if pagination.totalPagesCount > 1 %}
-
-    {# Number of page around current page+1 #}
-    {% set nearbyPagesLimit = 2 %}
-
-    <ul class="paginationUl">
-        {% if pagination.currentPage != 1 %}
-            <li>
-                <a href="{{ pagination.url }}page={{ 1 }}">Первая</a>
-            </li>
-        {% endif %}
-        {% for i in 1..pagination.totalPagesCount %}
-            {% if 0 < (pagination.currentPage - nearbyPagesLimit) - loop.index %} {# hide all before #}
-            {% elseif 0 > (pagination.currentPage + nearbyPagesLimit) - loop.index %} {# hide all after #}
-            {% else %}
-                {% if pagination.currentPage == loop.index  %}
-                    <li class="currentPage">
-                        {{ loop.index }}
-                    </li>
-                {% else %}
-                    <li>
-                        <a href="{{ pagination.url }}page={{ loop.index }}">{{ loop.index }}</a>
-                    </li>
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-        {% if pagination.currentPage != pagination.totalPagesCount %}
-            <li>
-                <a href="{{ pagination.url }}page={{ pagination.totalPagesCount }}">Последняя</a>
-            </li>
-        {% endif %}
-    </ul>
+        {# Number of page around current page+1 #}
+        {% set nearbyPagesLimit = 2 %}
+        <div class="row col-12">
+            <nav class="mx-auto">
+                <ul class="pagination">
+                    {% if pagination.currentPage != 1 %}
+                        <li class="page-item"><a class="page-link" href="{{ pagination.url }}page={{ 1 }}">Первая</a>
+                        </li>
+                    {% endif %}
+                    {% for i in 1..pagination.totalPagesCount %}
+                        {% if 0 < (pagination.currentPage - nearbyPagesLimit) - loop.index %} {# hide all before #}
+                        {% elseif 0 > (pagination.currentPage + nearbyPagesLimit) - loop.index %} {# hide all after #}
+                        {% else %}
+                            {% if pagination.currentPage == loop.index %}
+                                <li class="page-item disabled active"><a class="page-link" href="#">{{ loop.index }}</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link"
+                                                         href="{{ pagination.url }}page={{ loop.index }}">{{ loop.index }}</a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if pagination.currentPage != pagination.totalPagesCount %}
+                        <li class="page-item"><a class="page-link"
+                                                 href="{{ pagination.url }}page={{ pagination.totalPagesCount }}">Последняя</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
     {% endif %}
 {% endspaceless %}

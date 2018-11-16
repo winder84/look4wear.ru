@@ -1,50 +1,54 @@
-    <div class="goodsMain">
-        {%  if actualCategory is defined %}
-            <section class="sideMenu">
-                {% include 'AppBundle:look4wear:side.menu.html.twig'%}
-            </section>
-        {% endif %}
-        {% if goods is defined and goods|length > 0 %}
-            <section class="goodsSection" itemscope itemtype="http://schema.org/ItemList">
-                {% for goodsItem in goods %}
-                    <div class="item" data-goods-id="{{ goodsItem.attrs.goodsid }}" itemprop="itemListElement" itemscope itemtype="http://schema.org/Product">
-                        {% if goodsItem.attrs.price < goodsItem.attrs.oldprice %}
-                            <div class="discountBlock">
-                                -{{ ((goodsItem.attrs.oldprice - goodsItem.attrs.price) / goodsItem.attrs.oldprice * 100)|round }}%
-                            </div>
-                        {% endif %}
-                        <a class="productLink productLinkToChange" target="_blank" rel="nofollow" href="#"
-                           data-product-alias="{{ goodsItem.attrs.alias }}"
-                           title="Купить {{ goodsItem.attrs.name }} по выгодной цене.">
-                            {% if goodsItem.attrs.pictures %}
-                                <div class="goodsImg">
-                                    <img class="b-lazy" src="{{ asset('/bundles/app/images/no-image.png') }}" itemprop="image"
-                                         data-src="{{ goodsItem.attrs.pictures| json_decode.0 | my_replace | imagine_filter('my_thumb') }}"
-                                         alt="Купить {{ goodsItem.attrs.name }} в интернет-магазине."
-                                         onerror="this.style.display='none'"/>
-                                </div>
-                            {% else %}
-                                <div class="goodsImg">
-                                    <img class="b-lazy" src="{{ asset('/bundles/app/images/no-image.png') }}" alt=""
-                                         onerror="this.style.display='none'"/>
+<div class="row">
+    {%  if actualCategory is defined %}
+        <div class="col-md-3 d-none d-lg-block">
+            {% include 'AppBundle:look4wear:side.menu.html.twig'%}
+        </div>
+    {% endif %}
+    {% if goods is defined and goods|length > 0 %}
+        <div class="col-lg-9 col-md-12 album">
+            <div class="container px-0">
+                <div class="row" itemscope itemtype="http://schema.org/ItemList">
+                    {% for goodsItem in goods %}
+                        <div class="col-lg-4 col-md-4 px-1" data-goods-id="{{ goodsItem.attrs.goodsid }}" itemprop="itemListElement" itemscope itemtype="http://schema.org/Product">
+                            {% if goodsItem.attrs.price < goodsItem.attrs.oldprice %}
+                                <div class="discountBlock">
+                                    -{{ ((goodsItem.attrs.oldprice - goodsItem.attrs.price) / goodsItem.attrs.oldprice * 100)|round }}%
                                 </div>
                             {% endif %}
-                            <div class="goodsDescr">
-                                <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">{{ goodsItem.attrs.vendorname }}</span>
-                                <br/>
-                                <span itemprop="name">{{ goodsItem.attrs.name|length > 24 ? goodsItem.attrs.name|slice(0, 24) ~ '...' : goodsItem.attrs.name }}</span>
-                                <br/>
-                                Цена:
-                                <span class="goodsPrice" itemprop="price">{{ goodsItem.attrs.price }}</span><span class="goodsPrice" itemprop="priceCurrency" content="RUB">руб</span>
-                            </div>
-                        </a>
-                    </div>
-                {% endfor %}
-                {% if pagination is defined %}
-                    {{ include('AppBundle:look4wear:pagination.html.twig', { 'pagination': pagination }) }}
-                {% endif %}
-            </section>
-        {% else %}
-            {{ include('AppBundle:look4wear:goods.not.found.html.twig') }}
-        {% endif %}
-    </div>
+                            <a class="productLinkToChange text-dark" href="#" title="Женская одежда" rel="nofollow" data-product-alias="{{ goodsItem.attrs.alias }}"
+                               title="Купить {{ goodsItem.attrs.name }} по выгодной цене." target="_blank">
+                                <div class="card mb-4 box-shadow">
+                                    {% if goodsItem.attrs.pictures %}
+                                        <img class="b-lazy img-fluid" src="{{ asset('/bundles/app/images/no-image.png') }}" itemprop="image"
+                                             data-src="{{ goodsItem.attrs.pictures| json_decode.0 | my_replace | imagine_filter('my_thumb') }}"
+                                             alt="Купить {{ goodsItem.attrs.name }} в интернет-магазине."
+                                             onerror="this.style.display='none'">
+                                    {% else %}
+                                        <img class="b-lazy img-fluid" src="{{ asset('/bundles/app/images/no-image.png') }}" alt=""
+                                             onerror="this.style.display='none'"/>
+                                    {% endif %}
+                                    <div class="card-body">
+                                            <p itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                                                {{ goodsItem.attrs.vendorname }}
+                                                <br />
+                                                <span itemprop="name">{{ goodsItem.attrs.name }}</span>
+                                                <br />
+                                                Цена:
+                                                <span class="font-weight-bold" itemprop="price">{{ goodsItem.attrs.price }}</span>
+                                                <span class="font-weight-bold" itemprop="priceCurrency" content="RUB">руб</span>
+                                            </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                    {% if pagination is defined %}
+                        {{ include('AppBundle:look4wear:pagination.html.twig', { 'pagination': pagination }) }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        {{ include('AppBundle:look4wear:goods.not.found.html.twig') }}
+    {% endif %}
+</div>

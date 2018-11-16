@@ -22,12 +22,12 @@ class DefaultController extends Controller
     /**
      * @var int
      */
-    protected static $resultsOnPage = 20;
+    protected static $resultsOnPage = 18;
 
     /**
      * @var int
      */
-    protected static $topVendorsOnPage = 10;
+    protected static $topVendorsOnPage = 12;
 
     /**
      * @var string

@@ -26,12 +26,18 @@
             {% stylesheets 'bundles/app/css/main.min.css' filter='cssrewrite' %}
                 <link rel="stylesheet" href="{{ asset_url }}" />
             {% endstylesheets %}
+            {% stylesheets 'bundles/app/css/bootstrap/*' filter='cssrewrite' %}
+                <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
         {% endblock %}
         {% block javascripts %}
             {% javascripts '@jquery' %}
                 <script type="text/javascript" src="{{ asset_url }}"></script>
             {% endjavascripts %}
-            {% javascripts 'bundles/app/js/*' %}
+            {% javascripts 'bundles/app/js/blazy.min.js' 'bundles/app/js/main.js' 'bundles/app/js/popper.js' %}
+                <script async type="text/javascript" src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+            {% javascripts 'bundles/app/js/bootstrap/*.js' %}
                 <script async type="text/javascript" src="{{ asset_url }}"></script>
             {% endjavascripts %}
         {% endblock %}

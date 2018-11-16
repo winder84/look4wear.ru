@@ -4,11 +4,11 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="500px"
 	 height="500px" viewBox="0 0 500 500" enable-background="new 0 0 500 500" xml:space="preserve">
 <g id="Слой_1">
-	<rect y="114.169" fill="#081822" stroke="#000000" stroke-miterlimit="10" width="500" height="385.831"/>
-	<path fill="none" stroke="#081822" stroke-width="40" stroke-miterlimit="10" d="M371.479,114.169
+	<rect y="114.169" fill="#ffffff" stroke="#000000" stroke-miterlimit="10" width="500" height="385.831"/>
+	<path fill="none" stroke="#ffffff" stroke-width="40" stroke-miterlimit="10" d="M371.479,114.169
 		c0-54.445-55.436-98.502-123.944-98.502c-65.783,0-119.014,44.057-119.014,98.502"/>
 </g>
 <g id="Слой_2">
-	<text transform="matrix(1 0 0 1 35 390)" fill="#F9F8F7" font-family="Helvetica" font-size="200">L4W</text>
+	<text transform="matrix(1 0 0 1 35 390)" fill="#343a40" font-family="Helvetica" font-size="200">L4W</text>
 </g>
 </svg>

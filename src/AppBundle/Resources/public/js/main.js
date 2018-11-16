@@ -19,10 +19,3 @@ $('.productLinkToChange').hover(function () {
 }, function () {
     $(this).prop('href', '#');
 });
-
-$(function() {
-    $('.menu__icon').on('click', function() {
-        $(this).closest('.mobileBlock').toggleClass('menu_state_open');
-        $('.menu__links').toggle();
-    });
-});

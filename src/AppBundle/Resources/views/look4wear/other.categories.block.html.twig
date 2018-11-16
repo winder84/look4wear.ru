@@ -1,18 +1,26 @@
 {% if otherCategories|length > 0 %}
-    <hr />
-    <div class="titleDiv">
-        <h3>{{ title }}:</h3>
+    <hr/>
+    <div class="row col-12">
+        <h2 class="mx-auto text-dark">
+            <small>{{ title }}:</small>
+        </h2>
     </div>
-    <div class="otherCategoriesWrapper">
-        {% for alias, otherCategory in otherCategories %}
-            {% if loop.index <= 10 %}
-                <a href="{{ otherCategory.link }}/brand/{{ vendorAlias }}"
-                   title="{{ otherCategory.title }} {{ otherCategory.vendorName }}. Товаров: {{ otherCategory.count }} шт.">
-                    <h2 class="item">
-                        {{ otherCategory.title }} ({{ otherCategory.count }}&nbsp;шт.)
-                    </h2>
-                </a>
-            {% endif %}
-        {% endfor %}
+    <div class="row">
+        <div class="d-flex flex-wrap">
+            {% for alias, otherCategory in otherCategories %}
+                {% if loop.index <= 12 %}
+                    <a href="{{ otherCategory.link }}/brand/{{ vendorAlias }}"
+                       title="{{ otherCategory.title }} {{ otherCategory.vendorName }}. Товаров: {{ otherCategory.count }} шт."
+                       class="px-1 my-1 col-md-4">
+                        <div class="lead h-100 text-center ">
+                            <div class="text-dark">
+                                {{ otherCategory.title }}
+                                {#{{ otherCategory.title }} ({{ otherCategory.count }}&nbsp;шт.)#}
+                            </div>
+                        </div>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
 {% endif %}

@@ -1,23 +1,30 @@
 {% if categoryTopVendorsResult|length > 0 %}
-    <hr />
-    <div class="titleDiv">
-        <h3>{{ title }}:</h3>
+    <hr/>
+    <div class="row col-12">
+        <h2 class="mx-auto text-dark">
+            <small>{{ title }}:</small>
+        </h2>
     </div>
-    <div class="vendorsWrapper">
-        {% for categoryTopVendor in categoryTopVendorsResult %}
-            {% if loop.index <= 10 and vendorAlias != categoryTopVendor.alias %}
-                <a href="{{ actualCategory|get_category_url }}/brand/{{ categoryTopVendor.alias }}"
-                   title="Купить {{ actualCategory.title }} {{ categoryTopVendor.name }}. Товаров: {{ categoryTopVendor.count }} шт."
-                   class="categoryTopVendor">
-                    <div class="item">
-                        {% if categoryTopVendor.imgUrl %}
-                            <img src="{{ asset('media/brands/' ~ categoryTopVendor.imgUrl) }}" alt="изображение {{ actualCategory.title }} {{ categoryTopVendor.name }}">
-                        {% else %}
-                            {{ categoryTopVendor.name }}
-                        {% endif %}
-                    </div>
-                </a>
-            {% endif %}
-        {% endfor %}
+    <div class="row">
+        <div class="d-flex flex-wrap">
+            {% for categoryTopVendor in categoryTopVendorsResult %}
+                {% if loop.index <= 12 and vendorAlias != categoryTopVendor.alias %}
+                    <a href="{{ actualCategory|get_category_url }}/brand/{{ categoryTopVendor.alias }}"
+                       title="Купить {{ actualCategory.title }} {{ categoryTopVendor.name }}. Товаров: {{ categoryTopVendor.count }} шт."
+                       class="px-1 my-1 col-md-3">
+                        <div class="lead border text-nowrap h-100 text-center ">
+                            <div class="text-dark">
+                                {% if categoryTopVendor.imgUrl %}
+                                    <img class="img-fluid" src="{{ asset('media/brands/' ~ categoryTopVendor.imgUrl) }}"
+                                         alt="изображение {{ actualCategory.title }} {{ categoryTopVendor.name }}">
+                                {% else %}
+                                    {{ categoryTopVendor.name }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
 {% endif %}
