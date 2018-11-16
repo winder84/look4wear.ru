@@ -68,10 +68,10 @@
                 <div class="col-md-4">
                     <h4 class="text-light"><small>Выбирайте одежду в нашем каталоге:</small></h4>
                     <ul class="list-unstyled">
-                        <li><a href="/catalog/dlya_mujchin">Мужская одежда</a></li>
-                        <li><a href="/catalog/dlya_jenshin">Женская одежда</a></li>
-                        <li><a href="/catalog/dlya_malchikov">Одежда для мальчиков</a></li>
-                        <li><a href="/catalog/dlya_devochek">Одежда для девочек</a></li>
+                        <li><a class="text-info" href="/catalog/dlya_mujchin">Мужская одежда</a></li>
+                        <li><a class="text-info" href="/catalog/dlya_jenshin">Женская одежда</a></li>
+                        <li><a class="text-info" href="/catalog/dlya_malchikov">Одежда для мальчиков</a></li>
+                        <li><a class="text-info" href="/catalog/dlya_devochek">Одежда для девочек</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4">
@@ -80,9 +80,9 @@
                         {% for menuItemKey, menuItemValue in menuItems %}
                             <li>
                                 {% if app.request.attributes.get('_route') == menuItemKey %}
-                                    <span class="active">{{ menuItemValue }}</span>
+                                    <span class="text-white-50 active">{{ menuItemValue }}</span>
                                 {% else %}
-                                    <a href="{{ path(menuItemKey) }}">
+                                    <a class="text-info" href="{{ path(menuItemKey) }}">
                                         {{ menuItemValue }}
                                     </a>
                                 {% endif %}
@@ -97,9 +97,9 @@
                             {% for lastArticle in lastArticles %}
                                 <li>
                                     {% if path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) == '/article/' ~ lastArticle.alias %}
-                                        <span class="active">{{ lastArticle.title|slice(0, 30) ~ '...' }}</span>
+                                        <span class="text-white-50 active">{{ lastArticle.title|slice(0, 30) ~ '...' }}</span>
                                     {% else %}
-                                        <a href="/article/{{ lastArticle.alias }}">
+                                        <a class="text-info" href="/article/{{ lastArticle.alias }}">
                                             {{ lastArticle.title|slice(0, 30) ~ '...' }}
                                         </a>
                                     {% endif %}
