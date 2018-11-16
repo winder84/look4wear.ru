@@ -6,13 +6,13 @@
         </h2>
     </div>
     <div class="row">
-        <div class="d-flex flex-wrap">
+        <div class="d-flex justify-content-center flex-wrap">
             {% for categoryTopVendor in categoryTopVendorsResult %}
                 {% if loop.index <= 12 and vendorAlias != categoryTopVendor.alias %}
                     <a href="{{ actualCategory|get_category_url }}/brand/{{ categoryTopVendor.alias }}"
                        title="Купить {{ actualCategory.title }} {{ categoryTopVendor.name }}. Товаров: {{ categoryTopVendor.count }} шт."
-                       class="px-1 my-1 col-md-3">
-                        <div class="lead border text-nowrap h-100 text-center ">
+                       class="px-0 mx-1 my-1 col-md-2">
+                        <div class="px-1 lead border h-100 text-center ">
                             <div class="text-dark">
                                 {% if categoryTopVendor.imgUrl %}
                                     <img class="img-fluid" src="{{ asset('media/brands/' ~ categoryTopVendor.imgUrl) }}"

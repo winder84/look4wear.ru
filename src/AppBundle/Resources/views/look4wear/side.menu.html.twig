@@ -1,4 +1,4 @@
-<ul class="px-3 py-1 list-unstyled">
+<ul class="py-1 list-unstyled">
     {% macro recursiveCategory(category, actualParentCategories, actualCategory, vendor, categoryTopVendorsResult) %}
         {% import _self as self %}
         {% if category in actualParentCategories %}
@@ -8,7 +8,7 @@
                     {{ category.name }}
                 </span>
             {% else %}
-                <a href="{{ category|get_category_url }}" title="{{ category.seoTitle }}">
+                <a class="text-info" href="{{ category|get_category_url }}" title="{{ category.seoTitle }}">
                     {{ category.name }}
                 </a>
             {% endif %}
@@ -21,7 +21,7 @@
             {% elseif category.parentCategory and category.data.topVendors and actualCategory == category %}
                 <ul class="px-3 py-1 list-unstyled">
                     {% for topVendor, count in category.data.topVendors|slice(0, 5) %}
-                        <li>
+                        <li class="text-nowrap">
                             {% if app.request.attributes.get('_route') and app.request.attributes.get('_route_params') and path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) == category|get_category_url ~ '/brand/' ~ topVendor %}
                                 <span class="active">
                                     {% if categoryTopVendorsResult[topVendor] is defined %}
@@ -31,7 +31,7 @@
                                     {% endif %}
                                 </span>
                             {% else %}
-                                <a href="{{ category|get_category_url }}/brand/{{ topVendor }}" {{ category.seoTitle }} {{ topVendor }}>
+                                <a class="text-info" href="{{ category|get_category_url }}/brand/{{ topVendor }}" {{ category.seoTitle }} {{ topVendor }}>
                                     {% if categoryTopVendorsResult[topVendor] is defined %}
                                         {{ categoryTopVendorsResult[topVendor].name }}
                                     {% else %}
