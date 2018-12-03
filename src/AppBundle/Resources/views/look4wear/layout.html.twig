@@ -65,7 +65,7 @@
     <footer class="py-5 bg-dark">
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <h4 class="text-light"><small>Выбирайте одежду в нашем каталоге:</small></h4>
                     <ul class="list-unstyled">
                         <li><a class="text-info" href="/catalog/dlya_mujchin">Мужская одежда</a></li>
@@ -74,7 +74,7 @@
                         <li><a class="text-info" href="/catalog/dlya_devochek">Одежда для девочек</a></li>
                     </ul>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <h4 class="text-light"><small>Полезные ссылки:</small></h4>
                     <ul class="list-unstyled">
                         {% for menuItemKey, menuItemValue in menuItems %}
@@ -90,17 +90,24 @@
                         {% endfor %}
                     </ul>
                 </div>
+                <div class="col-md-3">
+                    <h4 class="text-light"><small>Контакты:</small></h4>
+                    <ul class="list-unstyled">
+                        <li class="text-light">Email: <a href="emailto:support@look4wear.ru" target="_blank" class="text-info">support@look4wear.ru</a></li>
+                        <li class="text-light">VK: <a href="https://vk.com/look4wear" target="_blank" class="text-info">Мы вконтакте</a></li>
+                    </ul>
+                </div>
                 {% if lastArticles is defined %}
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <h4 class="text-light"><small>Свежие статьи:</small></h4>
                         <ul class="list-unstyled">
                             {% for lastArticle in lastArticles %}
                                 <li>
                                     {% if path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) == '/article/' ~ lastArticle.alias %}
-                                        <span class="text-white-50 active">{{ lastArticle.title|slice(0, 30) ~ '...' }}</span>
+                                        <span class="text-white-50 active">{{ lastArticle.title|slice(0, 50) ~ '...' }}</span>
                                     {% else %}
                                         <a class="text-info" href="/article/{{ lastArticle.alias }}">
-                                            {{ lastArticle.title|slice(0, 30) ~ '...' }}
+                                            {{ lastArticle.title|slice(0, 50) ~ '...' }}
                                         </a>
                                     {% endif %}
                                 </li>
