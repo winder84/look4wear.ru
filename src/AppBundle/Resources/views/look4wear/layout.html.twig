@@ -106,7 +106,7 @@
                                     {% if path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) == '/article/' ~ lastArticle.alias %}
                                         <span class="text-white-50 active">{{ lastArticle.title|slice(0, 50) ~ '...' }}</span>
                                     {% else %}
-                                        <a class="text-info" href="/article/{{ lastArticle.alias }}">
+                                        <a class="text-info" href="/article/{{ lastArticle.alias }}" title="{{ lastArticle.title }}">
                                             {{ lastArticle.title|slice(0, 50) ~ '...' }}
                                         </a>
                                     {% endif %}
