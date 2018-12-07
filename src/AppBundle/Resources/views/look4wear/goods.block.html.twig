@@ -34,7 +34,7 @@
                                                 <span itemprop="name">{{ goodsItem.attrs.name }}</span>
                                                 <br />
                                                 Цена:
-                                                <span class="font-weight-bold" itemprop="price">{{ goodsItem.attrs.price }}</span>
+                                                <span class="font-weight-bold" itemprop="price">{{ goodsItem.attrs.price|number_format(2, '.', ',') }}</span>
                                                 <span class="font-weight-bold" itemprop="priceCurrency" content="RUB">руб</span>
                                             </p>
                                     </div>
