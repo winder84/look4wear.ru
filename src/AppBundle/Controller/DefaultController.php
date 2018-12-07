@@ -681,6 +681,7 @@ class DefaultController extends Controller
         }
 
         return $this->defaultRender('AppBundle:look4wear:offer.html.twig', [
+            'seoTitle' => 'Купить современную одежду в ' . $offer->getName() . '. Акционные товары, скидки и доставка по России.',
             'offer' => $offer,
             'goods' => $matches,
             'pagination' => $pagination,
