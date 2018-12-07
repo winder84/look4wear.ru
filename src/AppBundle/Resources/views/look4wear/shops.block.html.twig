@@ -1,0 +1,25 @@
+{% if shops|length > 0 %}
+    <hr/>
+    <div class="row col-12">
+        <h2 class="mx-auto text-dark">
+            <small>{{ title }}:</small>
+        </h2>
+    </div>
+    <div class="row">
+        <div class="d-flex justify-content-center flex-wrap">
+            {% for shop in shops %}
+                {% if loop.index <= 12 %}
+                    <a href="/shop/{{ shop.alias }}"
+                       title="Купить одежду и обувь в {{ shop.name }}."
+                       class="px-0 mx-1 my-1 col-md-2">
+                        <div class="px-1 lead border h-100 text-center ">
+                            <div class="text-dark">
+                                {{ shop.name }}
+                            </div>
+                        </div>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}

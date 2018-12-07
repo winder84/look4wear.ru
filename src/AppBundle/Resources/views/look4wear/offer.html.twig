@@ -1,0 +1,17 @@
+{% extends 'AppBundle:look4wear:layout.html.twig' %}
+
+{% block content %}
+    {% if offer is defined %}
+        <h1 class="text-center text-dark">
+            <small>
+                {{ offer.name }}
+            </small>
+        </h1>
+    {% endif %}
+    {{ include('AppBundle:look4wear:goods.block.html.twig', { 'goods': goods }) }}
+    {% if offer.description %}
+        <div>
+            {{ offer.description|raw }}
+        </div>
+    {% endif %}
+{% endblock %}

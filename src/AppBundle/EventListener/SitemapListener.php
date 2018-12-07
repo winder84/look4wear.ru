@@ -4,6 +4,7 @@ namespace AppBundle\EventListener;
 
 use AppBundle\Entity\Article;
 use AppBundle\Entity\Category;
+use AppBundle\Entity\Offer;
 use JantaoDev\SitemapBundle\Service\SitemapListenerInterface;
 use JantaoDev\SitemapBundle\Event\SitemapGenerateEvent;
 use JantaoDev\SitemapBundle\Sitemap\Url;
@@ -66,6 +67,15 @@ class SitemapListener implements SitemapListenerInterface
             $url = new Url($this->urlGenerator->generate(
                 'article_page',
                 ['alias' => $article->getAlias()],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            ), new \DateTime('now'), 0.8, 'daily');
+            $sitemap->add($url);
+        }
+        $offers = $this->doctrine->getRepository(Offer::class)->findBy(['isDelete' => false]);
+        foreach ($offers as $offer) {
+            $url = new Url($this->urlGenerator->generate(
+                'shop_page',
+                ['alias' => $offer->getAlias()],
                 UrlGeneratorInterface::ABSOLUTE_URL
             ), new \DateTime('now'), 0.8, 'daily');
             $sitemap->add($url);

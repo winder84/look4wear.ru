@@ -60,6 +60,11 @@ class DefaultController extends Controller
     protected static $lastArticles = [];
 
     /**
+     * @var ArrayCollection
+     */
+    protected static $shops = [];
+
+    /**
      * @var array
      */
     protected static $menuItems = [
@@ -140,6 +145,9 @@ class DefaultController extends Controller
         self::$lastArticles = self::$em
             ->getRepository('AppBundle:Article')
             ->findBy([], ['id' => 'DESC'], 5);
+        self::$shops = self::$em
+            ->getRepository('AppBundle:Offer')
+            ->findBy(['isDelete' => false]);
         foreach ($mainMenuCategories as $mainMenuCategory) {
             self::$mainMenuCategories[] = [
                 'title' => $mainMenuCategory->getTitle(),
@@ -515,6 +523,7 @@ class DefaultController extends Controller
             'seoTitle' => '',
             'pageTitle' => '',
             'childrenCategories' => [],
+            'actualCategory' => null,
             'actualParentCategories' => self::$parentCategories,
             'totalCount' => $totalCount,
             'searchString' => $searchString,
@@ -631,6 +640,53 @@ class DefaultController extends Controller
             'seoTitle' => $article->getSeoTitle(),
             'seoDescription' => $article->getSeoDescription(),
             'article' => $article,
+        ]);
+    }
+
+    /**
+     * @Route("/shop/{alias}", name="shop_page")
+     */
+    public function shopAction($alias, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $offer = $em
+            ->getRepository('AppBundle:Offer')
+            ->findOneBy(['alias' => $alias]);
+        if (!$offer) {
+            throw $this->createNotFoundException('The $offer does not exist');
+        }
+
+        $matches = [];
+        $pagination = null;
+        $searchString = '@offerAlias ' . $alias ;
+        $searchGoods = $this->searchByString($searchString, $request->query->getInt('page', 0));
+        if (isset($searchGoods['matches'])) {
+            $matches = $searchGoods['matches'];
+        }
+        $totalCount = $searchGoods['total_found'];
+        $actualUrl = '/shop/' . $alias;
+        $pagination = [
+            'url' => $actualUrl . '?',
+            'currentPage' => $request->query->getInt('page', 1),
+            'totalPagesCount' => ceil($totalCount / self::$resultsOnPage),
+        ];
+        $link = $this->generateUrl(
+            'shop_page', [
+            'alias' => $alias,
+        ],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+        if ($link != $request->getUri()) {
+            self::$canonicalLink = $link;
+        }
+
+        return $this->defaultRender('AppBundle:look4wear:offer.html.twig', [
+            'offer' => $offer,
+            'goods' => $matches,
+            'pagination' => $pagination,
+            'canonicalLink' => self::$canonicalLink,
+            'actualCategory' => null,
+            'actualParentCategories' => self::$parentCategories,
         ]);
     }
 
@@ -798,6 +854,7 @@ class DefaultController extends Controller
             'parentCategories' => self::$parentCategories,
             'menuItems' => self::$menuItems,
             'lastArticles' => self::$lastArticles,
+            'shops' => self::$shops,
         ] + $templateArgs);
     }
 

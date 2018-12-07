@@ -21,4 +21,7 @@
     {% if categoryTopVendorsResult %}
         {{ include('AppBundle:look4wear:top.vendors.block.html.twig', { 'categoryTopVendorsResult': categoryTopVendorsResult, 'title': 'Популярные бренды этой категории', 'vendorAlias': '' }) }}
     {% endif %}
+    {% if shops %}
+        {{ include('AppBundle:look4wear:shops.block.html.twig', { 'shops': shops, 'title': 'Магазины-партнёры' }) }}
+    {% endif %}
 {% endblock %}
